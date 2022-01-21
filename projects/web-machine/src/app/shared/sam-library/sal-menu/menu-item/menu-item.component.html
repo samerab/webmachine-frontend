@@ -1,0 +1,23 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false" [dir]="lang === 'ar' ? 'rtl' : 'ltr'">
+  <ng-container *ngFor="let child of items">
+    <!-- Handle branch node menu items -->
+    <ng-container *ngIf="child.children && child.children.length > 0">
+      <button mat-menu-item color="accent" [matMenuTriggerFor]="menu.childMenu">
+        <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
+        <span translate>{{ child.label }}</span>
+      </button>
+      <sam-menu-item
+        (onchildClick)="onchildClicked($event)"
+        #menu
+        [items]="child.children"
+      ></sam-menu-item>
+    </ng-container>
+    <!-- Handle leaf node menu items -->
+    <ng-container *ngIf="!child.children || child.children.length === 0">
+      <button (click)="onchildClicked(child)" mat-menu-item>
+        <mat-icon *ngIf="child.icon">{{ child.icon }}</mat-icon>
+        <span translate>{{ child.label }}</span>
+      </button>
+    </ng-container>
+  </ng-container>
+</mat-menu>

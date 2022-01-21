@@ -1,0 +1,70 @@
+/* For use in src/lib/core/theming/_palette.scss */
+$sam-primary: (
+    50 : #e1e9ed,
+    100 : #b3c7d2,
+    200 : #80a2b5,
+    300 : #4d7c97,
+    400 : #276080,
+    500 : #01446a,
+    600 : #013e62,
+    700 : #013557,
+    800 : #012d4d,
+    900 : #001f3c,
+    A100 : #72acff,
+    A200 : #3f8dff,
+    A400 : #0c6fff,
+    A700 : #0063f1,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$sam-accent: (
+    50 : #fbfbfb,
+    100 : #f6f6f6,
+    200 : #f0f0f0,
+    300 : #e9e9e9,
+    400 : #e5e5e5,
+    500 : #e0e0e0,
+    600 : #dcdcdc,
+    700 : #d8d8d8,
+    800 : #d3d3d3,
+    900 : #cbcbcb,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$primary: mat-palette($sam-primary);
+$accent:  mat-palette($sam-accent);
+$sam-theme-2: mat-light-theme($primary, $accent);

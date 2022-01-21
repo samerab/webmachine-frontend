@@ -1,0 +1,37 @@
+$sam-accent:  (
+    50 : #f0faff,
+    100 : #d9f3ff,
+    200 : #c0ecff,
+    300 : #a6e4ff,
+    400 : #93deff,
+    500 : #80d8ff,
+    600 : #78d4ff,
+    700 : #6dceff,
+    800 : #63c8ff,
+    900 : #50bfff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #f6fbff,
+    A700 : #dcf2ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$primary: mat-palette($mat-light-blue);
+$accent:  mat-palette($sam-accent);
+$sam-theme-7: mat-light-theme($primary, $accent);

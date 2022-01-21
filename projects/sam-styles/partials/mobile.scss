@@ -1,0 +1,210 @@
+// كلاس مرن يصبح ١٠٠ ٪ في الموبايل
+.col-flex-1 {
+  width: 8.33%;
+}
+.col-flex-2 {
+  width: 16.66%;
+}
+.col-flex-3 {
+  width: 25%;
+}
+.col-flex-4 {
+  width: 33.33%;
+}
+.col-flex-5 {
+  width: 41.66%;
+}
+.col-flex-6 {
+  width: 50%;
+}
+.col-flex-7 {
+  width: 58.33%;
+}
+.col-flex-8 {
+  width: 66.66%;
+}
+.col-flex-9 {
+  width: 75%;
+}
+.col-flex-10 {
+  width: 83.33%;
+}
+.col-flex-11 {
+  width: 91.66%;
+}
+.col-flex-12 {
+  width: 100%;
+}
+
+// كلاس خاص للموبايل
+// .col-mob-1 {
+//   width: 8.33%;
+// }
+// .col-mob-2 {
+//   width: 16.66%;
+// }
+// .col-mob-3 {
+//   width: 25%;
+// }
+// .col-mob-4 {
+//   width: 33.33%;
+// }
+// .col-mob-5 {
+//   width: 41.66%;
+// }
+// .col-mob-6 {
+//   width: 50%;
+// }
+// .col-mob-7 {
+//   width: 58.33%;
+// }
+// .col-mob-8 {
+//   width: 66.66%;
+// }
+// .col-mob-9 {
+//   width: 75%;
+// }
+// .col-mob-10 {
+//   width: 83.33%;
+// }
+// .col-mob-11 {
+//   width: 91.66%;
+// }
+// .col-mob-12 {
+//   width: 100%;
+// }
+
+.col-fixed-1 {
+  width: 8.33%;
+}
+.col-fixed-2 {
+  width: 16.66%;
+}
+.col-fixed-3 {
+  width: 25%;
+}
+.col-fixed-4 {
+  width: 33.33%;
+}
+.col-fixed-5 {
+  width: 41.66%;
+}
+.col-fixed-6 {
+  width: 50%;
+}
+.col-fixed-7 {
+  width: 58.33%;
+}
+.col-fixed-8 {
+  width: 66.66%;
+}
+.col-fixed-9 {
+  width: 75%;
+}
+.col-fixed-10 {
+  width: 83.33%;
+}
+.col-fixed-11 {
+  width: 91.66%;
+}
+.col-fixed-12 {
+  width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="col-flex-"] {
+    width: 100%;
+  }
+}
+
+/***** End Columns ****/
+
+.container-fluid {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+}
+
+.row {
+  @include flexCenter(row);
+}
+
+.row-nowrap {
+  @include flexCenter(row, nowrap);
+}
+
+.row::after,
+.row-nowrap::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+/******************************************/
+//    Fast Classes
+/******************************************/
+
+.pointer {
+  cursor: pointer;
+}
+
+.relative {
+  position: relative;
+}
+
+.laptop {
+  display: none !important;
+}
+
+.mobile {
+  display: flex !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/******************************************/
+
+.entity-content {
+  padding: 20px;
+  height: calc(100% - 42px);
+  overflow-x: scroll;
+}
+
+.checkbox-group-column {
+  display: flex !important;
+  flex-direction: column;
+  .mat-checkbox {
+    margin-bottom: 5px;
+  }
+}
+
+.mat-radio-button {
+  margin-bottom: 5px;
+}
+
+.setting-card {
+  &.mat-card {
+    margin-bottom: 10px;
+  }
+}
+
+.form-container {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin: 30px;
+}
+
+.mat-form-field {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.mat-slide-toggle-content {
+  padding: 15px;
+}

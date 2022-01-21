@@ -1,0 +1,61 @@
+<ng-container *ngTemplateOutlet="template"></ng-container>
+
+<ng-template #confirmMessage>
+  <div class="confirm-message">
+    <div class="text">
+      <div class="title">
+        Thank You For Subscribing
+      </div>
+      <div class="par">
+        Just one more step...
+      </div>
+      <div class="par">
+        Check your email to confirm your subscription
+      </div>
+      <div class="icon primary-color">
+        <mat-icon>mark_email_unread</mat-icon>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #success>
+  <div class="success">
+    <div class="icon">
+      <mat-icon>mark_email_read</mat-icon>
+    </div>
+    <div class="text">
+      <div class="title">
+        Email address confirmed
+      </div>
+      <div class="par">
+        You have successfully confirmed your email.
+      </div>
+      <div class="par">
+        Please login to continue
+      </div>
+      <div class="callToAction">
+        <button [routerLink]="['/users/login']" routerLinkActive="router-link-active"  mat-raised-button color="primary">go to login</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #failure>
+  <div class="failure">
+    <div class="icon">
+      <mat-icon>error_outline</mat-icon>
+    </div>
+    <div class="text">
+      <div class="title">
+        There was an error confirming your email
+      </div>
+      <div class="par">
+        Please signup again
+      </div>
+      <div class="callToAction">
+        <button [routerLink]="['/users/signup']" mat-raised-button color="primary">go to signup</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

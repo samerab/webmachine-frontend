@@ -1,0 +1,28 @@
+.subdomain,
+.domain {
+  display: grid;
+  place-items: center;
+  padding-top: 125px;
+  .icon {
+    margin-bottom: 30px;
+    .mat-icon {
+      height: 100px;
+      width: 100px;
+    }
+    .material-icons {
+      font-size: 100px;
+    }
+  }
+  .text {
+    text-align: center;
+    padding: 20px;
+    font-size: 33px;
+    line-height: 1.5;
+  }
+}
+
+.subdomain {
+  .icon {
+    color: red;
+  }
+}

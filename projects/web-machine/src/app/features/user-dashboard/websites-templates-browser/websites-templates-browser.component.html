@@ -1,0 +1,3 @@
+<div *ngFor="let tpl of websiteTemplateList" (click)="onTplSelect(tpl.id)" class="websites-templates-browser-img pointer">
+    <img [src]="tpl?.imgSrc" class="img">
+</div>

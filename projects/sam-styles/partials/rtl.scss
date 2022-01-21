@@ -1,0 +1,49 @@
+.rtl {
+  direction: rtl;
+  div {
+    direction: rtl;
+    text-align: start;
+  }
+
+  //--- For Material --------------------
+  .mat-option {
+    text-align: right;
+  }
+
+  .mat-radio-label-content {
+    padding-right: 8px;
+  }
+
+  .mat-menu-item {
+    text-align: right;
+  }
+
+  .mat-standard-chip .mat-chip-remove,
+  .mat-standard-chip .mat-chip-trailing-icon {
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    .mat-radio-container {
+      margin-left: 7px;
+    }
+  }
+
+  span.mat-checkbox-label {
+    margin-right: 10px;
+  }
+
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type,
+  th.mat-header-cell:first-of-type {
+    padding-right: 24px;
+  }
+
+  div.cdk-overlay-connected-position-bounding-box {
+    //direction: rtl;
+  }
+}

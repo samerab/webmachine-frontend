@@ -1,0 +1,31 @@
+<form [formGroup]="form" class="form">
+  <div formArrayName="variantList">
+    <div class="variant-box" *ngFor="let v of variantsControls; let i = index">
+      <div [formGroupName]="i">
+        <mat-form-field>
+          <input formControlName="name" matInput autocomplete="off" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let option of v.get('options').value"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeOption(option, i)"
+            >
+              {{ option }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="addOption($event, i)"
+            />
+          </mat-chip-list>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>

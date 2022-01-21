@@ -1,0 +1,55 @@
+:host.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.mat-toolbar {
+  a {
+    color: #000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  .spacer {
+    flex: 1 1 auto;
+  }
+  .logo {
+    width: 100px;
+    display: grid;
+    place-items: center;
+    img {
+      width: 100%;
+    }
+  }
+  a:hover:not(.active) {
+    background-color: #111;
+  }
+  .active-menu {
+    background-color: #04aa6d;
+  }
+  .sign-user {
+    .mat-icon {
+      height: 30px;
+      width: 30x;
+    }
+    .material-icons {
+      font-size: 30px;
+    }
+  }
+}
+
+// .command {
+//   display: grid;
+//   grid-template-columns: 40px 75px;
+//   font-size: 18px;
+//   align-items: center;
+//   margin: 10px 0;
+//   cursor: pointer;
+//   width: 100%;
+//   border-top: 1px solid #ddd;
+//   padding: 30px 0 0;
+//   span {
+//     font-size: 24px;
+//   }
+// }

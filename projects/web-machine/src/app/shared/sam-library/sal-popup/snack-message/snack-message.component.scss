@@ -1,0 +1,20 @@
+@import "projects/sam-styles/variables.scss";
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include icon-size(30px)
+}
+
+.icon {
+    background: white;
+    color: $success;
+    border-radius: 50%;
+}
+
+.message {
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+}

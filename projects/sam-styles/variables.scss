@@ -1,0 +1,29 @@
+$success: #4BB543;
+$error: #B00020;
+$toolbar-height: 64px;
+$content-height: calc(100vh - 64px);
+$secondary-toolbar-height: 45px;
+
+@mixin icon-size($size) {
+    .mat-icon-button i, .mat-icon-button .mat-icon {
+        line-height: $size;
+    }
+    .mat-icon {
+        height: $size;
+        width: $size;
+        margin: 0;
+    }
+    .material-icons {
+        font-weight: bold;
+        font-size: $size;
+    }
+}
+
+@mixin box-shadow-broad($color) {
+    box-shadow: 
+    rgba($color, 42%) 5px 5px, 
+    rgba($color, 30%) 10px 10px, 
+    rgba($color, 20%) 15px 15px, 
+    rgba($color, 10%) 20px 20px, 
+    rgba($color, 5%) 25px 25px;
+}

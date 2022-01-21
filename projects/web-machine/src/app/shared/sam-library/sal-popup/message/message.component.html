@@ -1,0 +1,25 @@
+<div
+  class="message-container"
+  [ngClass]="{
+    success: type === 'success',
+    error: type === 'error',
+    warning: type === 'warning'
+  }"
+>
+  <div class="icon">
+    <mat-icon *ngIf="type === 'success'">check_circle</mat-icon>
+    <mat-icon *ngIf="type === 'error'">error</mat-icon>
+    <mat-icon *ngIf="type === 'warning'">feedback</mat-icon>
+  </div>
+  <div class="message">
+    <div [innerHTML]="message | translate | safe:'html'"></div>
+  </div>
+  <div class="actions">
+      <button *ngIf="data.isDialog" mat-raised-button [mat-dialog-close]="false">
+          {{ cancel | translate }}
+        </button>
+    <button class="okBtn" mat-raised-button [mat-dialog-close]="true">
+      {{ ok | translate}}
+    </button>
+  </div>
+</div>

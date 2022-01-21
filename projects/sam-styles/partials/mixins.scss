@@ -1,0 +1,14 @@
+
+@mixin imgBg($url) {
+  background: url($url) center top;
+  background-size: cover;
+}
+
+@mixin flexCenter($direction, $wrap: wrap) {
+    display: flex;
+    flex-wrap: $wrap;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+  }

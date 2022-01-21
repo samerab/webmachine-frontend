@@ -1,0 +1,12 @@
+<sal-page
+  [page$]="page$"
+  [info$]="info$"
+  [fileList$]="fileList$"
+  [fixedGridList$]="fixedGridList$"
+  [gridTemplateList$]="gridTemplateList$"
+  (onSave)="onSaveEvent($event)"
+  (onRealPreview)="onRealPreviewEvent($event)"
+  (onAction)="onAction($event)"
+>
+  <ng-content></ng-content>
+</sal-page>

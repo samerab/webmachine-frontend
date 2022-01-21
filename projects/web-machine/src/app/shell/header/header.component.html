@@ -1,0 +1,37 @@
+<mat-toolbar class="primary">
+  <div (click)="goHome()" class="logo pointer">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/ZDF_logo%21_Logo_2021.svg/1200px-ZDF_logo%21_Logo_2021.svg.png"
+      alt=""
+    />
+  </div>
+  <a
+    *ngFor="let item of menuList"
+    class="primary"
+    [routerLink]="[item.link]"
+    routerLinkActive="active-menu"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >{{ item.title }}</a
+  >
+  <span class="spacer"></span>
+  <button class="sign-user" (click)="openSignUserPopup()" mat-button>
+    <mat-icon>account_circle</mat-icon>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+</mat-toolbar>
+
+<ng-template #signUserTemplate let-email="data">
+  <div (click)="onPopupClick()">
+    <ws-sign-window
+      (onLogin)="onLogin()"
+      (onLogout)="onLogout()"
+      (onSignup)="onSignup()"
+      [email$]="email$"
+    >
+      <div signWindowCommand (click)="onDash()">
+        <mat-icon>space_dashboard</mat-icon>
+        <span>dashboard</span>
+      </div>
+    </ws-sign-window>
+  </div>
+</ng-template>

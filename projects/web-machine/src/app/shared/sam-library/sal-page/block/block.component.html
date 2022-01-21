@@ -1,0 +1,13 @@
+<sal-navbar
+  *ngIf="isDesignMode"
+  (onItemClick)="runCommand($event)"
+  [startList]="startList"
+  [endList]="endList"
+  color="primary-50"
+>
+  <h3 #title class="nav-title">{{ "block" }}</h3>
+</sal-navbar>
+
+<div class="block-container">
+  <div #blockContainer></div>
+</div>

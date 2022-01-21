@@ -1,0 +1,8 @@
+.variant-input {
+    display: flex;
+    flex-direction: column;
+        .mat-form-field {
+            display: block;
+            margin: 10px 30px;
+        }
+}

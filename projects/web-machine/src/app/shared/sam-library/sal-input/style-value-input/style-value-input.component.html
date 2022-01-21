@@ -1,0 +1,57 @@
+<form [formGroup]="form" class="style-form-container">
+  <div class="label">{{ label }}</div>
+
+  <ng-container *ngIf="styleConfig.hasValueWithUnit">
+    <mat-form-field class="value">
+      <input formControlName="value" matInput autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field class="unit">
+      <mat-select formControlName="unit">
+        <mat-option *ngFor="let unit of units" [value]="unit">
+          {{ unit }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+
+  <mat-form-field *ngIf="styleConfig.hasOptions">
+    <mat-select formControlName="option">
+      <mat-option *ngFor="let option of styleConfig.options" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <ng-container *ngIf="styleConfig.hasOptionsWithValues">
+    <mat-form-field>
+      <mat-select formControlName="option">
+        <mat-option *ngFor="let option of styleConfig.options" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="hasSpecifiedNumber">
+      <input
+        type="number"
+        formControlName="value"
+        matInput
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </ng-container>
+
+  <mat-form-field *ngIf="styleConfig.hasColor" class="color">
+    <input type="color" formControlName="color" matInput autocomplete="off" />
+  </mat-form-field>
+
+  <mat-slider *ngIf="styleConfig.hasValueSlider"
+    class="slider"
+    [max]="styleConfig.max"
+    [min]="styleConfig.min"
+    [step]="styleConfig.step"
+    [thumbLabel]="true"
+    formControlName="value"
+  >
+  </mat-slider>
+</form>

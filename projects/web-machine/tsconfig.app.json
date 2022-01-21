@@ -1,0 +1,21 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "paths": {
+      "@ws-sal": ["./projects/web-machine/src/app/shared/sam-library/index.ts"],
+      "@ws-sal/block-settings": ["./projects/web-machine/src/app/shared/sam-library/sal-block-settings/sal-block-settings.module.ts"],
+      "@ws-sal/style": ["./projects/web-machine/src/app/shared/sam-library/sal-style/sal-style.module.ts"],
+      "@ws-store/*": ["./projects/web-machine/src/app/store/*"],
+    }
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

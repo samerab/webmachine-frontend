@@ -1,0 +1,22 @@
+<div
+  style="visibility: hidden; position: fixed"
+  [style.left]="position.x"
+  [style.top]="position.y"
+  [matMenuTriggerFor]="contextMenu"
+  [dir]="dir"
+></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-container  *ngFor="let item of items">
+    <button
+    *samPermission="item.permission"
+    (click)="onItemClick(item.id)"
+    mat-menu-item
+  >
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span>{{ item.id | translate }}</span>
+  </button>
+  </ng-container>
+  
+  
+</mat-menu>

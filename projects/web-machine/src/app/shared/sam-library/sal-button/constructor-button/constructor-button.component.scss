@@ -1,0 +1,20 @@
+.btnContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  span.mat-button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+  }
+
+  .material-icons {
+    // line-height: 1.2; for arabic font
+    // line-height: 1; for english
+}

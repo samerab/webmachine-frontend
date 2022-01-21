@@ -1,0 +1,57 @@
+@import "../../../../../../../sam-styles/variables.scss";
+//@import '../../../../../../sam-styles/variables.scss';
+
+.mat-toolbar-multiple-rows {
+  height: $secondary-toolbar-height;
+  min-height: $secondary-toolbar-height;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: $secondary-toolbar-height;
+}
+
+mat-toolbar-row.mat-toolbar-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: $secondary-toolbar-height;
+  padding: 0;
+}
+
+:host(.padding) {
+  .start,
+  .end {
+    padding: 0 10px;
+  }
+}
+
+.start,
+.end {
+  display: flex;
+  height: 100%;
+}
+
+.end {
+  justify-content: flex-end;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-icon-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: fit-content;
+  height: 100%;
+  border-radius: 0%;
+  &:hover {
+    color: black;
+  }
+}
+
+.content-after-end {
+  display: grid;
+  align-items: center;
+}

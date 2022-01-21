@@ -1,0 +1,9 @@
+<!-- <button (click)="useLanguage('en')">en</button>
+<button (click)="useLanguage('ar')">de</button> -->
+<!-- <button [routerLink]="['/pages/yyy']" routerLinkActive="router-link-active" >gooooo</button> -->
+<router-outlet></router-outlet>
+
+<ws-aux-outlet #aux *ngIf="showAuxOutlet"></ws-aux-outlet>
+<div *ngIf="loading$ | async" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>

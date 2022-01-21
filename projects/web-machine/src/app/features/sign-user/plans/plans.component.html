@@ -1,0 +1,93 @@
+<div class="plans-container">
+  <div class="page-header">
+    <div class="title primary">
+      <div>Pricing Plans</div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path
+        class="primary"
+        fill="#01446a"
+        fill-opacity="1"
+        d="M0,192L48,181.3C96,171,192,149,288,128C384,107,480,85,576,90.7C672,96,768,128,864,154.7C960,181,1056,203,1152,181.3C1248,160,1344,96,1392,64L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,322Z"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="table primary-color" *ngIf="plans$ | async as plans">
+    <ng-container *ngFor="let plan of plans; index as index">
+      <div class="details primary-100">
+        <div class="head primary">
+          <div class="name">
+            {{plan.id}}
+          </div>
+          <div class="price accent-color">
+              {{plan.price}}
+          </div>
+          <div class="period">
+              {{plan.period}}
+          </div>
+        </div>
+        <div class="body">
+          <p *ngFor="let key of plan | values">{{ key }}</p>
+        </div>
+        <button
+          (click)="onSelect(plan.id)"
+          color="primary"
+          class="action"
+          mat-raised-button
+        >
+          select plan
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- <div class="details primary-100">
+    <div class="head primary">
+      <div class="name">
+        basic
+      </div>
+      <div class="price accent-color">
+        10 €
+      </div>
+      <div class="period">
+        per Month
+      </div>
+    </div>
+    <div class="body">
+      <p *ngFor="let key of plans[1] | values">{{ key }}</p>
+    </div>
+    <button
+      (click)="onSelect(plans[1]['price'])"
+      color="primary"
+      class="action"
+      mat-raised-button
+    >
+      select plan
+    </button>
+  </div>
+  <div class="details primary-100">
+    <div class="head primary">
+      <div class="name">
+        basic
+      </div>
+      <div class="price accent-color">
+        10 €
+      </div>
+      <div class="period">
+        per Month
+      </div>
+    </div>
+    <div class="body">
+      <p *ngFor="let key of plans[2] | values">{{ key }}</p>
+    </div>
+    <button
+      (click)="onSelect(plans[2]['price'])"
+      color="primary"
+      class="action"
+      mat-raised-button
+    >
+      select plan
+    </button>
+  </div> -->
+  </div>
+</div>

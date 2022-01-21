@@ -1,0 +1,23 @@
+<sal-navbar
+  color="primary-500"
+  (onItemClick)="runCommand($event)"
+  [startList]="startList"
+  [endList]="endList"
+  class="padding"
+></sal-navbar>
+
+<sal-table
+  [data]="products$ | async"
+  [columns]="['title']"
+  [hasAction]="true"
+  [hasSelection$]="showSelectionSubject$"
+  (multiSelect)="onSelect($event)"
+  (rowSelect)="onItemClick($event)"
+  (actionClick)="onActionClick($event)"
+></sal-table>
+
+<sam-context-menu
+  #contextMenu
+  [contextMenuItems$]="contextMenu$"
+  (itemClick)="onContextMenuItemClick($event)"
+></sam-context-menu>

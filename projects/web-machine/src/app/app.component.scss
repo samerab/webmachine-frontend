@@ -1,0 +1,22 @@
+:host.aux-outlet {
+    display: grid;
+    grid-template-columns: 0 1fr 500px;
+}
+
+:host.full-aux-outlet {
+    display: grid;
+    grid-template-columns: 0 0 1fr;
+}
+
+.spinner {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffffa1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }

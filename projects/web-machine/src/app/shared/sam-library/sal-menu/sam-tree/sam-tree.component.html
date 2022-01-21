@@ -1,0 +1,75 @@
+<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <cdk-nested-tree-node
+    cdkDropList
+    (cdkDropListDropped)="drop()"
+    *cdkTreeNodeDef="let node"
+    class="tree-node"
+  >
+  <!-- *ngIf="node.children" -->
+    <div 
+      class="sam-node"
+      [id]="node.id"
+      cdkDrag
+      (cdkDragStarted)="onDragStarted(node)"
+      (mouseover)="onMouseOver(node, div1)"
+      (mouseleave)="onMouseLeave(div1)"
+      (click)="send(node, div1)"
+      (contextmenu)="send(node, div1)"
+      #div1
+    >
+      <button mat-icon-button disabled></button>
+      <button (contextmenu)="send(node, div1)" mat-icon-button>
+        <mat-icon *ngIf="!node.children" class="mat-icon-rtl-mirror">
+          {{ "description" }}
+        </mat-icon>
+        <mat-icon
+          *ngIf="node.children && node.children.length === 0"
+          class="mat-icon-rtl-mirror"
+        >
+          {{ "folder" }}
+        </mat-icon>
+        {{ node.label[lang$ | async] }}
+      </button>
+    </div>
+  </cdk-nested-tree-node>
+  <cdk-nested-tree-node
+    cdkDropList
+    (cdkDropListDropped)="drop()"
+    *cdkTreeNodeDef="let node; when: hasChild"
+    class="tree-node"
+  >
+    <div
+      [id]="node.id"
+      cdkDrag
+      (cdkDragStarted)="onDragStarted(node)"
+      (mouseover)="onMouseOver(node, div2)"
+      (mouseleave)="onMouseLeave(div2)"
+      (click)="send(node, div2)"
+      (contextmenu)="send(node, div2)"
+      #div2
+    >
+      <button
+        mat-icon-button
+        [attr.aria-label]="'Toggle ' + node.label[lang$ | async]"
+        cdkTreeNodeToggle
+      >
+        <mat-icon
+          *ngIf="node.children && node.children.length > 0"
+          class="mat-icon-rtl-mirror"
+        >
+          {{ getNavIcon(isRightDir, node) }}
+        </mat-icon>
+      </button>
+      <button (contextmenu)="send(node, div2)" mat-icon-button>
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ "folder" }}
+        </mat-icon>
+        {{ node.label[lang$ | async] }}
+      </button>
+    </div>
+
+    <div [class.tree-invisible]="!treeControl.isExpanded(node)">
+      <ng-container cdkTreeNodeOutlet></ng-container>
+    </div>
+  </cdk-nested-tree-node>
+</cdk-tree>

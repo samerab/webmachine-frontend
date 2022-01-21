@@ -1,0 +1,17 @@
+<sal-smart-input
+    #input
+  [label]="label"
+  [lang]="lang"
+  [displayedKey]="displayedKey"
+  (enterClick)="openPopup($event)"
+></sal-smart-input>
+
+<!-- Template -->
+<ng-template #table let-data="data">
+  <sal-table
+    [data]="data"
+    [noData]="'common.no_data' | translate"
+    (rowSelect)="onSelect($event)"
+  >
+  </sal-table>
+</ng-template>

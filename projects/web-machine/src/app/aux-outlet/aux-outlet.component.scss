@@ -1,0 +1,33 @@
+:host {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  &.fullscreen {
+    grid-template-columns: 0 1fr;
+  }
+}
+
+.aux {
+  display: grid;
+  grid-template-rows: 40px 0 0 0 1fr;
+  overflow: auto;
+  // position: fixed;
+  // top: 0;
+  // bottom: 0;
+  // //left: 0;
+  // right: 0;
+  background: #ffffff;
+  padding: 5px;
+  //width: 500px;
+  div {
+    display: grid;
+    justify-content: flex-end;
+    cursor: pointer;
+    font-size: 50px;
+    padding: 10px;
+  }
+}

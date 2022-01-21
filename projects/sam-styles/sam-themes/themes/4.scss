@@ -1,0 +1,36 @@
+$sam-primary: (
+    50 : #eae7e6,
+    100 : #cac2c0,
+    200 : #a79a97,
+    300 : #83716d,
+    400 : #69524d,
+    500 : #4e342e,
+    600 : #472f29,
+    700 : #3d2723,
+    800 : #35211d,
+    900 : #251512,
+    A100 : #ff7b67,
+    A200 : #ff4f34,
+    A400 : #ff2301,
+    A700 : #e61f00,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$primary: mat-palette($sam-primary);
+$accent: mat-palette($mat-orange);
+$sam-theme-4: mat-light-theme($primary, $accent);

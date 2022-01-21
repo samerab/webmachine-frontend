@@ -1,0 +1,16 @@
+<div class="user-dashboard-container">
+  <div class="sidenav">
+    <sal-sidenav
+      [list]="sidenavList"
+      [hasDivider]="false"
+      activeClass="active-primary"
+      childrenBg="#b1d5e9"
+      [idToOpen]="idToOpen"
+      (onSelect)="onNavigate($event)"
+    >
+    </sal-sidenav>
+  </div>
+  <div class="content">
+    <router-outlet (activate)="subToRoute($event)"></router-outlet>
+  </div>
+</div>

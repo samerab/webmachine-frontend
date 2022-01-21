@@ -1,0 +1,12 @@
+<ng-container  *ngFor="let btn of config.buttonList; index as index">
+  <constructor-button
+  *ngIf="btn"
+  [label]="btn.label"
+  [icon]="btn.icon"
+  [color]="btn.color"
+  [type]="config.type"
+  [primaryDisabled]="config.primaryDisabled && index === 0"
+  (onBtnClick)="onClickHandler($event)"
+></constructor-button>
+<div *ngIf="!btn"></div>
+</ng-container>

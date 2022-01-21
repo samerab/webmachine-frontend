@@ -1,0 +1,31 @@
+@import "~@angular/material/theming";
+
+@mixin menuComponent($theme, $hoverbg, $hoverFg) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+
+  .mat-menu-item:hover:not([disabled]),
+  .mat-menu-item.cdk-program-focused:not([disabled]),
+  .mat-menu-item.cdk-keyboard-focused:not([disabled]),
+  .mat-menu-item-highlighted:not([disabled]) {
+    background: $hoverbg;
+    color: $hoverFg;
+  }
+}
+
+:host {
+  display: flex;
+  flex-basis: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+button.mat-menu-item {
+  width: fit-content;
+  height: 100%;
+  //line-height: 100%;
+}
+
+.mat-menu-item .mat-icon {
+  margin-right: 0;
+}

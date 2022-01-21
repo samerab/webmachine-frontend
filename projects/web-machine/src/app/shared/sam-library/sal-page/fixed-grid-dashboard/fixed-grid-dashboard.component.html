@@ -1,0 +1,21 @@
+<h1>Fixed Grids</h1>
+<div (click)="addGrid()" class="add-grid pointer">
+    <mat-icon>add</mat-icon>
+  </div>
+
+  <div class="grids">
+      <div *ngFor="let grid of fixedGridList$ | async" class="grid">
+        <div>
+            {{grid?.settings?.name}}
+        </div>
+        <div class="actions">
+            <mat-icon (click)="remove(grid.id)">delete</mat-icon>
+            <mat-icon (click)="editGridName(grid)">edit</mat-icon>
+        </div>
+      </div>
+  </div>
+
+
+  <ng-template #gridNameTemplate let-data="data">
+    <sal-change-name [name]="data" (onItemClick)="onButtonSelect($event)"></sal-change-name>
+</ng-template>

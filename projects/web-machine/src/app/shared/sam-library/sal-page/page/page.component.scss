@@ -1,0 +1,19 @@
+@import "~@angular/material/theming";
+
+
+.page-viewer-container {
+  //min-height: 100vh;
+}
+
+.blank-page {
+    //height: 100vh;
+}
+
+// @mixin pageViewerComponent($theme) {
+//     $primary: map-get($theme, primary);
+//     $accent: map-get($theme, accent);
+    
+//     .page-viewer-container {
+//     //background: mat-color($primary);
+//   }
+// }

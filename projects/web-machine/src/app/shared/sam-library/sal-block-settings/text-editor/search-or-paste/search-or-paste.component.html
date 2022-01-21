@@ -1,0 +1,13 @@
+<div class="container">
+  <mat-form-field>
+    <mat-label>Search or paste a link</mat-label>
+    <input [formControl]="link" autocomplete="off" matInput>
+    <button (click)="link.setValue('')" matSuffix mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+<button (click)="onApply()" mat-button>apply</button>
+</div>
+<div class="search-result">
+
+</div>

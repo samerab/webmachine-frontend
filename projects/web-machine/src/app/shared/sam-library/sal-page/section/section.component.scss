@@ -1,0 +1,21 @@
+//@import '../../../../../../../sam-styles/variables.scss';
+@import 'variables.scss';
+
+.block-list-container {
+    display: grid;
+    //place-content: flex-start;
+    align-content: flex-start;
+    overflow: auto;
+    height: 100%;
+    //height: calc(100% - #{$secondary-toolbar-height});
+}
+
+
+
+:host {
+    &.design-view {
+        border-right: 3px solid;
+    }
+    overflow: hidden;
+    //border-right: 2px solid #e1e9ed;
+}

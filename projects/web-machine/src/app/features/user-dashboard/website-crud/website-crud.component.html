@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="createWebsite()">
+  <div class="subdomain">
+    <mat-form-field appearance="fill">
+      <mat-label>subdomain</mat-label>
+      <input formControlName="subdomain" matInput autocomplete="off" />
+    </mat-form-field>
+    <div class="domain">
+      .webtech.zone
+    </div>
+  </div>
+  <mat-form-field appearance="fill">
+    <mat-label>name</mat-label>
+    <input formControlName="name" matInput autocomplete="off" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Websites Templates</mat-label>
+    <mat-select formControlName="template">
+      <mat-option *ngFor="let tpl of websiteTemplates" [value]="tpl.id">
+        {{tpl.id}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button>create</button>
+</form>
+<div class="template-browser">
+<button *ngIf="status === 'edit'">{{status}}</button>
+    <img [src]="currentTemplate?.imgSrc">
+</div>

@@ -1,0 +1,86 @@
+mat-form-field.mat-form-field.filter {
+  padding-left: 20px;
+  max-width: 400px;
+}
+
+.table-container {
+  margin-top: -4px;
+}
+
+table {
+  width: 100%;
+  cursor: pointer;
+}
+
+.table-external-guest {
+  width: 100%;
+  height: 100%;
+}
+
+td.mat-cell {
+  text-align: center;
+  border-left: 1px solid #eee;
+  padding: 5px;
+  font-size: 14px;
+}
+
+// th.mat-sort-header {
+//   background: black;
+//   color: white;
+// }
+
+th {
+  background: #eee;
+}
+.table-tools {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  place-items: center;
+  height: 90px;
+}
+:host ::ng-deep .mat-sort-header-container {
+  justify-content: center;
+  font-size: 14px;
+}
+
+tr.mat-row {
+  background: #ffffff;
+}
+
+tr.mat-row.rowBg {
+  background: #ccc;
+  color: white;
+}
+
+tr:hover {
+  background: #e1f6dd;
+}
+
+mat-icon.check-icon {
+  position: absolute;
+  top: 0;
+  left: -10px;
+}
+
+.checkHeader {
+  display: grid;
+  justify-content: center;
+  position: relative;
+  place-content: center;
+  height: 56px;
+}
+
+// th.mat-header-cell:first-of-type.select,
+// td.mat-cell:first-of-type.select,
+// td.mat-footer-cell:first-of-type.select {
+//   padding-left: 24px;
+//   width: 100px;
+// }
+
+th.mat-header-cell.select,
+td.mat-cell.select,
+td.mat-footer-cell.select {
+  padding-left: 24px;
+  width: 100px;
+  text-align: center;
+}

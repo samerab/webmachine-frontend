@@ -1,0 +1,25 @@
+<div class="files-container">
+  <sal-navbar
+    color="primary-500"
+    (onItemClick)="runCommand($event)"
+    [startList]="startList"
+    class="padding"
+  ></sal-navbar>
+
+  <input #fileInput (change)="fileChange($event)" type="file" multiple hidden />
+
+  <div class="files">
+    <div class="file" *ngFor="let file of fileList | async">
+      <img
+        [src]="getSrc(file)"
+        alt=""
+        (click)="
+          checkbox.checked = !checkbox.checked;
+          addFile(file, { source: null, checked: checkbox.checked })
+        "
+      />
+      <mat-checkbox #checkbox (change)="addFile(file, $event)"></mat-checkbox>
+    </div>
+  </div>
+</div>
+<sal-button [config]="buttonsConfig" (onClick)="onClick($event)"></sal-button>

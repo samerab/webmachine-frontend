@@ -1,0 +1,21 @@
+.blocks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    gap: 15px;
+}
+
+.block {
+    cursor: pointer;
+}
+
+h3 {
+    text-align: center;
+}
+
+.img {
+    width: 150px;
+    height: 150px;
+    img {
+        width: 100%;
+    }
+}

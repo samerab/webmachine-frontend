@@ -1,0 +1,76 @@
+@import "~@angular/material/theming";
+
+@mixin samTreeComponent($theme, $hoverbg, $hoverFg) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  .hover {
+    background: $hoverbg;
+    .material-icons {
+      color: $hoverFg;
+    }
+    .mat-icon-button {
+      color: $hoverFg;
+    }
+  }
+
+  .search-result {
+    background: mat-color($primary, A700);
+    .material-icons {
+      color: mat-color($accent, A700);
+    }
+    .mat-icon-button {
+      color: mat-color($accent, A700);
+    }
+  }
+
+  .drag-hover {
+    background: mat-color($accent, 900);
+    border: 1px dashed mat-color($primary);
+    .material-icons {
+      color: mat-color($primary);
+    }
+    .mat-icon-button {
+      color: mat-color($primary);
+    }
+  }
+  // .selection {
+  //   background: mat-color($primary);
+  // }
+  // .deselection {
+  //   background: #ffffff;
+  // }
+  :host {
+    .material-icons {
+      color: mat-color($primary);
+    }
+    .mat-icon-button {
+      color: mat-color($primary);
+    } 
+  }
+}
+
+.tree-invisible {
+  display: none;
+}
+
+.tree ul,
+.tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+.tree-node {
+  display: block;
+  cursor: pointer;
+}
+
+.tree-node .tree-node {
+  padding-left: 40px;
+}
+
+:host(.rtlClass) {
+  .tree-node .tree-node {
+    padding-right: 40px;
+    padding-left: 0;
+  }
+}

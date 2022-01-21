@@ -1,0 +1,58 @@
+form {
+    display: grid;
+    grid-template-columns: 150px 60px 40px 60px 60px;
+    grid-template-rows: 54px;
+    column-gap: 7px;
+}
+
+:host.option-val {
+    form {
+        grid-template-columns: 150px 1fr 40px;
+    }
+}
+
+:host.val-unit {
+    form {
+        grid-template-columns: 150px 60px 40px;
+    }
+}
+
+:host.option {
+    form {
+        grid-template-columns: 150px 1fr;
+    }
+}
+
+:host.color {
+    form {
+        grid-template-columns: 150px 60px;
+    }
+}
+
+.unit{
+    width: 50px;
+    .mat-form-field-appearance-legacy .mat-form-field-infix {
+        padding: 7px;
+        background: #eee;
+        margin: 1px;
+    }
+}
+
+.value {
+    width: 60px;
+}
+
+.label {
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    margin: 0;
+    padding: 3px;
+    align-self: flex-end;
+}
+
+.mat-slider-horizontal {
+    transform: translateY(16px);
+}

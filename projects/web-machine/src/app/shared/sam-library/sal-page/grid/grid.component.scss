@@ -1,0 +1,16 @@
+.section-list-container {
+    display: grid;
+    overflow: auto;
+    &.design {
+        border: 5px solid #80a2b5;
+    }
+    //min-height: 100vh;
+}
+
+.blank-grid {
+    //height: 200px;
+}
+
+.coral {
+    background: coral;
+}

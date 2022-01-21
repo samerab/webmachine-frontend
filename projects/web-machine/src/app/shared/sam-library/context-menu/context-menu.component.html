@@ -1,0 +1,11 @@
+<div
+  style="visibility: hidden; position: fixed"
+  [style.left]="position.x"
+  [style.top]="position.y"
+  [matMenuTriggerFor]="contextMenu"
+  [dir]="dir"
+></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-content></ng-content>
+</mat-menu>

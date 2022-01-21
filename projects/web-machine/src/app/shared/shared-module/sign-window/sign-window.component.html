@@ -1,0 +1,27 @@
+<ng-container *ngIf="email$ | async as email; else sign">
+  <div class="user-img">
+    <mat-icon>account_circle</mat-icon>
+  </div>
+  <div class="email">
+    <span class="primary-color user-email">{{ email }}</span>
+  </div>
+
+  <ng-content></ng-content>
+
+  <div (click)="_onLogout()" class="command">
+    <mat-icon>logout</mat-icon>
+    <span>logout</span>
+  </div>
+</ng-container>
+
+<ng-template #sign>
+  <div (click)="_onLogin()" class="command login">
+    <mat-icon>person</mat-icon>
+    <span>login</span>
+  </div>
+  <hr />
+  <div (click)="_onSignup()" class="command">
+    <mat-icon>person_add</mat-icon>
+    <span>signup</span>
+  </div>
+</ng-template>

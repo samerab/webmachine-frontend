@@ -1,0 +1,55 @@
+.confirm-message,
+.success,
+.failure {
+  display: grid;
+  line-height: 1.5;
+  .text {
+    text-align: center;
+    .title {
+      font-size: 50px;
+      margin-bottom: 30px;
+    }
+    .par {
+      font-size: 26px;
+      margin-bottom: 30px;
+    }
+    .callToAction {
+      margin-top: 100px;
+      .mat-raised-button {
+        width: 400px;
+        height: 65px;
+        font-size: 20px;
+        border-radius: 50px;
+      }
+    }
+  }
+  .icon {
+    text-align: center;
+    margin-top: 90px;
+    .mat-icon {
+      height: 200px;
+      width: 200px;
+    }
+    .material-icons {
+      font-size: 200px;
+    }
+  }
+}
+
+.confirm-message {
+  .text {
+    margin-top: 100px;
+  }
+}
+
+.success {
+  .icon {
+    color: green;
+  }
+}
+
+.failure {
+  .icon {
+    color: #c73e1d;
+  }
+}

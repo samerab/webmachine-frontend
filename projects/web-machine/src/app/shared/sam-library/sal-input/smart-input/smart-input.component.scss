@@ -1,0 +1,22 @@
+:host {
+    display: flex;
+}
+
+// .mat-form-field {
+//     display: flex;
+//     align-items: baseline;
+//     font-size: 12px;
+//     margin: 0;
+//     height: 100%;
+// }
+
+[hidden] { display: none !important;}
+
+// .close.mat-icon {
+//     transform: rotate(180deg);
+// }
+
+.symbol {
+    display: grid;
+    place-content: center;
+}

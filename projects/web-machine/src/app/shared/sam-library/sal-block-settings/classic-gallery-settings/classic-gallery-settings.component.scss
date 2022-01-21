@@ -1,0 +1,29 @@
+.add-image {
+  display: grid;
+  height: 60px;
+  place-content: center;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.images {
+  width: 100%;
+  padding: 20px;
+}
+
+img {
+  width: 100%;
+}
+
+.img {
+  position: relative;
+  button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  button:nth-child(2) {
+    top: 60px;
+  }
+}

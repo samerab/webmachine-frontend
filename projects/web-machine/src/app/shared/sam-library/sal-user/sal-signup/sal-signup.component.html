@@ -1,0 +1,15 @@
+<form [formGroup]="form" (submit)="send()" class="sal-signup-form">
+        <h1>Signup</h1>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput autocomplete="off" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input formControlName="password" type="password" matInput autocomplete="off" />
+        </mat-form-field>
+        <div class="errors-panel">
+            <div *ngIf="isEmailError">please enter valid email</div>
+        </div>
+        <button type="submit" mat-raised-button color="primary">signup</button>
+      </form>

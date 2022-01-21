@@ -1,0 +1,25 @@
+<div *ngFor="let page$ of pageList$" class="panel">
+  <div class="page">
+    <sal-page
+      [isViewMode]="true"
+      [page$]="page$"
+      [fixedGridList$]="fixedGridList$"
+    ></sal-page>
+  </div>
+  <div class="data" *ngIf="page$ | async as page">
+    <div class="actions">
+      <sam-menu
+        [menuData$]="menu$"
+        (onItemClick)="onMenuItemClick($event, page)"
+      ></sam-menu>
+    </div>
+    <div class="title">{{ page | templateName }}</div>
+  </div>
+</div>
+
+<ng-template #changeNameTemplate let-data="data">
+  <sal-change-name
+    [name]="data"
+    (onItemClick)="onButtonSelect($event)"
+  ></sal-change-name>
+</ng-template>

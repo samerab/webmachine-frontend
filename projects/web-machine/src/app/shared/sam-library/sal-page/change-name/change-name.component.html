@@ -1,0 +1,8 @@
+<mat-form-field appearance="outline">
+  <mat-label>grid name</mat-label>
+  <input #input matInput [value]="name ? name : ''" />
+</mat-form-field>
+<sal-button
+  [config]="buttonsConfig"
+  (onClick)="onClick($event, input.value)"
+></sal-button>

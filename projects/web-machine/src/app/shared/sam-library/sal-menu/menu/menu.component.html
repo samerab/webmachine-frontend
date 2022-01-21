@@ -1,0 +1,28 @@
+<ng-container *ngFor="let item of shownList$ | async">
+  <!-- Handle branch node buttons here -->
+  <ng-container *ngIf="item.children && item.children.length > 0">
+    <button
+    class="menu-trigger"
+      mat-menu-item
+      color="accent"
+      [matMenuTriggerFor]="menu.childMenu"
+      [dir]="lang === 'ar' ? 'rtl' : 'ltr'"
+    >
+      <mat-icon [salColor]="color" *ngIf="item.icon">{{ item.icon }}</mat-icon>
+      <span translate>{{ item?.label }}</span>
+    </button>
+    <sam-menu-item
+      [lang]="lang"
+      (onchildClick)="onchildClicked($event)"
+      #menu
+      [items]="item.children"
+    ></sam-menu-item>
+  </ng-container>
+  <!-- Leaf node buttons here -->
+  <ng-container *ngIf="!item.children || item.children.length === 0">
+    <button class="menu-trigger" (click)="onchildClicked(item)" mat-menu-item color="accent">
+      <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+      <span translate> {{ item?.label }}</span>
+    </button>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,26 @@
+<ws-website-dashbaord-header></ws-website-dashbaord-header>
+<div class="website-dashboard-container">
+  <div class="sidenav">
+    <sal-sidenav
+      [list]="sidenavList"
+      [hasDivider]="false"
+      activeClass="primary-50"
+      (onSelect)="onNavigate($event)"
+      [idToOpen]="idToOpen"
+    >
+    </sal-sidenav>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- 
+      
+        
+        
+        childrenBg="#b1d5e9"
+        [idToOpen]="idToOpen"
+        
+        (activate)="subToRoute($event)"
+   -->

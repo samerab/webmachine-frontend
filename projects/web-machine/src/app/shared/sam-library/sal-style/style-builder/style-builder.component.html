@@ -1,0 +1,24 @@
+<div class="builder-container">
+  <sal-button (onClick)="onClick($event)" [config]="buttonConfig"></sal-button>
+</div>
+
+<form [formGroup]="form">
+  <div
+    formArrayName="styles"
+    *ngFor="let styleControl of stylesControls; let i = index"
+  >
+    <div [formGroupName]="i">
+      <style-form
+        formControlName="value"
+        (onDelete)="deleteStyle(i)"
+        [styleId]="styleControl.value.id"
+      ></style-form>
+    </div>
+  </div>
+</form>
+
+<!-- Template -->
+<ng-template #template let-data="data">
+  <sal-table (rowSelect)="onStyleSelect($event)" [data]="data"></sal-table>
+</ng-template>
+<button (click)="logObj()">print</button>

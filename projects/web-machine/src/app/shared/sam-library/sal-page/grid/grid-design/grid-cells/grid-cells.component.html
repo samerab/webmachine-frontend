@@ -1,0 +1,15 @@
+<div id="cells" class="cells">
+  <ws-grid-cell
+  [changeColor$]="changeColorSubject"
+  (onClick)="onClick($event)"
+  [cell]="cell"
+  *ngFor="let cell of cellList"
+  ></ws-grid-cell>
+</div>
+<div class="mergeLists">
+  <button [disabled]="!currentMergeGroupId" (click)="send()" mat-raised-button color="primary">merge</button>
+  <div #groupDiv *ngFor="let group of mergeGroupList; index as i" class="merge-group">
+    <span (click)="changeGroupIdAndStyle(group.id, i)">{{ 'group ' + i }}</span>
+    <mat-icon (click)="deleteGroup(i)">delete</mat-icon>
+  </div>
+</div>

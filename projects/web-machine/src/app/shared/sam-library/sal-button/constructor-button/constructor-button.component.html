@@ -1,0 +1,30 @@
+<button 
+  [disabled]="primaryDisabled"
+  *ngIf="type === 'raised'"
+  type="button"
+  (click)="onBtnClickHandler()"
+  mat-raised-button
+  [color]="color"
+>
+  <div class="btnContent">
+    <mat-icon *ngIf="icon && icon !== null && icon !== undefined">{{
+      icon
+    }}</mat-icon>
+    <span>{{ label | translate }}</span>
+  </div>
+</button>
+
+<button
+  *ngIf="type === 'stroked'"
+  type="button"
+  (click)="onBtnClickHandler()"
+  mat-stroked-button
+  [color]="color"
+>
+  <div class="btnContent">
+    <mat-icon *ngIf="icon && icon !== null && icon !== undefined">{{
+      icon
+    }}</mat-icon>
+    <span>{{ label | translate }}</span>
+  </div>
+</button>

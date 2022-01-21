@@ -1,0 +1,20 @@
+@import '../../../../../../../sam-styles/variables.scss';
+//@import '../../../../../../sam-styles/variables.scss';
+
+.mat-toolbar-multiple-rows {
+  height: $secondary-toolbar-height;
+  min-height: $secondary-toolbar-height;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: $secondary-toolbar-height;
+}
+
+.mat-menu-item {
+  line-height: $secondary-toolbar-height;
+  height: $secondary-toolbar-height;
+}
+
+.end, .start {
+  height: 100%;
+}

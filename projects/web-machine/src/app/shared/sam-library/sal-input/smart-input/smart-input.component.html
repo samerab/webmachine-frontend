@@ -1,0 +1,23 @@
+<div class="symbol">
+  <mat-icon *ngIf="inputIsHidden" (click)="expandInput()">search</mat-icon>
+</div>
+
+<div class="input">
+  <mat-form-field [hidden]="inputIsHidden">
+    <mat-label>{{ label }}</mat-label>
+    <input
+      color="primary"
+      placeholder="ادخل هنا"
+      (focus)="onFocusEvent()"
+      #input
+      [formControl]="inputFormControl"
+      matInput
+      autocomplete="off"
+    />
+    <mat-icon (click)="triggerEnter()" matSuffix>search</mat-icon>
+    <mat-icon (click)="reset()" matSuffix>refresh</mat-icon>
+    <mat-icon *ngIf="canShrank" class="close" (click)="hideInput()" matSuffix
+      >highlight_off</mat-icon
+    >
+  </mat-form-field>
+</div>

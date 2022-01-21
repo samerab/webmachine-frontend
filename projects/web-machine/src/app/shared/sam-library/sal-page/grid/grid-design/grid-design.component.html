@@ -1,0 +1,78 @@
+<form [formGroup]="form">
+  <div class="sidbar">
+    <mat-accordion>
+      <!-- genral -->
+      <mat-expansion-panel
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          general
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>{{ "menuItem.icon" }}</mat-label>
+        <input formControlName="name" matInput autocomplete="off" />
+      </mat-form-field>
+    </mat-expansion-panel>
+
+    <!-- columns -->
+      <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            columns
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>{{ "menuItem.icon" }}</mat-label>
+          <input formControlName="columns" matInput autocomplete="off" />
+        </mat-form-field>
+        <div
+          formArrayName="columnWidthArray"
+          *ngFor="let columnWidthControl of columnWidthControls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>{{ "xx" }}</mat-label>
+              <input formControlName="width" matInput autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- Rows -->
+      <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            rows
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>{{ "menuItem.icon" }}</mat-label>
+          <input formControlName="rows" matInput autocomplete="off" />
+        </mat-form-field>
+        <div
+          formArrayName="rowHeightArray"
+          *ngFor="let rowHeightControl of rowHeightControls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>{{ "xx" }}</mat-label>
+              <input formControlName="height" matInput autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="preview">
+      <ws-grid-cells [settings]="settings" [removeMerge$]="removeMergeSubject" (onMerge)="onMerge($event)" [cellList]="cellList"></ws-grid-cells>
+  </div>
+</form>

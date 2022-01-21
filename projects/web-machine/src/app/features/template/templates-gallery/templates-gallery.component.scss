@@ -1,0 +1,31 @@
+:host {
+    display: grid;
+    gap: 30px;
+    //grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, 300px);
+    height: 300px;
+    margin: 30px;
+}
+
+.page {
+    overflow: hidden;
+    height: 300px;
+}
+
+.data {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    align-items: center;
+    justify-content: center;
+    //border: 1px solid #eee;
+}
+
+.action {
+    justify-self: center;
+}
+
+.title {
+    justify-self: center;
+    font-size: 16px;
+    font-weight: 500;
+}

@@ -1,0 +1,59 @@
+.plans-container {
+  .title {
+    display: grid;
+    place-items: center;
+    font-size: 73px;
+    line-height: 1.2;
+    padding: 51px 0 0;
+  }
+
+  .table {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    padding: 0 100px 100px;
+    place-items: center;
+    font-size: 22px;
+    gap: 20px;
+    .titles {
+      padding: 125px 20px 0;
+    }
+    .details {
+      border: 1px solid #eee;
+      width: 100%;
+      border-radius: 10px;
+      text-align: center;
+      .head {
+        padding: 20px;
+        .name {
+          font-size: 30px;
+          padding: 18px;
+        }
+        .price {
+          margin: 20px;
+          font-size: 43px;
+          font-weight: 900;
+        }
+        .period {
+          font-size: 16px;
+        }
+      }
+      .body {
+        margin-top: 25px;
+      }
+      button {
+        width: 86%;
+        height: 60px;
+        margin-bottom: 7%;
+        font-size: 20px;
+      }
+    }
+    p {
+      text-align: center;
+      padding: 8px;
+    }
+  }
+
+  svg {
+    transform: rotate(180deg) translateY(1px);
+  }
+}

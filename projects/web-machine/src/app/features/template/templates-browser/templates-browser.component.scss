@@ -1,0 +1,21 @@
+.router-link-active {
+   border-bottom: 2px solid blue;
+}
+
+.navbar {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    height: 70px;
+    border-bottom: 1px solid #eee;
+    justify-content: center;
+    align-items: center;
+    margin: 0 30px;
+}
+
+a {
+    display: grid;
+    height: 100%;
+    place-content: center;
+    font-size: 16px;
+    font-weight: 500;
+}

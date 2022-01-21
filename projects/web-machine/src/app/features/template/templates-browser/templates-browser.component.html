@@ -1,0 +1,25 @@
+<div class="navbar">
+  <a
+    [routerLink]="['/dashboard/templates/pageTemplates']"
+    routerLinkActive="router-link-active"
+  >
+    Page Templates
+  </a>
+  <a
+    [routerLink]="['/dashboard/templates/gridTemplates']"
+    routerLinkActive="router-link-active"
+  >
+    Grid Templates
+  </a>
+  <a
+    [routerLink]="['/dashboard/templates/fixedGrids']"
+    routerLinkActive="router-link-active"
+  >
+    Fixed Grids
+  </a>
+</div>
+
+<sal-templates-gallery
+  (onTemplateAction)="onTemplateAction($event)"
+  [templateList$]="list$"
+></sal-templates-gallery>

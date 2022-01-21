@@ -1,0 +1,26 @@
+<!-- <sal-table
+  [data]="pages$ | async"
+  [columns]="['title']"
+  [hasAction]="true"
+  [hasSelection$]="showSelectionSubject$"
+  (multiSelect)="onMultiSelect($event)"
+  (rowSelect)="onRowClick($event)"
+  (actionClick)="onActionClick($event)"
+></sal-table>
+
+<sam-context-menu
+  #contextMenu
+  [contextMenuItems$]="contextMenu$"
+  (itemClick)="onContextMenuItemClick($event)"
+></sam-context-menu>
+
+<ng-template cdk-portal>
+  <div class="tools">
+    <button (click)="addPage()" mat-icon-button>
+      <mat-icon>add</mat-icon>
+    </button>
+    <button (click)="deletePages()" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</ng-template> -->

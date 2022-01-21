@@ -1,0 +1,21 @@
+@import "./themes/1.scss";
+@import "./themes/2.scss";
+@import "./themes/3.scss";
+@import "./themes/4.scss";
+@import "./themes/5.scss";
+@import "./themes/6.scss";
+@import "./themes/7.scss";
+@import "./themes/8.scss";
+@import "./themes/9.scss";
+
+$themes: (
+  1: $sam-theme-1,
+  2: $sam-theme-2,
+  3: $sam-theme-3,
+  4: $sam-theme-4,
+  5: $sam-theme-5,
+  6: $sam-theme-6,
+  7: $sam-theme-7,
+  8: $sam-theme-8,
+  9: $sam-theme-9,
+);

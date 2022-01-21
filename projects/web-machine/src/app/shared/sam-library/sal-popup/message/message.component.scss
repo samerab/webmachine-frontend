@@ -1,0 +1,109 @@
+.icon {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-icon {
+  height: 60px;
+  width: 60px;
+}
+
+.message-container {
+  padding: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 20px;
+  div {
+    font-size: 18px;
+    text-align: center;
+    line-height: 30px;
+  }
+}
+
+button.mat-focus-indicator.mat-raised-button.mat-button-base {
+  width: 100%;
+  height: 50px;
+  margin: 15px 5px -20px;
+}
+
+.mat-flat-button,
+.mat-raised-button,
+.mat-fab,
+.mat-mini-fab {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.material-icons {
+  font-size: 60px;
+}
+
+.success {
+  .mat-flat-button,
+  .mat-raised-button,
+  .mat-fab,
+  .mat-mini-fab {
+    background: #1ca21c;
+  }
+
+  .material-icons {
+    color: #1ca21c;
+  }
+
+  .message {
+    div {
+      color: #1ca21c;
+    }
+  }
+}
+
+.error {
+  .mat-flat-button,
+  .mat-raised-button,
+  .mat-fab,
+  .mat-mini-fab {
+    background: #c50606;
+  }
+
+  .material-icons {
+    color: #c50606;
+  }
+
+  .message {
+    div {
+      color: #c50606;
+    }
+  }
+}
+
+.warning {
+  .mat-flat-button,
+  .mat-raised-button,
+  .mat-fab,
+  .mat-mini-fab {
+    background: #e25c1e;
+    &.okBtn {
+      background: #ffffff;
+      color: #e25c1e;
+    }
+  }
+
+  .material-icons {
+    color: #e25c1e;
+  }
+
+  .message {
+    div {
+      color: #e25c1e;
+    }
+  }
+}

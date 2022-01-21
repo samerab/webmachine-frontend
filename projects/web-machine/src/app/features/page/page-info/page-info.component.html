@@ -1,0 +1,11 @@
+<form [formGroup]="form" class="form">
+  <mat-form-field>
+    <mat-label>{{ "title" | translate }}</mat-label>
+    <input matInput formControlName="title" autocomplete="off" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ "desc" | translate }}</mat-label>
+    <input matInput formControlName="description" autocomplete="off" />
+  </mat-form-field>
+  <ng-content></ng-content>
+</form>

@@ -1,0 +1,39 @@
+<mat-toolbar [salColor]="color">
+  <mat-toolbar-row>
+    <div class="start">
+      <button
+        *ngFor="let item of startList"
+        [disabled]="item?.disabled | async"
+        (click)="runCommand(item, $event)"
+        mat-icon-button
+        [matTooltip]="item.tip"
+        [matTooltipPosition]="'below'"
+      >
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        <span *ngIf="item.label">{{ item.label && item.label["ar"] }}</span>
+      </button>
+    </div>
+
+    <div class="spacer">
+      <ng-content></ng-content>
+    </div>
+    <!-- <span class="spacer"></span> -->
+
+    <div class="end">
+      <button
+        [disabled]="item?.disabled | async"
+        *ngFor="let item of endList"
+        (click)="runCommand(item, $event)"
+        mat-icon-button
+        [matTooltip]="item.tip"
+        [matTooltipPosition]="'below'"
+      >
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        <span *ngIf="item.label">{{ item.label && item.label["ar"] }}</span>
+      </button>
+      <div class="content-after-end">
+        <ng-content select="[contentAfterEnd]"></ng-content>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

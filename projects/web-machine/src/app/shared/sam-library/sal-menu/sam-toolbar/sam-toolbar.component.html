@@ -1,0 +1,17 @@
+<mat-toolbar color="accent">
+  <mat-toolbar-row>
+    <div class="start">
+      <ng-content select="[start]"></ng-content>
+    </div>
+    
+    <sam-menu
+      (onItemClick)="onItemClickHandler($event)"
+      [menuData$]="menuData$"
+    >
+    </sam-menu>
+    <div class="end">
+      <ng-content select="[end]"></ng-content>
+    </div>
+    
+  </mat-toolbar-row>
+</mat-toolbar>

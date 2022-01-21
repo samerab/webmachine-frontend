@@ -1,0 +1,17 @@
+{
+	"button.cancel": "Cancel",
+	"button.ok": "OK",
+	"button.save": "Save changes",
+	"dashboard.general": "general",
+	"dashboard.invoice": "invoice",
+	"error.error": "Error",
+	"error.missing_inputs": "Missing inputs",
+	"error.try_again": "Error, please try again",
+	"error.user_not_found": "User not found",
+	"error.invalid_password": "Invalid Password",
+	"error.not_authorized": "Not authorized",
+	"button.show_details": "Show error details",
+	"setting.available_languages": "available languages",
+	"common.no_data": "no dataaaaa",
+	"add khara": "kharaaaaaa"
+}

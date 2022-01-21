@@ -1,0 +1,19 @@
+<ng-container *ngTemplateOutlet="template; context: context"></ng-container>
+
+<ng-template #wrongSubdomain let-subdomain="subdomain">
+  <div class="subdomain">
+    <div class="icon">
+      <mat-icon>report_problem</mat-icon>
+    </div>
+    <div class="text">You have enterd wrong subdomain: {{ subdomain }}</div>
+  </div>
+</ng-template>
+
+<ng-template #unregisteredDomain let-domain="domain">
+  <div class="domain">
+    <div class="icon primary-color">
+      <mat-icon>domain_disabled</mat-icon>
+    </div>
+    <div class="text">Your domain {{ domain }} is not registered yet.</div>
+  </div>
+</ng-template>

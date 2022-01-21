@@ -1,0 +1,33 @@
+<div class="variant-input">
+  <mat-form-field>
+    <!-- <input #option matInput placeholder="{{ 'product.variant_name' | translate }}" [formControl]="variantName"
+      autocomplete="off"> -->
+      <input #option1 matInput placeholder="{{ 'product.variant_name' | translate }}" [(ngModel)]="option['variantName']"
+      autocomplete="off">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip *ngFor="let val of option['variantOptions']" [selectable]="selectable" [removable]="removable"
+        (removed)="remove(val)">
+        {{val}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="{{ ('product.variant_options' | translate) + ' ' + option1.value}}"
+        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+  </mat-form-field>
+</div>
+
+
+<!-- <mat-chip *ngFor="let val of variantValues" [selectable]="selectable" [removable]="removable" -->
+
+
+<!-- <mat-card>
+      <mat-card-content>
+        <mat-card-title>
+         Options
+        </mat-card-title>
+      </mat-card-content>
+    </mat-card> -->

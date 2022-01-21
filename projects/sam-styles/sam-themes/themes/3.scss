@@ -1,0 +1,41 @@
+$primary: mat-palette($mat-grey, 900);
+$accent:  mat-palette($mat-amber);
+// $mat-dark-theme-background: (
+//   status-bar: black,
+//   app-bar:    map-get($mat-grey, 900),
+//   background: #303030,
+//   hover:      rgba(white, 0.04),
+//   card:      mat-color($primary, 800),
+//   dialog:     map-get($mat-grey, 800),
+//   disabled-button: rgba(white, 0.12),
+//   raised-button: map-get($mat-grey, 800),
+//   focused-button: $light-focused,
+//   selected-button: map-get($mat-grey, 900),
+//   selected-disabled-button: map-get($mat-grey, 800),
+//   disabled-button-toggle: black,
+//   unselected-chip: map-get($mat-grey, 700),
+//   disabled-list-option: black,
+//   tooltip: map-get($mat-grey, 700),
+// );
+
+$mat-dark-theme-foreground: (
+  base:              white,
+  divider:           $light-dividers,
+  dividers:          $light-dividers,
+  disabled:          $light-disabled-text,
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     $light-disabled-text,
+  elevation:         black,
+  hint-text:         $light-disabled-text,
+  secondary-text:    $light-secondary-text,
+  icon:              white,
+  icons:             white,
+  text:              mat-color($accent),
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+
+$sam-theme-3: mat-dark-theme($primary, $accent);
+

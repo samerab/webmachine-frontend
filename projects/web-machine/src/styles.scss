@@ -1,0 +1,213 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+// used styles
+@import "../../sam-styles/sam-themes/importer";
+@import "../../sam-styles/variables";
+
+// affected scss components
+@import "./components-styles-importer";
+
+@mixin my-components-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $hoverbg: mat-color($primary, 100);
+  $hoverFg: mat-color($primary, 100-contrast);
+  @include dashboardComponent($theme);
+}
+
+@mixin global-classes($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  .snack-bar {
+    background: mat-color($mat-green, 500);
+  }
+
+  .active-primary {
+    background: mat-color($primary) !important;
+    color: mat-color($accent) !important;
+  }
+
+  .active-accent {
+    background: mat-color($accent) !important;
+    color: mat-color($primary) !important;
+  }
+
+  .gradientBg {
+    //background: linear-gradient(220deg, mat-color($primary, 100) 0%, mat-color($accent, 100) 56%);
+    background: linear-gradient(
+      85deg,
+      mat-color($primary, 100) 0%,
+      mat-color($accent, 100) 100%
+    ) !important;
+  }
+
+  .form {
+    margin: 40px;
+    max-width: 500px;
+  }
+
+  .primaryFg {
+    color: mat-color($primary);
+  }
+
+  /*
+    > sal-color directive settings
+    > with mat tag like mat-toolbar we use directive salColor but with customed component we use input color after we have set salClor inside the customed component 
+  */
+  $intensities: 50 100 200 300 400 500 600 700 800 900 A100 A200 A400 A700;
+  $mat-components: toolbar button icon card;
+
+  .primary-border {
+    border: 1px solid mat-color($primary) !important;
+  }
+  /** 
+  * bg - bg with contrast color
+  */
+
+  .primary {
+    background: mat-color($primary) !important;
+    color: mat-contrast($primary, 500) !important;
+    fill: mat-color($primary) !important;
+  }
+
+  .accent {
+    background: mat-color($accent) !important;
+    color: mat-contrast($accent, 500) !important;
+    fill: mat-color($accent) !important;
+  }
+
+  @each $intensity in $intensities {
+    .primary-#{$intensity} {
+      background: mat-color($primary, $intensity) !important;
+      color: mat-contrast($primary, $intensity) !important;
+    }
+  }
+
+  @each $intensity in $intensities {
+    .accent-#{$intensity} {
+      background: mat-color($accent, $intensity) !important;
+      color: mat-contrast($accent, $intensity) !important;
+    }
+  }
+
+  /** 
+  * bg - only bg without color contrast
+  */
+
+  /** shortcut to primary-bg-500 */
+  .primary-bg {
+    background-color: mat-color($primary) !important;
+    fill: mat-color($primary) !important;
+  }
+
+  @each $intensity in $intensities {
+    .primary-bg-#{$intensity} {
+      background: mat-color($primary, $intensity) !important;
+      fill: mat-color($primary, $intensity) !important;
+    }
+  }
+
+  /** shortcut to accent-bg-500 */
+  .accent-bg {
+    background-color: mat-color($accent);
+    fill: mat-color($accent) !important;
+  }
+
+  @each $intensity in $intensities {
+    .accent-bg-#{$intensity} {
+      background: mat-color($accent, $intensity) !important;
+      fill: mat-color($accent, $intensity) !important;
+    }
+  }
+
+  /** 
+  * color - only color without bg contrast
+  */
+
+  /** shortcut to primary-color-500 */
+  .primary-color {
+    color: mat-color($primary) !important;
+  }
+
+  @each $intensity in $intensities {
+    .primary-color-#{$intensity} {
+      color: mat-color($primary, $intensity) !important;
+    }
+  }
+
+  /** shortcut to accent-color-500 */
+  .accent-color {
+    color: mat-color($accent) !important;
+  }
+
+  @each $intensity in $intensities {
+    .accent-color-#{$intensity} {
+      color: mat-color($accent, $intensity) !important;
+    }
+  }
+
+  /**
+  * for materials
+  */
+
+  @each $mat-component in $mat-components {
+    .mat-#{$mat-component}.primary {
+      background: mat-color($primary) !important;
+      color: mat-contrast($primary, 500) !important;
+    }
+  }
+
+  @each $mat-component in $mat-components {
+    .mat-#{$mat-component}.accent {
+      background: mat-color($accent) !important;
+      color: mat-contrast($accent, 500) !important;
+    }
+  }
+
+  @each $mat-component in $mat-components {
+    @each $intensity in $intensities {
+      .mat-#{$mat-component}.primary-#{$intensity} {
+        background: mat-color($primary, $intensity) !important;
+        color: mat-contrast($primary, $intensity) !important;
+      }
+    }
+  }
+  @each $mat-component in $mat-components {
+    @each $intensity in $intensities {
+      .mat-#{$mat-component}.accent-#{$intensity} {
+        background: mat-color($accent, $intensity) !important;
+        color: mat-contrast($accent, $intensity) !important;
+      }
+    }
+  }
+  /* sal-color end */
+  .mat-dialog-container {
+    background: mat-color($primary, 50) !important;
+  }
+  cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 0;
+}
+}
+
+@each $id, $theme in $themes {
+  .sam-theme-#{$id} {
+    @include angular-material-theme($theme);
+    @include my-components-theme($theme);
+    @include global-classes($theme);
+  }
+}
+
+.nav-title {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  padding: 0 10px;
+  width: 70px;
+}
+
+.select-full-height {
+  &.mat-select-panel {
+    max-height: 100vh;
+  }
+}

@@ -1,0 +1,15 @@
+form {
+  display: grid;
+    grid-template-columns: 1fr;
+}
+
+mat-card {
+  margin: 20px;
+}
+
+mat-card-actions.mat-card-actions {
+  display: grid;
+  grid-template-columns: 30px 150px;
+  gap: 30px;
+  align-items: center;
+}
