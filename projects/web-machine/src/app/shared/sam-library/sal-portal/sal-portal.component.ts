@@ -1,20 +1,28 @@
 import { CdkPortal } from '@angular/cdk/portal';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { PortalService } from './portal.service';
 
 @Component({
-  selector: 'app-sal-portal',
+  selector: 'sal-portal',
   templateUrl: './sal-portal.component.html',
   styleUrls: ['./sal-portal.component.scss'],
 })
-export class SalPortalComponent implements OnInit {
+export class SalPortalComponent implements OnInit, AfterViewInit {
   @Input('hostId') id: string;
   @ViewChild(CdkPortal)
   private portal: CdkPortal;
 
   constructor(private portalSv: PortalService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngAfterViewInit(): void {
     if (this.id) {
       const elem = document.querySelector(`[id=${this.id}]`);
       if (elem) {

@@ -5,7 +5,14 @@ import { CommonModule } from '@angular/common';
 
 import { UserDashboardRoutingModule } from './user-dashboard-routing.module';
 import { WebsitesTemplatesBrowserComponent } from './websites-templates-browser/websites-templates-browser.component';
-import { SalSidenavModule, SalTableModule, SamMenuModule } from '@ws-sal';
+import {
+  SalBtnModule,
+  SalContextMenuModule,
+  SalPortalModule,
+  SalSidenavModule,
+  SalTableModule,
+  SamMenuModule,
+} from '@ws-sal';
 import { UserDashboardComponent } from './dashboard/user-dashboard.component';
 import { WebsiteCrudComponent } from './website-crud/website-crud.component';
 import { EffectsModule } from '@ngrx/effects';
@@ -28,7 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     UserDashboardRoutingModule,
     SalSidenavModule,
-    EffectsModule.forFeature([WebsiteEffects]),
+    EffectsModule.forFeature([]),
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -36,6 +43,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     SamMenuModule,
     SalTableModule,
+    SalContextMenuModule,
+    SalPortalModule,
+    SalBtnModule,
   ],
 })
 export class UserDashboardModule {}

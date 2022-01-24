@@ -1,5 +1,6 @@
-// export class Page {
-//     id: string;
-//     content: any[];
-//     info: any;
-// }
+export class Page {
+  id: string;
+  websiteId: string;
+  content: any[];
+  info: any;
+}

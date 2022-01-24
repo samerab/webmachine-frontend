@@ -5,10 +5,16 @@ import {
   SignWindowComponent,
 } from './sign-window/sign-window.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ClientComponent } from './client/client.component';
+import { SalPageModule } from '@ws-sal';
 
 @NgModule({
-  declarations: [SignWindowComponent, SignWindowCommandDirective],
-  imports: [CommonModule, MatIconModule],
+  declarations: [
+    SignWindowComponent,
+    SignWindowCommandDirective,
+    ClientComponent,
+  ],
+  imports: [CommonModule, MatIconModule, SalPageModule],
   exports: [SignWindowComponent, SignWindowCommandDirective],
 })
 export class SharedModule {}

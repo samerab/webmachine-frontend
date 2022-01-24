@@ -1,0 +1,25 @@
+.sal-sidenav-header {
+  width: 100%;
+}
+
+.mat-expansion-panel-header {
+  padding: 0 24px 0 0;
+}
+
+.mat-expansion-panel:last-of-type {
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.mat-expansion-panel:first-of-type {
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+::ng-deep .no-divider.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+  box-shadow: none;
+}

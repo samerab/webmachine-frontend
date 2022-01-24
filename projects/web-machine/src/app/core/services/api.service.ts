@@ -41,43 +41,47 @@ export class ApiService {
     return this.httpClient.get(`${this.envSv.apiUrl}/assets/${name}`);
   }
 
-  loadOne(entity: string, id: string) {
+  loadOne(entity: string, id: string, detach = false) {
     if (entity === 'users') {
       return this.httpClient.get(`${this.envSv.apiUrl}/users/${id}`);
     }
-    return this.httpClient.get(this.genUrl(entity, id));
+    return this.httpClient.get(this.genUrl(entity, id, detach));
   }
 
-  loadAll(entity: string) {
-    return this.httpClient.get(this.genUrl(entity));
+  loadAll(entity: string, detach = false) {
+    return this.httpClient.get(this.genUrl(entity, null, detach));
   }
 
-  loadMany(entity: string, payload: any, detach = false) {
-    return this.httpClient.post(this.genUrl(entity, null, detach), payload);
+  loadMany(entity: string, detach = false) {
+    return this.httpClient.get(this.genUrl(entity, 'loadMany', detach));
   }
 
   addOne(entity: string, payload: any, detach = false) {
     return this.httpClient.post(this.genUrl(entity, null, detach), payload);
   }
 
-  addMany(entity: string, payload: any) {
-    return this.httpClient.post(this.genUrl(entity), payload);
+  addMany(entity: string, payload: any, detach = false) {
+    return this.httpClient.post(this.genUrl(entity, null, detach), payload);
   }
 
-  updateOne(entity: string, id: string, payload: any) {
-    return this.httpClient.put(this.genUrl(entity, id), payload);
+  updateOne(entity: string, id: string, payload: any, detach = false) {
+    return this.httpClient.put(this.genUrl(entity, id, detach), payload);
   }
 
-  updateMany(entity: string, payload: { id: string; changes: any }[]) {
-    return this.httpClient.put(this.genUrl(entity), payload);
+  updateMany(
+    entity: string,
+    payload: { id: string; changes: any }[],
+    detach = false
+  ) {
+    return this.httpClient.put(this.genUrl(entity, null, detach), payload);
   }
 
-  deleteOne(entity: string, id: string) {
-    return this.httpClient.delete(this.genUrl(entity, id));
+  deleteOne(entity: string, id: string, detach = false) {
+    return this.httpClient.delete(this.genUrl(entity, id, detach));
   }
 
-  deleteMany(entity: string, payload: any) {
-    return this.httpClient.put(this.genUrl(entity, 'delete'), payload);
+  deleteMany(entity: string, payload: any, detach = false) {
+    return this.httpClient.put(this.genUrl(entity, 'delete', detach), payload);
   }
 
   // get(path: string) {

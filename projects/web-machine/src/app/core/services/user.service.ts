@@ -1,6 +1,5 @@
 import { filter, map, take } from 'rxjs/operators';
 import { AppState } from '@ws-store/index';
-import { Router } from '@angular/router';
 import { Injectable, InjectionToken, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { loadUser, loginUser, logoutUser } from '@ws-store/user/user.actions';
@@ -40,13 +39,6 @@ export class UserService {
     this.store.dispatch(logoutUser());
     this.subToCurrentUser(navigateTo);
   }
-
-  // get isLoggedin$() {
-  //   return this.store.select(currentUser)
-  //   .pipe(
-  //     map(user => user ? true : false)
-  //   )
-  // }
 }
 
 export const LOGGED = new InjectionToken<Observable<boolean>>('LOOGED', {
@@ -57,10 +49,3 @@ export const LOGGED = new InjectionToken<Observable<boolean>>('LOOGED', {
       .pipe(map((user) => (user ? true : false)));
   },
 });
-
-// export const LOGGED = new InjectionToken<Observable<boolean>>('LOOGED', {
-//   factory: () => {
-//     const userSv = inject(UserService);
-//     return userSv.isLoggedin$
-//   }
-// })

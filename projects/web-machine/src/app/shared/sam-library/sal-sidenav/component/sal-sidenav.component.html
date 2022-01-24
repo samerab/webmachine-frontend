@@ -1,42 +1,5 @@
 <div class="sal-sidenav" [class]="panelClass">
-  <mat-accordion displayMode="flat" multi>
-    <ng-container *ngFor="let item of list; index as index">
-      <mat-expansion-panel
-        class="sal-sidenav-item"
-        [class.no-divider]="!hasDivider"
-        [hideToggle]="!item.children"
-        (click)="onItemSelect(item, index, -1)"
-      >
-        <mat-expansion-panel-header
-          #header
-          [expandedHeight]="lineHeight"
-          [collapsedHeight]="lineHeight"
-          [ngClass]="getActiveClasses(index, -1)"
-        >
-          <mat-panel-title>
-            <div class="sal-sidenav-header" [ngClass]="getActiveClasses(index, -1)">
-              <mat-icon>{{ item.icon }}</mat-icon>
-              <span *ngIf="hasTitle">{{ item.title }}</span>
-            </div>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <div class="sal-sidenav-children pointer" *ngIf="item.children">
-          <div
-            #childrenArea
-            *ngFor="let child of item.children; index as childIndex"
-            class="sal-sidenav-child-container"
-            [ngClass]="getActiveClasses(index, childIndex)"
-            (click)="onItemSelect(child, index, childIndex, true)"
-            [id]="getId(index, childIndex)"
-          >
-            <div #child class="sal-sidenav-child">
-              <mat-icon>{{ child.icon }}</mat-icon>
-              <span>{{ child.title }}</span>
-            </div>
-          </div>
-        </div>
-      </mat-expansion-panel>
-    </ng-container>
+  <mat-accordion>
+    <ng-content></ng-content>
   </mat-accordion>
 </div>

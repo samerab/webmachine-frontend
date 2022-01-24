@@ -1,13 +1,14 @@
 <div class="user-dashboard-container">
   <div class="sidenav">
-    <sal-sidenav
-      [list]="sidenavList"
-      [hasDivider]="false"
-      activeClass="active-primary"
-      childrenBg="#b1d5e9"
-      [idToOpen]="idToOpen"
-      (onSelect)="onNavigate($event)"
-    >
+    <sal-sidenav>
+      <sal-sidenav-panel [hasContent]="true">
+        <sal-icon-btn
+          (click)="openWebsiteList()"
+          title
+          icon="menu"
+          text="Websites"
+        ></sal-icon-btn>
+      </sal-sidenav-panel>
     </sal-sidenav>
   </div>
   <div class="content">

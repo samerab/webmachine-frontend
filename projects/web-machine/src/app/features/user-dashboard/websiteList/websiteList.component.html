@@ -1,26 +1,29 @@
-<!-- <sal-table
-  [data]="pages$ | async"
-  [columns]="['title']"
+<sal-table
+  [data]="entities$ | async"
+  [columns]="['id', 'name', 'userId']"
   [hasAction]="true"
   [hasSelection$]="showSelectionSubject$"
   (multiSelect)="onMultiSelect($event)"
-  (rowSelect)="onRowClick($event)"
+  (rowSelect)="onRowSelect($event)"
   (actionClick)="onActionClick($event)"
 ></sal-table>
 
-<sam-context-menu
-  #contextMenu
-  [contextMenuItems$]="contextMenu$"
-  (itemClick)="onContextMenuItemClick($event)"
-></sam-context-menu>
+<sal-context-menu #contextMenu>
+  <sal-icon-btn (click)="editEntity()" icon="edit" text="edit"></sal-icon-btn>
+  <sal-icon-btn
+    (click)="deleteEntity()"
+    icon="delete"
+    text="delete"
+  ></sal-icon-btn>
+</sal-context-menu>
 
-<ng-template cdk-portal>
+<sal-portal hostId="salTableExternalGuest">
   <div class="tools">
-    <button (click)="addPage()" mat-icon-button>
+    <button (click)="addEntity()" mat-icon-button>
       <mat-icon>add</mat-icon>
     </button>
-    <button (click)="deletePages()" mat-icon-button>
+    <button (click)="deleteEntities()" mat-icon-button>
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-</ng-template> -->
+</sal-portal>

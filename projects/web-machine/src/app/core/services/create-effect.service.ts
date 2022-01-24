@@ -16,6 +16,7 @@ import { Observable, of } from 'rxjs';
 import { map, exhaustMap, catchError, concatMap, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
+import { K } from '@angular/cdk/keycodes';
 
 export interface EntityInfo {
   name: string;
@@ -68,7 +69,8 @@ export class CreateEffectService {
   private handleError(err: any, showMsg = true) {
     this.store.dispatch(endLoading());
     if (showMsg) {
-      const message = err.error.message ? err.error.message : err.message;
+      //const message = err.error.message ? err.error.message : err.message;
+      const message = err?.error ? err.error.message : err.message;
       this.popupSv.showMsg({ message, type: MessageType.Error });
     }
     return of(failure({ err }));
@@ -178,17 +180,19 @@ export class CreateEffectService {
         ofType(entity.entityActions[load]),
         exhaustMap((action) => {
           this.store.dispatch(startLoading());
-          return this.apiSv.loadOne(entity.entityPlural, action['id']).pipe(
-            map((response) => {
-              this.store.dispatch(endLoading());
-              return entity.entityActions[loadSuccess]({
-                [entity.entity]: (response as BackendResponse)?.data,
-              });
-            }),
-            catchError((err) => {
-              return this.handleError(err);
-            })
-          );
+          return this.apiSv
+            .loadOne(entity.entityPlural, action['id'], entityInfo.detach)
+            .pipe(
+              map((response) => {
+                this.store.dispatch(endLoading());
+                return entity.entityActions[loadSuccess]({
+                  [entity.entity]: (response as BackendResponse)?.data,
+                });
+              }),
+              catchError((err) => {
+                return this.handleError(err);
+              })
+            );
         })
       )
     );
@@ -220,16 +224,17 @@ export class CreateEffectService {
   sendRequest(
     entityInfo: EntityInfo,
     actionCommand: string,
-    apiMethod: () => Observable<Object>,
+    apiMethod: (actionPayload) => Observable<Object>,
     plural = false
   ) {
     const entity = this.getEntityData(entityInfo, actionCommand, plural);
     return createEffect(() =>
       this.actions$.pipe(
         ofType(entity.action),
-        concatMap(() => {
+        concatMap((actionPayload) => {
           this.store.dispatch(startLoading());
-          return apiMethod().pipe(
+          console.log('actionPayload', actionPayload);
+          return apiMethod(actionPayload).pipe(
             tap((_) => this.store.dispatch(endLoading())),
             map((response) => {
               return entity.actionSuccess({
@@ -245,6 +250,34 @@ export class CreateEffectService {
     );
   }
 
+  // sendRequest(
+  //   entityInfo: EntityInfo,
+  //   actionCommand: string,
+  //   apiMethod: () => Observable<Object>,
+  //   plural = false
+  // ) {
+  //   const entity = this.getEntityData(entityInfo, actionCommand, plural);
+  //   return createEffect(() =>
+  //     this.actions$.pipe(
+  //       ofType(entity.action),
+  //       concatMap(() => {
+  //         this.store.dispatch(startLoading());
+  //         return apiMethod().pipe(
+  //           tap((_) => this.store.dispatch(endLoading())),
+  //           map((response) => {
+  //             return entity.actionSuccess({
+  //               [entity.entName]: (response as BackendResponse)?.data,
+  //             });
+  //           }),
+  //           catchError((err) => {
+  //             return this.handleError(err);
+  //           })
+  //         );
+  //       })
+  //     )
+  //   );
+  // }
+
   loadAll(entityInfo: EntityInfo) {
     const name = this.getEntityData(entityInfo, '', true).entName;
     return this.sendRequest(
@@ -255,12 +288,29 @@ export class CreateEffectService {
     );
   }
 
-  loadMany(entityInfo: EntityInfo, payload: any) {
+  loadMany(entityInfo: EntityInfo) {
     const name = this.getEntityData(entityInfo, '', true).entName;
     return this.sendRequest(
       entityInfo,
       'loadMany',
-      () => this.apiSv.loadMany(name, payload, entityInfo.detach),
+      () => this.apiSv.loadMany(name, entityInfo.detach),
+      true
+    );
+  }
+
+  deleteEntity11(entityInfo: EntityInfo) {
+    const data = this.getEntityData(entityInfo, '', true);
+    const name = data.entName;
+    return this.sendRequest(
+      entityInfo,
+      'delete',
+      (actionPayload) => {
+        return this.apiSv.deleteOne(
+          name,
+          actionPayload['id'],
+          entityInfo.detach
+        );
+      },
       true
     );
   }
@@ -421,18 +471,20 @@ export class CreateEffectService {
         ofType(entityActions[deleteAction]),
         concatMap((action) => {
           this.store.dispatch(startLoading());
-          return this.apiSv.deleteOne(entityPlural, action['id']).pipe(
-            map((response) => {
-              this.store.dispatch(endLoading());
-              return entityActions[deleteSuccess]({ id: action['id'] });
-            }),
-            tap((_) =>
-              this.popupSv.openSnackBar('message.successfully_deleted')
-            ),
-            catchError((err) => {
-              return this.handleError(err);
-            })
-          );
+          return this.apiSv
+            .deleteOne(entityPlural, action['id'], entityInfo.detach)
+            .pipe(
+              map((response) => {
+                this.store.dispatch(endLoading());
+                return entityActions[deleteSuccess]({ id: action['id'] });
+              }),
+              tap((_) =>
+                this.popupSv.openSnackBar('message.successfully_deleted')
+              ),
+              catchError((err) => {
+                return this.handleError(err);
+              })
+            );
         })
       )
     );

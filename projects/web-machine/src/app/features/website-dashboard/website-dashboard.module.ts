@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebsiteDashboardRoutingModule } from './website-dashboard-routing.module';
 import { WebsiteLoginComponent } from './website-login/website-login.component';
-import { SalSidenavModule, SalUserModule } from '@ws-sal';
+import { SalSidebarModule, SalSidenavModule, SalUserModule } from '@ws-sal';
 import { WebsitedashboardComponent } from './dashboard/websitedashboard.component';
 import { WebsiteDashbaordHeaderComponent } from './header/website-dashbaord-header.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,12 +16,14 @@ import { FileEffects } from '@ws-store/file/file.effects';
 import { GridTemplateEffects } from '@ws-store/grid-template/grid-template.effects';
 import { PageTemplateEffects } from '@ws-store/page-template/page-template.effects';
 import { SharedModule } from '../../shared/shared-module/shared.module';
+import { RedirectComponent } from './redirect/redirect.component';
 
 @NgModule({
   declarations: [
     WebsiteLoginComponent,
     WebsitedashboardComponent,
     WebsiteDashbaordHeaderComponent,
+    RedirectComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { SharedModule } from '../../shared/shared-module/shared.module';
     ]),
     SalUserModule,
     SalSidenavModule,
+    SalSidebarModule,
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,

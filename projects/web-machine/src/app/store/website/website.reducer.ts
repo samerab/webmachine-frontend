@@ -17,6 +17,9 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
   initialState,
+  on(WebsiteActions.loadWebsiteSuccess, (state, action) =>
+    adapter.setOne(action.website, state)
+  ),
   on(WebsiteActions.addWebsiteSuccess, (state, action) =>
     adapter.addOne(action.website, state)
   ),
@@ -35,13 +38,16 @@ export const reducer = createReducer(
   on(WebsiteActions.updateWebsites, (state, action) =>
     adapter.updateMany(action.websites, state)
   ),
-  on(WebsiteActions.deleteWebsite, (state, action) =>
+  on(WebsiteActions.deleteWebsiteSuccess, (state, action) =>
     adapter.removeOne(action.id, state)
   ),
   on(WebsiteActions.deleteWebsites, (state, action) =>
     adapter.removeMany(action.ids, state)
   ),
-  on(WebsiteActions.loadWebsites, (state, action) =>
+  on(WebsiteActions.loadManyWebsitesSuccess, (state, action) =>
+    adapter.setAll(action.websites, state)
+  ),
+  on(WebsiteActions.loadWebsitesSuccess, (state, action) =>
     adapter.setAll(action.websites, state)
   ),
   on(WebsiteActions.clearWebsites, (state) => adapter.removeAll(state))

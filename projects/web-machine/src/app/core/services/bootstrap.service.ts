@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BootstrapService {
+  constructor(private userSv: UserService) {}
 
-constructor(private userSv: UserService) { }
-
-bootstrap() {
-  this.userSv.refreshUser()
-}
-
+  bootstrap() {
+    this.userSv.refreshUser();
+  }
 }

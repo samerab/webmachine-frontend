@@ -1,8 +1,12 @@
 import { LocalStoreService } from './../lacal-store-service/local-store.service';
 import { SnackMessageComponent } from './../snack-message/snack-message.component';
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { filter, take } from 'rxjs/operators';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { filter, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResultsPopupComponent } from '../resultsPopup/resultsPopup.component';
@@ -32,9 +36,7 @@ export enum MessageLayout {
 const dialog = {
   width: '500px',
   position: { top: '100px' },
-}
-
-
+};
 
 @Injectable()
 export class PopupService {
@@ -42,7 +44,7 @@ export class PopupService {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private store: LocalStoreService
-  ) { }
+  ) {}
 
   closeAll() {
     this.dialog.closeAll();
@@ -50,12 +52,12 @@ export class PopupService {
 
   openPopup(template: TemplateRef<any>, data?, config?: MatDialogConfig) {
     const layout = config ? config : FullPage;
-      const dialogRef = this.dialog.open(ResultsPopupComponent, {
+    const dialogRef = this.dialog.open(ResultsPopupComponent, {
       ...layout,
       data: {
         template,
-        context: { data }
-      }
+        context: { data },
+      },
     });
     return dialogRef.afterClosed().pipe(take(1));
   }
@@ -70,22 +72,24 @@ export class PopupService {
    *     this.dialogRef.close();
    *    }
    */
-  openPopup1(template: TemplateRef<any>, data?, config?: MatDialogConfig): MatDialogRef<ResultsPopupComponent, any> {
-    const layout = config
-      ? config
-      : FullPage;
-      const dialogRef = this.dialog.open(ResultsPopupComponent, {
+  openPopup1(
+    template: TemplateRef<any>,
+    data?,
+    config?: MatDialogConfig
+  ): MatDialogRef<ResultsPopupComponent, any> {
+    const layout = config ? config : FullPage;
+    const dialogRef = this.dialog.open(ResultsPopupComponent, {
       ...layout,
       data: {
         template,
-        context: { data }
-      }
+        context: { data },
+      },
     });
     return dialogRef;
   }
 
   /**
-   * @MessageOptions 
+   * @MessageOptions
    * {
    *  message: string;
    *  type?: MessageType;
@@ -101,29 +105,31 @@ export class PopupService {
       isFull: false,
       isDialog: false,
       buttonOkText: 'button.ok',
-      buttonCancelText: 'button.cancel'
-    }
+      buttonCancelText: 'button.cancel',
+    };
     const apliedOptions = { ...defaultOptions, ...options };
-    const info = apliedOptions.isFull ? { ...FullPage, data: apliedOptions } : { ...dialog, data: apliedOptions };
+    const info = apliedOptions.isFull
+      ? { ...FullPage, data: apliedOptions }
+      : { ...dialog, data: apliedOptions };
     const dialogRef = this.dialog.open(MessageComponent, info);
     if (apliedOptions.isDialog) {
       return dialogRef.afterClosed().pipe(take(1));
     }
-    return of(null)
+    return of(null);
   }
 
   showSuccessMsg(message = 'successful operation') {
     this.showMsg({
       message,
-      type: MessageType.Success
-    })
+      type: MessageType.Success,
+    });
   }
 
   showErrMsg(message: string) {
     this.showMsg({
       message,
-      type: MessageType.Error
-    })
+      type: MessageType.Error,
+    });
   }
 
   showDialog(message: string) {
@@ -132,8 +138,8 @@ export class PopupService {
       type: MessageType.Warning,
       isDialog: true,
       buttonOkText: 'button.yes',
-      buttonCancelText: 'button.no'
-    })
+      buttonCancelText: 'button.no',
+    });
   }
 
   // showDeleteDialog(func) {
@@ -147,12 +153,26 @@ export class PopupService {
     return this.showDialog('message.warning_delete')
       .pipe(
         take(1),
-        filter(res => !!res)
-      ).toPromise();
+        filter((res) => !!res)
+      )
+      .toPromise();
+  }
+
+  verifyDeleteDialog(onYes: Function) {
+    return this.showDialog('message.warning_delete').pipe(
+      take(1),
+      filter((res) => !!res),
+      tap((res) => {
+        console.log('fato', res);
+        if (res) {
+          onYes();
+        }
+      })
+    );
   }
 
   /**
-   * @options 
+   * @options
    *  {
    *  duration number ;
    *  horizontalPosition start | center | end;
@@ -162,12 +182,15 @@ export class PopupService {
   openSnackBar(message: string, options?) {
     //this.store.dispatch(setSnackBarMsg({ message }))
     this.store.snackMsgSubject.next(message);
-    this.snackBar.openFromComponent(SnackMessageComponent , {
+    this.snackBar.openFromComponent(SnackMessageComponent, {
       duration: options?.duration ? options.duration : 1500,
-      horizontalPosition: options?.horizontalPosition ? options.horizontalPosition : 'center',
-      verticalPosition: options?.verticalPosition ? options.verticalPosition : 'bottom',
-      panelClass: 'snack-bar'
+      horizontalPosition: options?.horizontalPosition
+        ? options.horizontalPosition
+        : 'center',
+      verticalPosition: options?.verticalPosition
+        ? options.verticalPosition
+        : 'bottom',
+      panelClass: 'snack-bar',
     });
   }
-
 }

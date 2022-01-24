@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SidenavItem } from '@ws-sal';
 import { RoutingService } from '../../../core/services/routing.service';
 import { Store } from '@ngrx/store';
@@ -7,16 +7,25 @@ import { loadFiles } from '@ws-store/file/file.actions';
 import { loadFixedGrids } from '@ws-store/fixed-grid/fixed-grid.actions';
 import { loadGridTemplates } from '@ws-store/grid-template/grid-template.actions';
 import { loadPageTemplates } from '@ws-store/page-template/page-template.actions';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
+import { loadPages } from '@ws-store/page/page.actions';
+import { homepageId } from '@ws-store/page/page.selectors';
 
 @Component({
   selector: 'app-websitedashboard',
   templateUrl: './websitedashboard.component.html',
   styleUrls: ['./websitedashboard.component.scss'],
 })
-export class WebsitedashboardComponent implements OnInit {
+export class WebsitedashboardComponent implements OnInit, OnDestroy {
   idToOpen = of('pages');
+  sub: Subscription = new Subscription();
+  homepageId: string;
   sidenavList: SidenavItem[] = [
+    {
+      id: 'homepage',
+      title: 'Homepage',
+      icon: 'home',
+    },
     {
       id: 'pages',
       title: 'pages',
@@ -30,6 +39,11 @@ export class WebsitedashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEntities();
+    this.setHomepageId();
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   loadEntities() {
@@ -37,6 +51,13 @@ export class WebsitedashboardComponent implements OnInit {
     this.store.dispatch(loadFixedGrids());
     this.store.dispatch(loadGridTemplates());
     this.store.dispatch(loadPageTemplates());
+    this.store.dispatch(loadPages());
+  }
+
+  setHomepageId() {
+    this.sub.add(
+      this.store.select(homepageId).subscribe((id) => (this.homepageId = id))
+    );
   }
 
   onNavigate(id: string) {
@@ -44,7 +65,10 @@ export class WebsitedashboardComponent implements OnInit {
       case 'pages':
         this.routingSv.navigate('pages');
         break;
-
+      case 'homepage':
+        console.log('jlklk', this.homepageId);
+        this.routingSv.navigate('editPage', this.homepageId);
+        break;
       default:
         break;
     }

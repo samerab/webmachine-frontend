@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WebsitedashboardComponent } from './dashboard/websitedashboard.component';
+import { RedirectComponent } from './redirect/redirect.component';
 import { WebsiteLoginComponent } from './website-login/website-login.component';
 
 const routes: Routes = [
   {
+    path: 'redirect/:id',
+    component: RedirectComponent,
+  },
+  {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
   },
   {
     path: 'login',

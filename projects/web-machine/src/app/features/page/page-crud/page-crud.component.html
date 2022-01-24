@@ -1,13 +1,17 @@
 <ws-page-factory
-  [page$]="page"
+  [page$]="page$"
   [info$]="info$"
   (onSave)="save($event)"
   (onRealPreview)="onRealPreview($event)"
 >
-  <ws-page-info [page$]="page" (onInfo)="onInfo($event)" #info>
-    <mat-form-field *ngIf="status === 'edit'">
-      <mat-label>{{ "slug" | translate }}</mat-label>
-      <input matInput [formControl]="slug" autocomplete="off" />
-    </mat-form-field>
-  </ws-page-info>
+  <ng-container *ngIf="page$ | async as page">
+    <ws-page-info [page$]="page$" (onInfo)="onInfo($event)" #info>
+      <mat-form-field
+        *ngIf="status === 'edit' && !page.id.startsWith('homepage-')"
+      >
+        <mat-label>{{ "slug" | translate }}</mat-label>
+        <input matInput [formControl]="slug" autocomplete="off" />
+      </mat-form-field>
+    </ws-page-info>
+  </ng-container>
 </ws-page-factory>

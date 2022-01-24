@@ -1,14 +1,14 @@
 <ws-website-dashbaord-header></ws-website-dashbaord-header>
 <div class="website-dashboard-container">
   <div class="sidenav">
-    <sal-sidenav
+    <sal-sidebar
       [list]="sidenavList"
       [hasDivider]="false"
       activeClass="primary-50"
       (onSelect)="onNavigate($event)"
       [idToOpen]="idToOpen"
     >
-    </sal-sidenav>
+    </sal-sidebar>
   </div>
   <div class="content">
     <router-outlet></router-outlet>

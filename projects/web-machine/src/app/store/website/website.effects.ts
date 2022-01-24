@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
@@ -19,7 +18,9 @@ export class WebsiteEffects {
   constructor(private createEffectSv: CreateEffectService) {}
 
   addWebsite$: Observable<Action> = this.createEffectSv.addEntity(entityInfo);
-  loadWebsites$: Observable<Action> = this.createEffectSv.loadAll(entityInfo);
+  loadUserWebsites$: Observable<Action> =
+    this.createEffectSv.loadMany(entityInfo);
+  loadWebsite$: Observable<Action> = this.createEffectSv.loadOne(entityInfo);
   updateWebsite$: Observable<Action> =
     this.createEffectSv.updateEntity(entityInfo);
   deleteWebsite$: Observable<Action> =

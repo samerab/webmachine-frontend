@@ -1,81 +1,84 @@
 import { FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@ws-store/index';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { getAllPagesSlugs, getPageById } from '@ws-store/page/page.selectors';
 import { addPage, updatePage } from '@ws-store/page/page.actions';
 import { EnvService } from '../../../core/services/env/env.service';
 import { switchMap, take } from 'rxjs/operators';
 import { Page } from '@ws-sal';
+import { firstWebsite } from '@ws-store/website/website.selectors';
+import { Website } from '@ws-store/website/website.model';
 
 @Component({
   selector: 'ws-page-crud',
   templateUrl: './page-crud.component.html',
-  styleUrls: ['./page-crud.component.scss']
+  styleUrls: ['./page-crud.component.scss'],
 })
-export class PageCrudComponent implements OnInit {
-
+export class PageCrudComponent implements OnInit, OnDestroy {
   info$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   slug: FormControl = new FormControl('');
   modifiedPage: Page;
   slugs = [];
   status;
   isSlugChanged = false;
+  currentWebsite: Website;
+  sub: Subscription = new Subscription();
 
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
     private window: Window,
-    private envSv: EnvService,
-  ) { }
+    private envSv: EnvService
+  ) {
+    this.setCurrentWebsite();
+  }
 
   ngOnInit(): void {
     this.setStatus();
     this.setPagesSlugs();
     this.onSlugChange();
-    this.page
-    .pipe(
-      take(1)
-    ).subscribe(page => {
-      this.slug.setValue(page?.info?.slug, {emitEvent: false})
-    })
+    this.page$.pipe(take(1)).subscribe((page) => {
+      this.slug.setValue(page?.info?.slug, { emitEvent: false });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   onInfo(info) {
-    this.info$.next(info)
+    this.info$.next(info);
   }
 
   private onSlugChange() {
-    this.slug.valueChanges.subscribe(() => this.isSlugChanged = true);
+    this.slug.valueChanges.subscribe(() => (this.isSlugChanged = true));
   }
 
-  get page() {
-    return this.route.paramMap
-      .pipe(
-        switchMap(params => {
-          const pageId = params.get('id');
-          this.status = pageId ? 'edit' : 'add';
-          if (this.status === 'edit') {
-            return this.store.pipe(select(getPageById(pageId)));
-          }
-          return of(null);
-        })
-      )
+  get page$() {
+    return this.route.paramMap.pipe(
+      switchMap((params) => {
+        const pageId = params.get('id');
+        this.status = pageId ? 'edit' : 'add';
+        if (this.status === 'edit') {
+          return this.store.pipe(select(getPageById(pageId)));
+        }
+        return of(null);
+      })
+    );
   }
-
 
   setStatus() {
-    this.route.url.subscribe(arr => this.status = arr[0].path);
+    this.route.url.subscribe((arr) => (this.status = arr[0].path));
   }
 
   setPagesSlugs() {
-    this.store.pipe(select(getAllPagesSlugs()))
-      .pipe(
-        take(1)
-      )
-      .subscribe(slugs => this.slugs = slugs)
+    this.store
+      .pipe(select(getAllPagesSlugs()))
+      .pipe(take(1))
+      .subscribe((slugs) => (this.slugs = slugs));
   }
 
   isSlugExist(slug: string) {
@@ -84,26 +87,24 @@ export class PageCrudComponent implements OnInit {
 
   getModifiedPage(page: Page, slug?: string) {
     slug = this.generateSlug(slug, page);
-    const infoCopy = {...page.info};
+    const infoCopy = { ...page.info };
     infoCopy.slug = slug;
-    const pageCopy = {...page};
-    pageCopy.info = {...infoCopy};
-    return {...pageCopy};
+    const pageCopy = { ...page };
+    pageCopy.info = { ...infoCopy };
+    return { ...pageCopy };
   }
 
   private generateSlug(slug: string, page: Page) {
     if (!slug) {
       slug = page.info.slug;
-    }
-    else {
-      slug = slug.replace(/ /g, '-')
+    } else {
+      slug = slug.replace(/ /g, '-');
     }
     let n = 1;
     while (this.isSlugExist(slug)) {
       if (n === 1) {
         slug = `${slug}-${n}`;
-      }
-      else {
+      } else {
         slug = `${slug.substr(0, slug.length - 2)}-${n}`;
       }
       n++;
@@ -111,33 +112,52 @@ export class PageCrudComponent implements OnInit {
     return slug;
   }
 
+  setCurrentWebsite() {
+    this.sub.add(
+      this.store.select(firstWebsite).subscribe((website) => {
+        this.currentWebsite = website;
+      })
+    );
+  }
+
   save(page) {
     if (this.status === 'add') {
-      page = {...this.getModifiedPage(page)};
-      this.store.dispatch(addPage({ page }));
-      this.status = 'edit';
-      this.slug.setValue(page?.info?.slug);
-    }
-    else {
-      if (this.isSlugChanged) {
-        page = {...this.getModifiedPage(page, this.slug.value)};
-        this.isSlugChanged = false;
-      }
-      const {id, ...changes} = page;
-      const update = {id, changes};
-      this.store.dispatch(updatePage({ page: update }));
+      page = this.addPage(page);
+    } else {
+      page = this.editPage(page);
     }
     this.modifiedPage = page;
+  }
+
+  private editPage(page: any) {
+    if (this.isSlugChanged) {
+      page = { ...this.getModifiedPage(page, this.slug.value) };
+      this.isSlugChanged = false;
+    }
+    const { id, ...changes } = page;
+    const update = { id, changes };
+    this.store.dispatch(updatePage({ page: update }));
+    return page;
+  }
+
+  private addPage(page: any) {
+    page = {
+      ...this.getModifiedPage(page),
+      websiteId: this.currentWebsite?.id,
+    };
+    this.store.dispatch(addPage({ page }));
+    this.status = 'edit';
+    this.slug.setValue(page?.info?.slug);
+    return page;
   }
 
   onRealPreview(page: Page) {
     const slug = this.modifiedPage?.info?.slug;
     let mainDomain = this.envSv.mainDomain;
-    if (mainDomain = 'http://localhost:3000') {
-      mainDomain = 'http://localhost:4200'
+    if ((mainDomain = 'http://localhost:3000')) {
+      mainDomain = 'http://localhost:4200';
     }
-    const url = `${mainDomain}/pages/${slug}`;
+    const url = `${mainDomain}/page/${slug}`;
     this.window.open(url);
   }
-
 }

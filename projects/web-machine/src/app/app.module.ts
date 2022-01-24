@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WebsiteModule } from './features/website/website.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -28,6 +27,7 @@ import { FooterComponent } from './shell/footer/footer.component';
 import { ShellComponent } from './shell/shell.component';
 import { UserEffects } from '@ws-store/user/user.effects';
 import { SharedModule } from './shared/shared-module/shared.module';
+import { WebsiteEffects } from '@ws-store/website/website.effects';
 
 @NgModule({
   declarations: [
@@ -51,10 +51,9 @@ import { SharedModule } from './shared/shared-module/shared.module';
       },
     }),
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([FixedGridEffects, UserEffects]),
+    EffectsModule.forRoot([FixedGridEffects, UserEffects, WebsiteEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule,
-    WebsiteModule,
     SalPopupModule,
     MatProgressSpinnerModule,
     SalCommonModule,

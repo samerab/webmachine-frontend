@@ -7,7 +7,7 @@ import { Direction } from '@angular/cdk/bidi';
   templateUrl: './context-menu.component.html',
   styleUrls: ['./context-menu.component.scss'],
 })
-export class ContextMenuComponent implements OnInit {
+export class SalContextMenuComponent implements OnInit {
   @Input() dir: Direction = 'ltr';
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   position = { x: '0px', y: '0px' };

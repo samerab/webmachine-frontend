@@ -4,9 +4,7 @@
       <mat-label>subdomain</mat-label>
       <input formControlName="subdomain" matInput autocomplete="off" />
     </mat-form-field>
-    <div class="domain">
-      .webtech.zone
-    </div>
+    <div class="domain">.webtech.zone</div>
   </div>
   <mat-form-field appearance="fill">
     <mat-label>name</mat-label>
@@ -16,13 +14,24 @@
     <mat-label>Websites Templates</mat-label>
     <mat-select formControlName="template">
       <mat-option *ngFor="let tpl of websiteTemplates" [value]="tpl.id">
-        {{tpl.id}}
+        {{ tpl.id }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button>create</button>
+  <button
+    [disabled]="form.invalid || !form.touched || !form.dirty"
+    mat-raised-button
+  >
+    {{ status === "add" ? "create" : "save changes" }}
+  </button>
 </form>
 <div class="template-browser">
-<button *ngIf="status === 'edit'">{{status}}</button>
-    <img [src]="currentTemplate?.imgSrc">
+  <button
+    (click)="openWebsiteDashboard()"
+    mat-flat-button
+    *ngIf="status === 'edit'"
+  >
+    Dashboard
+  </button>
+  <img [src]="currentTemplate?.imgSrc" />
 </div>

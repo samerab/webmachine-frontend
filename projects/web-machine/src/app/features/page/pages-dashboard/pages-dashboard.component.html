@@ -1,14 +1,6 @@
-<!-- <sal-navbar
-  color="primary-500"
-  (onItemClick)="runCommand($event)"
-  [startList]="startList"
-  [endList]="endList"
-  class="padding"
-></sal-navbar> -->
-
 <sal-table
   [data]="pages$ | async"
-  [columns]="['title']"
+  [columns]="['title', 'id']"
   [hasAction]="true"
   [hasSelection$]="showSelectionSubject$"
   (multiSelect)="onSelect($event)"
@@ -16,18 +8,16 @@
   (actionClick)="onActionClick($event)"
 ></sal-table>
 
-<!-- <sam-context-menu
-  #contextMenu
-  [contextMenuItems$]="contextMenu$"
-  (itemClick)="onContextMenuItemClick($event)"
-></sam-context-menu> -->
-
 <sal-context-menu #contextMenu>
-  <sal-icon-btn (click)="test1()" icon="edit"></sal-icon-btn>
-  <sal-icon-btn (click)="test1()" icon="menu"></sal-icon-btn>
+  <sal-icon-btn (click)="editPage()" icon="edit" text="edit"></sal-icon-btn>
+  <sal-icon-btn
+    (click)="deletePage()"
+    icon="delete"
+    text="delete"
+  ></sal-icon-btn>
 </sal-context-menu>
 
-<ng-template cdk-portal>
+<sal-portal hostId="salTableExternalGuest">
   <div class="tools">
     <button (click)="addPage()" mat-icon-button>
       <mat-icon>add</mat-icon>
@@ -36,4 +26,4 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-</ng-template>
+</sal-portal>

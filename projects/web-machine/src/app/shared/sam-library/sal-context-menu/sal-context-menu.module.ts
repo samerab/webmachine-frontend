@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContextMenuComponent } from './context-menu.component';
+import { SalContextMenuComponent } from './context-menu.component';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [ContextMenuComponent],
+  declarations: [SalContextMenuComponent],
   imports: [CommonModule, MatMenuModule],
-  exports: [ContextMenuComponent],
+  exports: [SalContextMenuComponent],
 })
-export class ContextMenuModule {}
+export class SalContextMenuModule {}

@@ -1,8 +1,8 @@
-import { WebsiteComponent } from './features/website/website/website.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './shell/home/home.component';
 import { ShellComponent } from './shell/shell.component';
+import { ClientComponent } from './shared/shared-module/client/client.component';
 
 const routes: Routes = [
   {
@@ -38,7 +38,8 @@ const routes: Routes = [
         (m) => m.WebsiteDashboardModule
       ),
   },
-  { path: 'pages/:id', component: WebsiteComponent },
+  { path: 'homepage', component: ClientComponent },
+  { path: 'page/:id', component: ClientComponent },
   {
     path: 'dashboard',
     loadChildren: () =>

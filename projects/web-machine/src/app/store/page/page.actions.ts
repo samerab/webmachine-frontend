@@ -1,27 +1,21 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Page } from '@ws-sal';
-//import { Page } from './page.model';
-
+//import { Page } from '@ws-sal';
+import { Page } from './page.model';
 
 export const setCurrentPage = createAction(
-  '[Page] Set Current Page', 
+  '[Page] Set Current Page',
   props<{ page: Page }>()
 );
 
-export const loadPages = createAction(
-  '[Page] Load Pages', 
-);
+export const loadPages = createAction('[Page] Load Pages');
 
 export const loadPagesSuccess = createAction(
-  '[Page] Load Pages Success', 
+  '[Page] Load Pages Success',
   props<{ pages: Page[] }>()
 );
 
-export const addPage = createAction(
-  '[Page] Add Page',
-  props<{ page: Page }>()
-);
+export const addPage = createAction('[Page] Add Page', props<{ page: Page }>());
 
 export const addPageSuccess = createAction(
   '[Page] Add Page Success',
@@ -78,6 +72,4 @@ export const deletePagesSuccess = createAction(
   props<{ ids: string[] }>()
 );
 
-export const clearPages = createAction(
-  '[Page/API] Clear Pages'
-);
+export const clearPages = createAction('[Page/API] Clear Pages');

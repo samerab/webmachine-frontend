@@ -4,8 +4,8 @@ import { SalPortalComponent } from './sal-portal.component';
 import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
-  imports: [CommonModule, PortalModule],
   declarations: [SalPortalComponent],
-  exports: [PortalModule],
+  imports: [CommonModule, PortalModule],
+  exports: [SalPortalComponent],
 })
 export class SalPortalModule {}

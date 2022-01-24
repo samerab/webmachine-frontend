@@ -3,8 +3,27 @@ import { Update } from '@ngrx/entity';
 
 import { Website } from './website.model';
 
-export const loadWebsites = createAction(
-  '[Website/API] Load Websites',
+export const loadWebsite = createAction(
+  '[Website/API] Load Website',
+  props<{ id: string }>()
+);
+
+export const loadWebsiteSuccess = createAction(
+  '[Website/API] Load Website Success',
+  props<{ website: Website }>()
+);
+
+export const loadWebsites = createAction('[Website/API] Load Websites');
+
+export const loadWebsitesSuccess = createAction(
+  '[Website/API] Load Websites Success',
+  props<{ websites: Website[] }>()
+);
+
+export const loadManyWebsites = createAction('[Website/API] Load Websites');
+
+export const loadManyWebsitesSuccess = createAction(
+  '[Website/API] Load Websites Success',
   props<{ websites: Website[] }>()
 );
 
@@ -45,6 +64,11 @@ export const updateWebsites = createAction(
 
 export const deleteWebsite = createAction(
   '[Website/API] Delete Website',
+  props<{ id: string }>()
+);
+
+export const deleteWebsiteSuccess = createAction(
+  '[Website/API] Delete Website Success',
   props<{ id: string }>()
 );
 

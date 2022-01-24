@@ -1,6 +1,5 @@
 export * from './models/modes.index';
 
-
 export * from './sal-input/sal-input.module';
 export * from './sal-popup/sal-popup.module';
 export * from './sal-table/sal-table.module';
@@ -15,12 +14,17 @@ export * from './sal-file/sal-file.module';
 export * from './sal-button/sal-button.module';
 export * from './sal-user/sal-user.module';
 export * from './sal-sidenav/sal-sidenav.module';
+export * from './sal-sidebar/sal-sidebar.module';
+export * from './sal-portal/sal-portal.module';
+export * from './sal-btn/sal-btn.module';
+export * from './sal-context-menu/sal-context-menu.module';
 
 // Components
 export * from './sal-popup/resultsPopup/resultsPopup.component';
 export * from './sal-menu/context-menu/context-menu.component';
 export * from './sal-menu/sal-dashboard/sal-dashboard.component';
 export * from './sal-button/button/button.component';
+export * from './sal-context-menu/context-menu.component';
 
 // Services
 export * from './sal-popup/popup-service/popup.service';
@@ -33,9 +37,8 @@ export * from './sal-common/event.service';
 export * from './sal-common/font.service';
 export * from './sal-common/common.service';
 
-
 // Models
 export * from './sal-menu/models';
 export * from './sal-page/page.model';
 export * from './sal-sidenav/interfaces';
-export * from './sal-common/decorators'
+export * from './sal-common/decorators';
