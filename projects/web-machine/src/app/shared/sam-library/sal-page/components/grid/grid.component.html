@@ -1,0 +1,43 @@
+<!-- <sal-navbar
+  *ngIf="isDesignMode"
+  (onItemClick)="runCommand($event)"
+  [startList]="startList"
+  [endList]="endList"
+  color="primary-200"
+  class="padding"
+>
+  <h3 #title class="nav-title">{{ data.settings?.name }}</h3>
+  <sam-menu
+    [menuData$]="menu$"
+    (onItemClick)="onMenuItemClick($event)"
+    color="primary-200"
+    contentAfterEnd
+  ></sam-menu>
+</sal-navbar> -->
+
+<div #sectionListDiv class="section-list-container">
+  <ng-container #sectionListContainer></ng-container>
+</div>
+<sal-sidebar
+  *ngIf="isDesignMode"
+  [list]="sidenavList"
+  [hasDivider]="false"
+  activeClass="primary-50"
+  (onSelect)="runCommand($event)"
+>
+</sal-sidebar>
+
+<!-- Templates -->
+<ng-template #designPopupTemplate let-data="data">
+  <ws-grid-design
+    [settings]="data"
+    (onDesignChange)="onDesignChange($event)"
+  ></ws-grid-design>
+</ng-template>
+
+<ng-template #gridNameTemplate let-data="data">
+  <sal-change-name
+    [name]="data"
+    (onItemClick)="onButtonSelect($event)"
+  ></sal-change-name>
+</ng-template>

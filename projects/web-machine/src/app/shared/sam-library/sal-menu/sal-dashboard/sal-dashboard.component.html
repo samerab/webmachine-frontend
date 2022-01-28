@@ -1,9 +1,0 @@
-<div #container class="dashboard-container">
-  <div *ngIf="mainSidebarIsVisible" class="dashboard-sidebar">
-    <sal-sidebar [list]="list" [sideBarClass]="sideBarClass"></sal-sidebar>
-  </div>
-  <div class="dashboard-content">
-    <ng-content select="[bodyHeader]"></ng-content>
-    <router-outlet></router-outlet>
-  </div>
-</div>

@@ -3,4 +3,5 @@ export class SidebarItem {
   title?: string;
   icon?: string;
   children?: SidebarItem[];
+  tip?: string;
 }

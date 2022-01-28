@@ -107,14 +107,19 @@ export class WebsiteCrudComponent implements OnInit, OnDestroy {
       const id = uuid();
       const website = { id, ...this.form.value };
       this.store.dispatch(addWebsite({ website }));
-      this.sub.add(
-        this.getlastAdded(id).subscribe((last) => {
-          if (last) {
-            this.routingSv.navigate('websiteList');
-          }
-        })
-      );
+      this.onAddSuccess(id);
     }
+  }
+
+  private onAddSuccess(id: string) {
+    this.sub.add(
+      this.getlastAdded(id).subscribe((last) => {
+        if (last) {
+          this.userDashboardSv.addHomepage(last);
+          this.routingSv.navigate('websiteList');
+        }
+      })
+    );
   }
 
   private watchTemplateChange() {
@@ -137,12 +142,13 @@ export class WebsiteCrudComponent implements OnInit, OnDestroy {
   }
 
   openWebsiteDashboard() {
-    let mainDomain = this.envSv.mainDomain;
-    if ((mainDomain = 'http://localhost:3000')) {
-      mainDomain = 'http://localhost:4200';
-    }
-    const id = this.currentWebsite.id;
-    const url = `${mainDomain}/website/redirect/${id}`;
-    this.window.open(url);
+    this.userDashboardSv.openWebsiteDashboard(this.currentWebsite.id);
+    // let mainDomain = this.envSv.mainDomain;
+    // if ((mainDomain = 'http://localhost:3000')) {
+    //   mainDomain = 'http://localhost:4200';
+    // }
+    // const id = this.currentWebsite.id;
+    // const url = `${mainDomain}/website/redirect/${id}`;
+    // this.window.open(url);
   }
 }

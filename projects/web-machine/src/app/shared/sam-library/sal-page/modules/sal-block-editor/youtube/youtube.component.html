@@ -1,0 +1,12 @@
+<form [formGroup]="form" (ngSubmit)="send()">
+  <mat-form-field>
+    <mat-label>{{ "menuItem.icon" }}</mat-label>
+    <input formControlName="src" matInput autocomplete="off" />
+  </mat-form-field>
+  <div>
+    <mat-checkbox formControlName="allowFullScreen">{{
+      "allowFullScreen"
+    }}</mat-checkbox>
+  </div>
+  <button>send</button>
+</form>

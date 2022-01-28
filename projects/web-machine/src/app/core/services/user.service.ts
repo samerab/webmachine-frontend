@@ -1,11 +1,13 @@
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map, take, tap } from 'rxjs/operators';
 import { AppState } from '@ws-store/index';
-import { Injectable, InjectionToken, inject } from '@angular/core';
+import { Injectable, InjectionToken, inject, Inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { loadUser, loginUser, logoutUser } from '@ws-store/user/user.actions';
 import { currentUser } from '@ws-store/user/user.selectors';
 import { Observable } from 'rxjs';
 import { RoutingService } from './routing.service';
+import { DOCUMENT } from '@angular/common';
+import { WINDOW } from './tokens';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +15,20 @@ import { RoutingService } from './routing.service';
 export class UserService {
   constructor(
     public store: Store<AppState>,
-    private routingSv: RoutingService
+    private routingSv: RoutingService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window
   ) {}
 
   refreshUser() {
-    this.store.dispatch(loadUser({ id: 'refresh' }));
+    this.store
+      .select(currentUser)
+      .pipe(
+        filter((user) => !user),
+        take(1),
+        tap(() => this.store.dispatch(loadUser({ id: 'refresh' })))
+      )
+      .subscribe();
   }
 
   login(user, navigateTo: string) {

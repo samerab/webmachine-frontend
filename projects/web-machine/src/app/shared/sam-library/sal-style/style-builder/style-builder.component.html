@@ -19,6 +19,10 @@
 
 <!-- Template -->
 <ng-template #template let-data="data">
-  <sal-table (rowSelect)="onStyleSelect($event)" [data]="data"></sal-table>
+  <sal-table
+    (rowSelect)="onStyleSelect($event)"
+    [data]="data"
+    [columns]="['id']"
+  ></sal-table>
 </ng-template>
 <button (click)="logObj()">print</button>

@@ -1,6 +1,6 @@
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +8,13 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductCrudComponent } from './product-crud/product-crud.component';
 import { ProductsDashboardComponent } from './products-dashboard/products-dashboard.component';
 import { ProductInfoComponent } from './product-info/product-info.component';
-import { SalPopupModule, SalTableModule, SalTranslateModule, SamMenuModule } from '@ws-sal';
+import {
+  SalContextMenuModule,
+  SalPopupModule,
+  SalTableModule,
+  SalTranslateModule,
+  SamMenuModule,
+} from '@ws-sal';
 import { PageFactoryModule } from '../../shared/page-factory/page-factory.module';
 import { ProductIdentityComponent } from './product-identity/product-identity.component';
 import { ProductVariantsComponent } from './product-variants/product-variants.component';
@@ -19,15 +25,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 
-
 @NgModule({
   declarations: [
-    ProductInfoComponent, 
-    ProductCrudComponent, 
-    ProductsDashboardComponent, 
-    ProductIdentityComponent, 
-    ProductVariantsComponent, 
-    ProductVarietyComponent, 
+    ProductInfoComponent,
+    ProductCrudComponent,
+    ProductsDashboardComponent,
+    ProductIdentityComponent,
+    ProductVariantsComponent,
+    ProductVarietyComponent,
     ProductImagesComponent,
   ],
   imports: [
@@ -45,6 +50,7 @@ import { MatChipsModule } from '@angular/material/chips';
     SalPopupModule,
     PageFactoryModule,
     MatChipsModule,
-  ]
+    SalContextMenuModule,
+  ],
 })
-export class ProductModule { }
+export class ProductModule {}

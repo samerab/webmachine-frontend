@@ -84,13 +84,13 @@ export class ApiService {
     return this.httpClient.put(this.genUrl(entity, 'delete', detach), payload);
   }
 
-  // get(path: string) {
-  //   return this.httpClient.get(`${this.envSv.apiUrl}/${path}`);
-  // }
+  get(path: string) {
+    return this.httpClient.get(`${this.envSv.apiUrl}/${path}`);
+  }
 
-  // post(path: string, body: any) {
-  //   return this.httpClient.post(`${this.envSv.apiUrl}/${path}`, body);
-  // }
+  post(path: string, body: any) {
+    return this.httpClient.post(`${this.envSv.apiUrl}/${path}`, body);
+  }
 
   // deleteAll(entityData: EntityData) {
   //   return this.httpClient.post(this.genUrl('deleteAll'), entityData);

@@ -41,17 +41,10 @@ const routes: Routes = [
   { path: 'homepage', component: ClientComponent },
   { path: 'page/:id', component: ClientComponent },
   {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./features/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
-  },
-  {
     path: 'block-settings',
     outlet: 'blockSettings',
     loadChildren: () =>
-      import('@ws-sal/block-settings').then((m) => m.SalBlockSettingsModule),
+      import('@ws-sal/block-editor').then((m) => m.SalBlockEditorModule),
   },
   {
     path: 'style',

@@ -35,12 +35,12 @@ import { SalButtonModule } from '../sal-button/sal-button.module';
     ClassicGallerySettingsComponent,
     TextEditorComponent,
     SearchOrPasteComponent,
-    LineHeightComponent
+    LineHeightComponent,
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     BlockSettingsRoutingModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
@@ -56,8 +56,7 @@ import { SalButtonModule } from '../sal-button/sal-button.module';
     SalPopupModule,
     SalFileModule,
     SalCommonModule,
-    SalButtonModule
-
-  ]
+    SalButtonModule,
+  ],
 })
 export class SalBlockSettingsModule {}

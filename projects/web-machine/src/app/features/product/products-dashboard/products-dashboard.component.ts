@@ -3,10 +3,19 @@ import { AppState } from '@ws-store/index';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { ClickedNavbarItem, ContextMenuComponent, NavbarItem, PopupService } from '@ws-sal';
+import {
+  ClickedNavbarItem,
+  NavbarItem,
+  PopupService,
+  SalContextMenuComponent,
+} from '@ws-sal';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { END_LIST, START_LIST } from './products-dashboard.data';
-import { deleteProduct, deleteProducts, loadProducts } from '@ws-store/product/product.actions';
+import {
+  deleteProduct,
+  deleteProducts,
+  loadProducts,
+} from '@ws-store/product/product.actions';
 import { allProducts } from '@ws-store/product/product.selectors';
 
 const CONTEXT_MENU = ['button.edit', 'button.delete'];
@@ -14,17 +23,17 @@ const CONTEXT_MENU = ['button.edit', 'button.delete'];
 @Component({
   selector: 'ws-products-dashboard',
   templateUrl: './products-dashboard.component.html',
-  styleUrls: ['./products-dashboard.component.scss']
+  styleUrls: ['./products-dashboard.component.scss'],
 })
 export class ProductsDashboardComponent implements OnInit {
-
-  @ViewChild('contextMenu') contextMenuComponent: ContextMenuComponent;
+  @ViewChild('contextMenu') contextMenuComponent: SalContextMenuComponent;
 
   contextMenu$: Observable<any> = of(CONTEXT_MENU);
   products$: Observable<Product[]>;
   startList: NavbarItem[] = START_LIST;
   endList: NavbarItem[] = END_LIST;
-  showSelectionSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  showSelectionSubject$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
   selectedItems: any[];
   selectedItem;
   currentItem;
@@ -33,7 +42,7 @@ export class ProductsDashboardComponent implements OnInit {
     private popupSv: PopupService,
     private router: Router,
     private store: Store<AppState>
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadProducts());
@@ -41,10 +50,7 @@ export class ProductsDashboardComponent implements OnInit {
   }
 
   private setProducts() {
-    this.products$ = this.store
-    .pipe(
-      select(allProducts),
-      );
+    this.products$ = this.store.pipe(select(allProducts));
   }
 
   runCommand(clickedNavbarItem: ClickedNavbarItem) {
@@ -52,7 +58,7 @@ export class ProductsDashboardComponent implements OnInit {
       case 'delete':
         this.deleteMany();
         break;
-        case 'add':
+      case 'add':
         this.addOne();
         break;
     }
@@ -74,7 +80,9 @@ export class ProductsDashboardComponent implements OnInit {
     }
     const yes = await this.popupSv.showDeleteDialog();
     if (yes) {
-      this.store.dispatch(deleteProducts({ids: this.selectedItems.map(item => item.id)}))
+      this.store.dispatch(
+        deleteProducts({ ids: this.selectedItems.map((item) => item.id) })
+      );
     }
   }
 
@@ -89,7 +97,7 @@ export class ProductsDashboardComponent implements OnInit {
         this.router.navigate(['dashboard/products/edit', id]);
         break;
       case 'delete':
-        this.store.dispatch(deleteProduct({id}))
+        this.store.dispatch(deleteProduct({ id }));
         break;
     }
   }
@@ -97,6 +105,4 @@ export class ProductsDashboardComponent implements OnInit {
   onItemClick(product: Product) {
     this.router.navigate(['dashboard/products/edit', product.id]);
   }
-
-
 }

@@ -1,0 +1,12 @@
+<div class="blocks-container">
+  <div
+    (click)="_onSelect(blockTempla.blockName)"
+    *ngFor="let blockTempla of blockTemplateList"
+    class="block"
+  >
+    <div class="img">
+      <img src="{{ '/assets/blocks-images/' + blockTempla.file }}" />
+    </div>
+    <h3>{{ blockTempla.blockName }}</h3>
+  </div>
+</div>

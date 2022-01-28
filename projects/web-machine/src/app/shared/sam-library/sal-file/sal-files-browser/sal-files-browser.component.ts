@@ -1,7 +1,14 @@
-import { PageService } from './../../sal-page/services/page.service';
 import { FileService } from './../file.service';
 import { ButtonConfig } from './../../sal-button/button/button.component';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ClickedNavbarItem, NavbarItem } from '../../sal-menu/models';
 import { START_LIST } from './sal-files-browser.data';
@@ -13,10 +20,9 @@ import { SalFile } from '@ws-sal';
 @Component({
   selector: 'sal-files-browser',
   templateUrl: './sal-files-browser.component.html',
-  styleUrls: ['./sal-files-browser.component.scss']
+  styleUrls: ['./sal-files-browser.component.scss'],
 })
 export class SalFilesBrowserComponent implements OnInit {
-
   @Input() fileList: Observable<SalFile[]>;
   @Output() onSelect: EventEmitter<SalFile[]> = new EventEmitter<SalFile[]>();
   @Output() onUpload: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -31,25 +37,21 @@ export class SalFilesBrowserComponent implements OnInit {
       { label: 'select', icon: 'input', color: 'primary' },
       { label: 'cancel', icon: 'clear' },
     ],
-    height: '50px'
-  }
+    height: '50px',
+  };
 
-  constructor(
-    private popupSv: PopupService,
-    private fileSv: FileService,
-    private pageSv: PageService
-  ) { }
+  constructor(private popupSv: PopupService, private fileSv: FileService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   addFile(file: SalFile, e: MatCheckboxChange) {
     if (e.checked) {
       this.selectedFiles.push(file);
-    }
-    else {
-      const index = this.selectedFiles.findIndex(f => f === file);
+    } else {
+      const index = this.selectedFiles.findIndex((f) => f === file);
       this.selectedFiles.splice(index, 1);
     }
+    this.send(this.selectedFiles);
   }
 
   triggerUpload() {
@@ -61,16 +63,16 @@ export class SalFilesBrowserComponent implements OnInit {
     this.onUpload.emit(uploadedFiles);
   }
 
-  onClick(label) {
-    switch (label) {
-      case 'select':
-        this.send(this.selectedFiles);
-        break;
-      case 'cancel':
-        this.send();
-        break;
-    }
-  }
+  // onClick(label) {
+  //   switch (label) {
+  //     case 'select':
+  //       this.send(this.selectedFiles);
+  //       break;
+  //     case 'cancel':
+  //       this.send();
+  //       break;
+  //   }
+  // }
 
   send(payload?: SalFile[]) {
     this.onSelect.emit(payload);
@@ -94,13 +96,15 @@ export class SalFilesBrowserComponent implements OnInit {
     if (!this.selectedFiles.length) {
       return this.popupSv.showErrMsg('select file to delete');
     }
-    this.popupSv.showDialog('message.warning_delete')
+    this.popupSv
+      .showDialog('message.warning_delete')
       .pipe(
         take(1),
-        filter(res => !!res)
-      ).subscribe(_ => {
-        this.onDelete.emit(this.selectedFiles.map(file => file.id));
-      })
+        filter((res) => !!res)
+      )
+      .subscribe((_) => {
+        this.onDelete.emit(this.selectedFiles.map((file) => file.id));
+      });
   }
 
   getSrc(file: SalFile) {
@@ -122,5 +126,4 @@ export class SalFilesBrowserComponent implements OnInit {
       this.fileSv.download(file);
     }
   }
-
 }

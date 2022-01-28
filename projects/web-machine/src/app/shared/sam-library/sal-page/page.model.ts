@@ -1,7 +1,7 @@
 export class Page {
   id: string;
   info: PageInfo;
-  content: Grid[]
+  content: Grid[];
 }
 
 export interface PageInfo {
@@ -22,7 +22,7 @@ export class Grid {
 
 export interface FixedGrid {
   id: string;
-  content: Grid
+  content: Grid;
 }
 
 export interface Section {
@@ -43,12 +43,12 @@ export class Block {
 
 export class SectionListToAdd {
   gridId: string;
-  sectionList: Section[]
+  sectionList: Section[];
 }
 
 export class BlockToAdd {
   sectionId: string;
-  block: Block
+  block: Block;
 }
 
 export class GridToUpdate {
@@ -89,16 +89,16 @@ export interface MergeInfo {
 
 export class Css {
   id: string;
-  css: any
+  css: any;
 }
 
 export interface Style {
-  id: string; /** margin | padding... */
+  id: string /** margin | padding... */;
   value?: any;
 }
 
 export interface StyleConfig {
-  id?: string; /** margin | padding... */
+  id?: string /** margin | padding... */;
   type?: string;
   options?: string[];
   default?: any;
@@ -108,14 +108,14 @@ export interface StyleConfig {
   hasOptions?: boolean;
   hasOptionsWithValues?: boolean;
   hasFourValues?: boolean;
-  max?: number; 
-  min?: number; 
+  max?: number;
+  min?: number;
   step?: number;
 }
 
 export interface StyleData {
   sender: string;
-  styleList: Style[]
+  styleList: Style[];
 }
 
 export interface SettingsData {
@@ -127,3 +127,7 @@ export interface BlockContent {
   data: any;
 }
 
+export interface BlockTemplate {
+  data: any;
+  setDefault: () => {};
+}

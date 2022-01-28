@@ -41,7 +41,7 @@ export const reducer = createReducer(
   on(WebsiteActions.deleteWebsiteSuccess, (state, action) =>
     adapter.removeOne(action.id, state)
   ),
-  on(WebsiteActions.deleteWebsites, (state, action) =>
+  on(WebsiteActions.deleteWebsitesSuccess, (state, action) =>
     adapter.removeMany(action.ids, state)
   ),
   on(WebsiteActions.loadManyWebsitesSuccess, (state, action) =>

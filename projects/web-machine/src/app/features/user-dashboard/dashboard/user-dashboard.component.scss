@@ -1,15 +1,25 @@
 .user-dashboard-container {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    grid-template-rows: 1fr;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+  .sidenav {
+    position: fixed;
+    width: 300px;
+    top: 64px;
     height: 100%;
-    .sidenav {
-        position: fixed;
-        width: 300px;
-        top: 64px;
-        height: 100%;
+  }
+  .content {
+    grid-column-start: 2;
+  }
+
+  ::ng-deep button {
+    height: 100% !important;
+  }
+
+  .selection {
+    ::ng-deep button {
+      background: red !important;
     }
-    .content {
-        grid-column-start: 2;
-    }
+  }
 }

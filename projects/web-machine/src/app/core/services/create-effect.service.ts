@@ -94,7 +94,7 @@ export class CreateEffectService {
               });
             }),
             catchError((err) => {
-              this.routingSv.navigate('login');
+              this.routingSv.navigate('loginUser');
               return this.handleError(err);
             })
           );
@@ -233,7 +233,6 @@ export class CreateEffectService {
         ofType(entity.action),
         concatMap((actionPayload) => {
           this.store.dispatch(startLoading());
-          console.log('actionPayload', actionPayload);
           return apiMethod(actionPayload).pipe(
             tap((_) => this.store.dispatch(endLoading())),
             map((response) => {

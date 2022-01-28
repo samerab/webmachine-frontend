@@ -21,23 +21,16 @@
     "strictNullChecks": false,
     "target": "es2017",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "paths": {
-      "@ws-sal": [
-        "./projects/web-machine/src/app/shared/sam-library/index.ts"
-      ],
-      "@ws-sal/block-settings": [
-        "./projects/web-machine/src/app/shared/sam-library/sal-block-settings/sal-block-settings.module.ts"
+      "@ws-sal": ["./projects/web-machine/src/app/shared/sam-library/index.ts"],
+      "@ws-sal/block-editor": [
+        "./projects/web-machine/src/app/shared/sam-library/sal-page/modules/sal-block-editor/sal-block-editor.module.ts"
       ],
       "@ws-sal/style": [
         "./projects/web-machine/src/app/shared/sam-library/sal-style/sal-style.module.ts"
       ],
-      "@ws-store/*": [
-        "./projects/web-machine/src/app/store/*"
-      ]
+      "@ws-store/*": ["./projects/web-machine/src/app/store/*"]
     }
   },
   "angularCompilerOptions": {

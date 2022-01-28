@@ -12,14 +12,14 @@ export class SalPageEvent {
 
 export enum SalPageEventName {
   UNSUBSCRIBE = 'unsubscribe',
-  SET_VIEW_MODE = 'setViewMode'
+  SET_VIEW_MODE = 'setViewMode',
+  delete_block = 'deleteBlock',
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PageService {
-
   defaultRowHeight = '500px';
   isWaitingForStyle;
 
@@ -32,7 +32,9 @@ export class PageService {
   setGridIdToDeleteSubject: Subject<string> = new Subject<string>();
   gridIdToDelete$ = this.setGridIdToDeleteSubject.asObservable();
 
-  updateDataSubject: Subject<Block | Section | Grid> = new Subject<Block | Section | Grid>();
+  updateDataSubject: Subject<Block | Section | Grid> = new Subject<
+    Block | Section | Grid
+  >();
   dataToUpdate$ = this.updateDataSubject.asObservable();
 
   updateGridSubject: Subject<any> = new Subject<any>();
@@ -44,10 +46,12 @@ export class PageService {
   setStyleSubject: Subject<StyleData> = new Subject<StyleData>();
   style$ = this.setStyleSubject.asObservable();
 
-  setSavedStyleSubject: BehaviorSubject<StyleData> = new BehaviorSubject<StyleData>(null);
+  setSavedStyleSubject: BehaviorSubject<StyleData> =
+    new BehaviorSubject<StyleData>(null);
   savedStyle$ = this.setSavedStyleSubject.asObservable();
 
-  setBlockSettingsSubject: BehaviorSubject<SettingsData> = new BehaviorSubject<SettingsData>(null);
+  setBlockSettingsSubject: BehaviorSubject<SettingsData> =
+    new BehaviorSubject<SettingsData>(null);
   blockSettings$ = this.setBlockSettingsSubject.asObservable();
 
   stopWatchingStyleSubject: Subject<Section> = new Subject<Section>();
@@ -56,11 +60,17 @@ export class PageService {
   closeAuxOutletSubject: Subject<Section> = new Subject<Section>();
   onCloseAuxOutlet$ = this.closeAuxOutletSubject.asObservable();
 
-  fileListsubject$: BehaviorSubject<SalFile[]> = new BehaviorSubject<SalFile[]>(null);
+  fileListsubject$: BehaviorSubject<SalFile[]> = new BehaviorSubject<SalFile[]>(
+    null
+  );
   fixedGridListSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  gridTemplateListSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  gridTemplateListSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
-  subject$: BehaviorSubject<SalPageEvent> = new BehaviorSubject<SalPageEvent>(null);
+  subject$: BehaviorSubject<SalPageEvent> = new BehaviorSubject<SalPageEvent>(
+    null
+  );
 
   emit(event: SalPageEvent) {
     this.subject$.next(event);
@@ -69,14 +79,18 @@ export class PageService {
   on(name: SalPageEventName) {
     return this.subject$.pipe(
       filter((event: SalPageEvent) => event?.name === name),
-      map(event => event.value),
-    )
+      map((event) => event.value)
+    );
   }
 
   private renderer: Renderer2;
 
-  constructor(rendererFactory: RendererFactory2, private router: Router,) {
+  constructor(rendererFactory: RendererFactory2, private router: Router) {
     this.renderer = rendererFactory.createRenderer(null, null);
+  }
+
+  showPrevieMode() {
+    this.emit(new SalPageEvent(SalPageEventName.SET_VIEW_MODE, true));
   }
 
   openStyleBuilder() {
@@ -84,11 +98,15 @@ export class PageService {
   }
 
   openBlockSettings(blockName: string) {
-    this.router.navigate([{ outlets: { blockSettings: `block-settings/${blockName}` } }]);
+    this.router.navigate([
+      { outlets: { blockSettings: `block-settings/${blockName}` } },
+    ]);
   }
 
   openx() {
-    this.router.navigate([{ outlets: { templates: `templates/grid-templates` } }]);
+    this.router.navigate([
+      { outlets: { templates: `templates/grid-templates` } },
+    ]);
   }
 
   combineStyleParts(obj) {
@@ -119,7 +137,10 @@ export class PageService {
 
   editStyle(data: Block | Section | Grid, element: HTMLElement) {
     this.openStyleBuilder();
-    this.setSavedStyleSubject.next({ sender: 'consumer', styleList: data.styleList });
+    this.setSavedStyleSubject.next({
+      sender: 'consumer',
+      styleList: data.styleList,
+    });
     //this.isWaitingForStyle = true;
     this.subToStyle(data, element);
   }
@@ -153,15 +174,19 @@ export class PageService {
   private subToStyle(data: Block | Section | Grid, element: HTMLElement) {
     this.style$
       .pipe(
-        filter(styleData => !!styleData),
-        takeUntil(this.onCloseAuxOutlet$),
-        )
+        filter((styleData) => !!styleData),
+        takeUntil(this.onCloseAuxOutlet$)
+      )
       .subscribe((styleData: StyleData) => {
         this.handleStyle(data, styleData.styleList, element);
       });
   }
 
-  handleStyle(data: Block | Section | Grid, styleList: Style[], element: HTMLElement) {
+  handleStyle(
+    data: Block | Section | Grid,
+    styleList: Style[],
+    element: HTMLElement
+  ) {
     this.removeStyle(data.styleList, element);
     this.applyStyle(styleList, element);
     this.saveStyle(data, styleList);
@@ -186,7 +211,7 @@ export class PageService {
   }
 
   saveStyle(data: Block | Section | Grid, styleList: Style[]) {
-    const dataCopy = {...data};
+    const dataCopy = { ...data };
     dataCopy.styleList = styleList;
     this.updatePageContent(dataCopy);
   }
@@ -197,7 +222,7 @@ export class PageService {
 
   getCssObject(styleList: Style[]) {
     if (!styleList) return null;
-    const stylesArr = styleList.map(styleConfig => styleConfig.value);
+    const stylesArr = styleList.map((styleConfig) => styleConfig.value);
     let cssObj = {};
     for (const style of stylesArr) {
       cssObj = { ...cssObj, ...style };
@@ -206,11 +231,13 @@ export class PageService {
   }
 
   getSectionIndexByBlockId(blockId: string, sectionList: Section[]) {
-    return sectionList.findIndex(section => this.isSectionHasBlock(section, blockId));
+    return sectionList.findIndex((section) =>
+      this.isSectionHasBlock(section, blockId)
+    );
   }
 
   isSectionHasBlock(section: Section, blockId: string) {
-    return section.blockList.map(block => block.id).includes(blockId);
+    return section.blockList.map((block) => block.id).includes(blockId);
   }
 
   getModifiedBlockToAdd(blockToAdd: BlockToAdd, property: string, val: any) {

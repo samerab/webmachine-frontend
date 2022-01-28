@@ -1,0 +1,208 @@
+<div class="layout">
+  <button
+    *ngIf="!isFullscreen"
+    id="maximize"
+    (click)="openFullscreen()"
+    mat-button
+  >
+    <mat-icon>open_in_full</mat-icon>
+  </button>
+  <button
+    *ngIf="isFullscreen"
+    id="minimize"
+    (click)="closeFullscreen()"
+    mat-button
+  >
+    <mat-icon>close_fullscreen</mat-icon>
+  </button>
+</div>
+<div class="frame">
+  <div class="first-line">
+    <!-- paint -->
+    <button
+      [class.active-style]="isFormatPainting"
+      (click)="exec('paintFormat')"
+      mat-button
+    >
+      <mat-icon>format_paint</mat-icon>
+    </button>
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- Font -->
+    <div class="select">
+      <mat-select
+        #select
+        (selectionChange)="onFontSelect($event)"
+        panelClass="select-full-height"
+      >
+        <mat-option *ngFor="let font of fonts" [value]="font">
+          <span [style]="'font-family: ' + font + ', serif;'">{{ font }}</span>
+        </mat-option>
+      </mat-select>
+    </div>
+    <input
+      #autoCompleteInput
+      class="font-size"
+      matInput
+      [formControl]="fontSizeControl"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete
+      class="font-size-panel-height"
+      [classList]="['font-size-panel-height']"
+      panelWidth="20px"
+      #auto="matAutocomplete"
+    >
+      <mat-option *ngFor="let option of fontSizeList" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+    <!-- bold -->
+    <button
+      id="bold"
+      (click)="exec('modifyStyle', 'font-weight', 'bold')"
+      mat-button
+    >
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button
+      id="italic"
+      (click)="exec('modifyStyle', 'font-style', 'italic')"
+      mat-button
+    >
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button
+      id="underline"
+      (click)="exec('modifyStyle', 'text-decoration', 'underline')"
+      mat-button
+    >
+      <mat-icon>format_underlined</mat-icon>
+    </button>
+    <!-- color -->
+    <input
+      #bgColorBox
+      hidden
+      class="bg"
+      (input)="onBgColor($event)"
+      type="color"
+    />
+    <button id="bgColor" (click)="triggerBgColorBox()" type="button" mat-button>
+      <mat-icon class="material-icons-rounded">format_color_fill</mat-icon>
+    </button>
+    <input #colorBox hidden (input)="onColor($event)" type="color" />
+    <button id="color" (click)="triggerColorBox()" type="button" mat-button>
+      <mat-icon>format_color_text</mat-icon>
+    </button>
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- link - img -->
+    <button (click)="exec('addLink')" mat-button>
+      <mat-icon>link</mat-icon>
+    </button>
+    <button (click)="exec('removeLink')" mat-button>
+      <mat-icon>link_off</mat-icon>
+    </button>
+    <button mat-button>
+      <mat-icon>image</mat-icon>
+    </button>
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- align -->
+    <button
+      id="left"
+      type="button"
+      (click)="exec('align', 'left')"
+      mat-button
+      color="basic"
+    >
+      <mat-icon>format_align_left</mat-icon>
+    </button>
+    <button
+      id="center"
+      type="button"
+      (click)="exec('align', 'center')"
+      mat-button
+      color="basic"
+    >
+      <mat-icon>format_align_center</mat-icon>
+    </button>
+    <button
+      id="right"
+      type="button"
+      (click)="exec('align', 'right')"
+      mat-button
+      color="basic"
+    >
+      <mat-icon>format_align_right</mat-icon>
+    </button>
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- list -->
+    <button id="listBtn" (click)="openUnicodeList()" mat-button>
+      <mat-icon>list_alt</mat-icon>
+    </button>
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- indent -->
+    <button (click)="exec('handleIndent', true)" mat-button>
+      <mat-icon>format_indent_increase</mat-icon>
+    </button>
+    <button (click)="exec('handleIndent')" mat-button>
+      <mat-icon>format_indent_decrease</mat-icon>
+    </button>
+    <!-- Line Height -->
+    <button (click)="openLineHeightPopup()" mat-button>
+      <mat-icon>height</mat-icon>
+    </button>
+
+    <div class="divider-container">
+      <div class="divider"></div>
+    </div>
+    <!-- clear -->
+    <button (click)="exec('clearStyle')" mat-button>
+      <mat-icon>format_clear</mat-icon>
+    </button>
+  </div>
+</div>
+<!-- Content -->
+<div
+  #content
+  id="content"
+  (mouseup)="onClick()"
+  (mousemove)="onMouseMove()"
+  (keydown)="onKeydown($event)"
+  (keyup)="onKeyup($event)"
+  contenteditable
+  spellcheck="false"
+  class="content"
+>
+  <br id="start-br" />
+  <br id="anchor-br" />
+</div>
+<!-- Template -->
+<ng-template #template let-data="data">
+  <div class="unicode-list">
+    <div
+      (click)="closeUnicodePopup(unicode)"
+      class="unicode-item"
+      *ngFor="let unicode of unicodeList"
+      [innerHtml]="unicode"
+    ></div>
+  </div>
+</ng-template>
+<!-- Template -->
+<ng-template #addLinkTemplate let-data="data">
+  <sal-search-or-paste (apply)="onLinkApply($event)"></sal-search-or-paste>
+</ng-template>
+<!-- Template -->
+<ng-template #lineHeightTemplate>
+  <sal-line-height
+    (valueChange)="closeLineHeightPopup($event)"
+  ></sal-line-height>
+</ng-template>

@@ -8,7 +8,7 @@ import {
   AfterViewInit,
   ViewChild,
 } from '@angular/core';
-import { NavigationStart, Router, RouterEvent } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { isLoading } from '@ws-store/common/common.selectors';
@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuxOutletComponent } from './aux-outlet/aux-outlet.component';
 import { FontService } from '@ws-sal';
 import { BootstrapService } from './core/services/bootstrap.service';
+import { test } from './core/services/tokens';
 
 @Component({
   selector: 'app-root',
@@ -38,10 +39,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     private translate: TranslateService,
     private fontSv: FontService
   ) {
-    const domain = window.location.hostname;
-    console.log('domain', domain);
-    this.onRouterChange();
+    // const domain = window.location.hostname;
+    // console.log('domain', domain);
     this.bootstrapSv.bootstrap();
+    this.onRouterChange();
   }
 
   ngOnInit() {

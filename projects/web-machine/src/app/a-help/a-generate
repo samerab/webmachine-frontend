@@ -1,1 +1,0 @@
-ng g c features/website-dashboard/redirect --skip-tests --inline-style --inline-template --flat

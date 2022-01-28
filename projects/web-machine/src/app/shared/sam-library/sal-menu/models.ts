@@ -1,7 +1,6 @@
-import { TranslateObj } from "../sal-translate/translate-obj";
+import { TranslateObj } from '../sal-translate/translate-obj';
 import { v4 as uuid } from 'uuid';
 import { BehaviorSubject, Observable } from 'rxjs';
-
 
 export interface DragDropInfo {
   hostNode;
@@ -65,7 +64,6 @@ export class MenuItem {
       this[key] = data[key];
     }
   }
-
 }
 
 export interface MenuAction {
@@ -87,7 +85,7 @@ export enum MenuAcionNames {
   openPage = 'openPage',
   openReport = 'openReport',
   dispatchAction = 'dispatchAction',
-  runLocalCommand = 'runLocalCommand'
+  runLocalCommand = 'runLocalCommand',
 }
 
 export interface PageInfoSubject {
@@ -95,18 +93,7 @@ export interface PageInfoSubject {
   defaultPageInfoSubject: BehaviorSubject<any>;
 }
 
-export class SidebarItem {
-  title: string;
-  path: string;
-  icon: string;
-  hidden?: boolean;
-
-  constructor() {
-      this.hidden = false;
-  }
-}
-
 export class ClickedNavbarItem {
   id: string;
-  event: MouseEvent
+  event: MouseEvent;
 }

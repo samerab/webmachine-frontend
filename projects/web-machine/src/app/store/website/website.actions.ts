@@ -77,4 +77,9 @@ export const deleteWebsites = createAction(
   props<{ ids: string[] }>()
 );
 
+export const deleteWebsitesSuccess = createAction(
+  '[Website/API] Delete Websites Success',
+  props<{ ids: string[] }>()
+);
+
 export const clearWebsites = createAction('[Website/API] Clear Websites');

@@ -5,19 +5,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PopupService } from '../../sal-popup';
 import { ResultsPopupComponent } from '../../sal-popup/resultsPopup/resultsPopup.component';
-import { BlockSettingsService } from '../block-settings.service';
+import { BlockSettingsService } from '../../sal-page/modules/sal-block-editor/block-settings.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SalFile } from '@ws-sal';
 import { Observable } from 'rxjs';
 import { EventService, SalEventName } from '../../sal-common/event.service';
+import { ContentService } from '../../sal-page/services/content.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'ws-classic-gallery-settings',
   templateUrl: './classic-gallery-settings.component.html',
-  styleUrls: ['./classic-gallery-settings.component.scss']
+  styleUrls: ['./classic-gallery-settings.component.scss'],
 })
 export class ClassicGallerySettingsComponent implements OnInit {
-
   @ViewChild('template') template: TemplateRef<any>;
   form: FormGroup;
   dialogRef: MatDialogRef<ResultsPopupComponent, any>;
@@ -28,13 +29,14 @@ export class ClassicGallerySettingsComponent implements OnInit {
     public settingsSv: BlockSettingsService,
     private popupSv: PopupService,
     private pageSv: PageService,
-    private eventSv: EventService
-  ) { }
+    private eventSv: EventService,
+    private contenteSv: ContentService
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.setForm();
-    this.form.valueChanges.subscribe(val => {
+    this.form.valueChanges.subscribe((val) => {
       this.send(val);
     });
     this.setFileList();
@@ -47,15 +49,16 @@ export class ClassicGallerySettingsComponent implements OnInit {
       minWidth: null,
       gap: null,
       radius: null,
-      rotate: null
+      rotate: null,
     });
   }
 
   setForm() {
-    this.settingsSv.savedBlockSettings$
-      .subscribe((settingsData: SettingsData) => {
+    this.settingsSv.savedBlockSettings$.subscribe(
+      (settingsData: SettingsData) => {
         this.form.setValue(settingsData.settings);
-      });
+      }
+    );
   }
 
   send(val) {
@@ -68,7 +71,14 @@ export class ClassicGallerySettingsComponent implements OnInit {
   }
 
   openFilesBrowser() {
-    this.dialogRef = this.popupSv.openPopup1(this.template, this.fileList);
+    // this.dialogRef = this.popupSv.openPopup1(this.template, this.fileList);
+    this.dialogRef = this.popupSv.openPopup1(
+      this.contenteSv.fileBrowsertemplate,
+      this.fileList
+    );
+    this.contenteSv.fileBrowser.onSelect
+      .pipe(filter((list) => !!list))
+      .subscribe((list: SalFile[]) => this.addSelectedImages(list));
   }
 
   get fileListControl() {
@@ -76,7 +86,7 @@ export class ClassicGallerySettingsComponent implements OnInit {
   }
 
   get srcList() {
-    return this.form.get('fileList').value?.map(file => file.url);
+    return this.form.get('fileList').value?.map((file) => file.url);
   }
 
   addSelectedImages(list: SalFile[]) {
@@ -93,18 +103,23 @@ export class ClassicGallerySettingsComponent implements OnInit {
   }
 
   deleteImg(src: string) {
-    const index = this.fileListControl.value.findIndex(file => src === file.url);
+    const index = this.fileListControl.value.findIndex(
+      (file) => src === file.url
+    );
     const fileList = [...this.fileListControl.value];
     fileList.splice(index, 1);
     this.fileListControl.setValue(fileList);
   }
 
   onUpload(uploadedFiles: any[]) {
-    this.eventSv.emit({name: SalEventName.UPLOAD_FILES, value: uploadedFiles});
+    this.eventSv.emit({
+      name: SalEventName.UPLOAD_FILES,
+      value: uploadedFiles,
+    });
   }
 
   onDelete(keys: string[]) {
-    this.eventSv.emit({name: SalEventName.DELETE_FILES, value: keys});
+    this.eventSv.emit({ name: SalEventName.DELETE_FILES, value: keys });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -112,5 +127,4 @@ export class ClassicGallerySettingsComponent implements OnInit {
     moveItemInArray(fileList, event.previousIndex, event.currentIndex);
     this.fileListControl.setValue(fileList);
   }
-
 }

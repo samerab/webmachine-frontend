@@ -1,0 +1,74 @@
+<sal-navbar
+  *ngIf="!isViewMode"
+  color="primary-500"
+  (onItemClick)="runCommand($event)"
+  [startList]="startList"
+  [endList]="endList"
+  class="padding"
+>
+  <sam-menu
+    [menuData$]="addGridMenu$"
+    (onItemClick)="onMenuItemClick($event)"
+    color="primary-500"
+    contentAfterEnd
+  ></sam-menu>
+</sal-navbar>
+
+<div *ngIf="!isViewMode" [hidden]="hideInfo" class="page-info">
+  <ng-content></ng-content>
+</div>
+
+<div [hidden]="!hideInfo" class="page-viewer-container">
+  <div #gridListContainer></div>
+</div>
+
+<!-- <ng-content #fileBrowser [select]="fileBrowser"></ng-content> -->
+
+<!-- Templates -->
+<ng-template #grid let-data="data">
+  <ws-grid [contentContainer]="data"></ws-grid>
+</ng-template>
+
+<ng-template #nameTemplate let-data="data">
+  <sal-change-name
+    [name]="data"
+    (onItemClick)="onButtonSelect($event)"
+  ></sal-change-name>
+</ng-template>
+
+<ng-template #fileBrowsertemplate let-data="data">
+  <ng-content #fileBrowser select="[fileBrowser]"></ng-content>
+</ng-template>
+<!-- <ng-content #fileBrowser select="[fileBrowser]"></ng-content> -->
+
+<!-- Context Menus -->
+<sal-context-menu #contextMenu></sal-context-menu>
+
+<!-- Tips for using sal-page -->
+<!-- 
+all cases for page :
+
+editor:
+--------
+<sal-page
+  (onUpload)="upload($event)"
+  (onSave)="save($event)"
+  [page]="page"
+  [fileList]="fileList"
+>
+  <ng-content></ng-content>
+</sal-page>
+
+builder:
+--------
+<sal-page (onUpload)="upload($event)" (onSave)="save($event)">
+    <ng-content></ng-content> 
+</sal-page>
+
+view:
+-----
+<sal-page [isViewMode]="true" [page]="page">
+    <ng-content></ng-content> 
+</sal-page>
+
+ -->

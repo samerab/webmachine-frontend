@@ -13,7 +13,6 @@
   $accent: map-get($theme, accent);
   $hoverbg: mat-color($primary, 100);
   $hoverFg: mat-color($primary, 100-contrast);
-  @include dashboardComponent($theme);
 }
 
 @mixin global-classes($theme) {
@@ -182,12 +181,20 @@
     }
   }
   /* sal-color end */
+  .mat-tooltip {
+    font-size: 18px;
+    padding: 10px;
+    background: mat-color($primary);
+    color: mat-color($accent);
+    line-height: 1.5;
+    text-align: center;
+  }
   .mat-dialog-container {
     background: mat-color($primary, 50) !important;
   }
   cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     opacity: 0;
-}
+  }
 }
 
 @each $id, $theme in $themes {

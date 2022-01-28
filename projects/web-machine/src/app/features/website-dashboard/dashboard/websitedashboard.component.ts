@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SidenavItem } from '@ws-sal';
+import { SidebarItem } from '@ws-sal';
 import { RoutingService } from '../../../core/services/routing.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@ws-store/index';
@@ -10,6 +10,7 @@ import { loadPageTemplates } from '@ws-store/page-template/page-template.actions
 import { of, Subscription } from 'rxjs';
 import { loadPages } from '@ws-store/page/page.actions';
 import { homepageId } from '@ws-store/page/page.selectors';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-websitedashboard',
@@ -20,7 +21,7 @@ export class WebsitedashboardComponent implements OnInit, OnDestroy {
   idToOpen = of('pages');
   sub: Subscription = new Subscription();
   homepageId: string;
-  sidenavList: SidenavItem[] = [
+  sidebarList: SidebarItem[] = [
     {
       id: 'homepage',
       title: 'Homepage',
@@ -34,8 +35,11 @@ export class WebsitedashboardComponent implements OnInit, OnDestroy {
   ];
   constructor(
     private routingSv: RoutingService,
-    private store: Store<AppState>
-  ) {}
+    private store: Store<AppState>,
+    private userSv: UserService
+  ) {
+    this.userSv.refreshUser();
+  }
 
   ngOnInit(): void {
     this.loadEntities();
@@ -66,7 +70,6 @@ export class WebsitedashboardComponent implements OnInit, OnDestroy {
         this.routingSv.navigate('pages');
         break;
       case 'homepage':
-        console.log('jlklk', this.homepageId);
         this.routingSv.navigate('editPage', this.homepageId);
         break;
       default:

@@ -1,7 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2, HostListener, TemplateRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  Renderer2,
+  HostListener,
+  TemplateRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { PageService } from '../../sal-page/services/page.service';
-import { BlockSettingsService } from '../block-settings.service';
+import { BlockSettingsService } from '../../sal-page/modules/sal-block-editor/block-settings.service';
 import { FormControl } from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { FontService } from '../../sal-common/font.service';
@@ -19,46 +28,52 @@ import { LineHeightInfo } from './line-height/line-height.component';
 @Component({
   selector: 'ws-text-editor',
   templateUrl: './text-editor.component.html',
-  styleUrls: ['./text-editor.component.scss']
+  styleUrls: ['./text-editor.component.scss'],
 })
 export class TextEditorComponent implements OnInit, AfterViewInit {
-
   @ViewChild('content') content: ElementRef<HTMLDivElement>;
   @ViewChild('colorBox') colorBox: ElementRef<HTMLInputElement>;
   @ViewChild('bgColorBox') bgColorBox: ElementRef<HTMLInputElement>;
   @ViewChild('select') select: MatSelect;
-  @ViewChild('autoCompleteInput') autoCompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoCompleteInput')
+  autoCompleteInput: ElementRef<HTMLInputElement>;
   @ViewChild(MatAutocompleteTrigger) autoComplete: MatAutocompleteTrigger;
   @ViewChild('template') template: TemplateRef<any>;
   @ViewChild('addLinkTemplate') addLinkTemplate: TemplateRef<any>;
   @ViewChild('lineHeightTemplate') lineHeightTemplate: TemplateRef<any>;
 
   _range: Range;
-  get range() { return this._range };
+  get range() {
+    return this._range;
+  }
   set range(val) {
     this._range = val;
-    this.selectionSv.setRange(val)
+    this.selectionSv.setRange(val);
   }
 
   _container: HTMLDivElement;
-  get container() { return this._container };
+  get container() {
+    return this._container;
+  }
   set container(val) {
     this._container = val;
     this.selectionSv.setContainer(val);
     this.elementsSv.setContainer(val);
-    this.partsSv.setContainer(val)
+    this.partsSv.setContainer(val);
   }
 
   _lineHeight;
-  get lineHeight() { return this._lineHeight };
+  get lineHeight() {
+    return this._lineHeight;
+  }
   set lineHeight(val) {
     this._lineHeight = val;
-    this.elementsSv.setLineHeight(val)
+    this.elementsSv.setLineHeight(val);
   }
 
   dialogRef: MatDialogRef<ResultsPopupComponent, any>;
   fontSizeControl: FormControl = new FormControl();
-  currentAlignDiv
+  currentAlignDiv;
   fonts;
   selectionType;
   isFullscreen = false;
@@ -66,15 +81,23 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   formatToPaint;
   isEdited = false;
   fontSizeList = [10, 14, 16, 18, 20, 24, 30, 36, 48];
-  unicodeList = ['&#8226;', '&#9658;', '&#9632;', '&#8727;', '&#9002;', '&#8883;', '&#9989;']
+  unicodeList = [
+    '&#8226;',
+    '&#9658;',
+    '&#9632;',
+    '&#8727;',
+    '&#9002;',
+    '&#8883;',
+    '&#9989;',
+  ];
   setting = {
     id: 'anchor',
     category: '',
     value: {
       color: 'rgb(0,0,255)',
-      underline: true
-    }
-  }
+      underline: true,
+    },
+  };
 
   constructor(
     private settingsSv: BlockSettingsService,
@@ -87,7 +110,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     private partsSv: PartsService,
     private selectionSv: SelectionService,
     private elementsSv: ElementsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.onFontSizeChange();
@@ -105,20 +128,25 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
       width: '500px',
       height: '280px',
       position: { top: '200px' },
-      disableClose: true
-    }
-    this.dialogRef = this.popupSv.openPopup1(this.lineHeightTemplate, null, config);
+      disableClose: true,
+    };
+    this.dialogRef = this.popupSv.openPopup1(
+      this.lineHeightTemplate,
+      null,
+      config
+    );
   }
 
   closeLineHeightPopup(lineHeightInfo: LineHeightInfo) {
     this.dialogRef.close();
     this.container.focus();
     this.selectionSv.restoreRange();
-    if (lineHeightInfo
-      && [undefined, 'apply'].includes(lineHeightInfo.clickedBtn)
-      && lineHeightInfo.lineHeight
+    if (
+      lineHeightInfo &&
+      [undefined, 'apply'].includes(lineHeightInfo.clickedBtn) &&
+      lineHeightInfo.lineHeight
     ) {
-      this.exec('handleLineHeight', lineHeightInfo.lineHeight)
+      this.exec('handleLineHeight', lineHeightInfo.lineHeight);
     }
   }
 
@@ -128,9 +156,13 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
       width: '500px',
       height: '280px',
       position: { top: '200px' },
-      disableClose: true
-    }
-    this.dialogRef = this.popupSv.openPopup1(this.addLinkTemplate, null, config);
+      disableClose: true,
+    };
+    this.dialogRef = this.popupSv.openPopup1(
+      this.addLinkTemplate,
+      null,
+      config
+    );
   }
   onLinkApply(link: string) {
     this.dialogRef.close();
@@ -138,7 +170,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.selectionSv.restoreRange();
     if (link) {
       this.addLink(link);
-      this.sendChanges()
+      this.sendChanges();
     }
   }
 
@@ -150,8 +182,8 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
       width: '390px',
       height: '280px',
       position: { top, left },
-      disableClose: true
-    }
+      disableClose: true,
+    };
     this.dialogRef = this.popupSv.openPopup1(this.template, null, config);
   }
 
@@ -159,30 +191,34 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.container.focus();
     this.selectionSv.restoreRange();
     if (unicode) {
-      this.exec('tryToInsertLi', unicode)
+      this.exec('tryToInsertLi', unicode);
     }
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   getPos(): ClientRect | DOMRect {
     const listBtn = document.getElementById('listBtn');
-    return listBtn.getBoundingClientRect()
+    return listBtn.getBoundingClientRect();
   }
 
   setFonts() {
-    this.fonts = this.fontSv.getFonts()
+    this.fonts = this.fontSv.getFonts();
   }
 
   onFontSelect(font) {
-    this.exec('modifyStyle', 'font-family', font.value)
+    this.exec('modifyStyle', 'font-family', font.value);
   }
 
   onColor(e: Event) {
-    this.exec('modifyStyle', 'color', (e?.target as HTMLInputElement)?.value)
+    this.exec('modifyStyle', 'color', (e?.target as HTMLInputElement)?.value);
   }
 
   onBgColor(e: Event) {
-    this.exec('modifyStyle', 'backgroundColor', (<HTMLInputElement>(e?.target))?.value)
+    this.exec(
+      'modifyStyle',
+      'backgroundColor',
+      (<HTMLInputElement>e?.target)?.value
+    );
   }
 
   exec(command: string, ...context) {
@@ -190,12 +226,12 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     if (selectionType === 'Caret') {
       const pre = this.partsSv.getPreviousBr();
       if (!pre) {
-        this.selectionSv.moveCaretAfter('start-br')
+        this.selectionSv.moveCaretAfter('start-br');
       }
     }
     this.elementsSv.checkMainBrs();
     this.runCommand(command, context);
-    this.sendChanges()
+    this.sendChanges();
   }
 
   private runCommand(command: string, context: any[]) {
@@ -225,7 +261,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
         this.isFormatPainting = true;
         break;
       case 'enter':
-        const alingDivId = this.partsSv.getAlignDiv() ?.id;
+        const alingDivId = this.partsSv.getAlignDiv()?.id;
         this.onEnter(alingDivId);
         break;
       case 'handleLineHeight':
@@ -247,7 +283,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     if (info) {
       const { range, selectionType } = info;
       this.range = range;
-      this.selectionType = selectionType
+      this.selectionType = selectionType;
     }
   }
 
@@ -259,32 +295,34 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
         const parent = selectionInfo.parent;
         const style = parent.getAttribute('style');
         this.formatToPaint = style;
-        return
+        return;
       }
       if (selectionInfo.type === 'multiInOneLine') {
         const alignDiv = this.getElementById(selectionInfo.alignDivId);
-        this.formatToPaint = this.styleInfoSv.extractStyleFromFirstChild(alignDiv);
-        return
+        this.formatToPaint =
+          this.styleInfoSv.extractStyleFromFirstChild(alignDiv);
+        return;
       }
       if (selectionInfo.type === 'multiLines') {
         const children = this.partsSv.getChildren(this.range);
-        this.formatToPaint = this.styleInfoSv.extractStyleFromFirstChild(children[0] as HTMLElement)
-        return
+        this.formatToPaint = this.styleInfoSv.extractStyleFromFirstChild(
+          children[0] as HTMLElement
+        );
+        return;
       }
     }
   }
 
   paintFormat() {
     this.modifyStyle(null, null, this.formatToPaint);
-    this.isFormatPainting = false
+    this.isFormatPainting = false;
   }
 
   handlePaintFormat() {
     if (this.isFormatPainting) {
-      this.paintFormat()
-    }
-    else {
-      this.saveFormat()
+      this.paintFormat();
+    } else {
+      this.saveFormat();
     }
   }
 
@@ -292,20 +330,21 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.handlePaintFormat();
     const parts = this.partsSv.getPartsFromStartToCaretPosition();
     if (parts.length === 0) {
-      this.selectionSv.moveCaretAfter('start-br')
+      this.selectionSv.moveCaretAfter('start-br');
     }
-    this.styleInfoSv.setInfo(this.fontSizeControl, this.select)
+    this.styleInfoSv.setInfo(this.fontSizeControl, this.select);
   }
 
   align(position: string) {
     switch (position) {
       case 'center':
-        this.handleAlignment('text-align', 'center')
+        this.handleAlignment('text-align', 'center');
         break;
       case 'left':
-        this.handleAlignment('text-align', 'left')
-        break; case 'right':
-        this.handleAlignment('text-align', 'right')
+        this.handleAlignment('text-align', 'left');
+        break;
+      case 'right':
+        this.handleAlignment('text-align', 'right');
         break;
     }
   }
@@ -313,10 +352,9 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   handleAlignment(name, value) {
     const selectionType = window.getSelection().type;
     if (selectionType === 'Caret') {
-      this.alignOne(name, value)
-    }
-    else if (selectionType === 'Range') {
-      this.alignMany(name, value)
+      this.alignOne(name, value);
+    } else if (selectionType === 'Range') {
+      this.alignMany(name, value);
     }
   }
 
@@ -333,7 +371,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   private alignOne(name: any, value: any) {
     const align = this.partsSv.getAlignDiv();
     if (align) {
-      this.removeOneIndent(align)
+      this.removeOneIndent(align);
       this.renderer.setStyle(align, name, value);
     }
   }
@@ -342,36 +380,35 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     const selectionType = window.getSelection().type;
     if (selectionType === 'Caret') {
       const alignDiv = this.partsSv.getAlignDiv();
-      this.handleOneIndent(alignDiv, increase)
-    }
-    else if (selectionType === 'Range') {
-      this.handleManyIndent(increase)
+      this.handleOneIndent(alignDiv, increase);
+    } else if (selectionType === 'Range') {
+      this.handleManyIndent(increase);
     }
   }
 
   handleManyIndent(increase: boolean) {
     const alingDivList = this.partsSv.getAlignDivList(this.range);
     for (const alignDiv of alingDivList) {
-      this.handleOneIndent(alignDiv, increase)
+      this.handleOneIndent(alignDiv, increase);
     }
   }
 
   handleOneIndent(alignDiv, increase: boolean) {
     if (alignDiv) {
       let indent = this.getIndent(alignDiv, increase);
-      this.renderer.setStyle(alignDiv, 'marginLeft', indent)
+      this.renderer.setStyle(alignDiv, 'marginLeft', indent);
     }
   }
 
   removeOneIndent(alignDiv) {
     if (alignDiv) {
-      this.renderer.setStyle(alignDiv, 'marginLeft', 0)
+      this.renderer.setStyle(alignDiv, 'marginLeft', 0);
     }
   }
 
   removeManyIndent(alingDivList) {
     for (const alignDiv of alingDivList) {
-      this.removeOneIndent(alignDiv)
+      this.removeOneIndent(alignDiv);
     }
   }
 
@@ -384,8 +421,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     }
     if (increase) {
       indent = `${val + 20}px`;
-    }
-    else {
+    } else {
       const tryVal = val - 20;
       indent = tryVal < 0 ? 0 : `${tryVal}px`;
     }
@@ -402,8 +438,8 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
 
   fixAlignDivChildren(alignDiv: ChildNode) {
     const { range } = this.selectionSv.getRangeInfo();
-    const children = Array.from(alignDiv.childNodes).filter(child => {
-      return !(child.nodeName === '#text' && child.nodeValue === '')
+    const children = Array.from(alignDiv.childNodes).filter((child) => {
+      return !(child.nodeName === '#text' && child.nodeValue === '');
     });
     for (const child of children) {
       if (child.nodeName === '#text') {
@@ -419,27 +455,31 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     if (!previousBr) return;
     const nextSibling = previousBr.nextSibling;
     if (!nextSibling) {
-      return null
+      return null;
     }
-    if (nextSibling && nextSibling.nodeName === 'DIV' && nextSibling['id'].startsWith('align')) {
+    if (
+      nextSibling &&
+      nextSibling.nodeName === 'DIV' &&
+      nextSibling['id'].startsWith('align')
+    ) {
       this.fixAlignDivChildren(nextSibling);
-      return nextSibling['id']
+      return nextSibling['id'];
     }
     if (nextSibling && nextSibling.nodeName === 'BR') {
-      return null
+      return null;
     }
     const { range } = this.selectionSv.getRangeInfo();
     range.setStartAfter(previousBr);
     range.setEndAfter(nextSibling);
     const con = range.extractContents().textContent;
     if (con === '') {
-      return null
+      return null;
     }
     const div = this.elementsSv.createElement('div', con);
     const alignDiv = this.elementsSv.createAlignDiv();
     alignDiv.appendChild(div);
     range.insertNode(alignDiv);
-    return alignDiv.id
+    return alignDiv.id;
   }
 
   private addNewLine(alignDivId?: string) {
@@ -448,22 +488,20 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     let after;
     if (alignDivId) {
       const alignDiv = this.container.querySelector(`[id='${alignDivId}']`);
-      after = alignDiv
-    }
-    else {
+      after = alignDiv;
+    } else {
       const previousBr = this.partsSv.getPreviousBr();
       const next = previousBr.nextSibling;
       if (next && next.nodeName === '#text') {
-        after = next
-      }
-      else {
-        after = previousBr
+        after = next;
+      } else {
+        after = previousBr;
       }
     }
     range.setStartAfter(after);
     const br = this.elementsSv.createElement('br');
     range.insertNode(br);
-    this.selectionSv.moveCaretAfter(br.id)
+    this.selectionSv.moveCaretAfter(br.id);
     return br;
   }
 
@@ -483,7 +521,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   onMouseMove() {
     if (this.isEdited) {
       this.fixAll();
-      this.isEdited = false
+      this.isEdited = false;
     }
   }
 
@@ -492,23 +530,22 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     switch (event.code) {
       case 'Enter':
         event.preventDefault();
-        this.exec('enter')
+        this.exec('enter');
         break;
       case 'Backspace':
         this.elementsSv.removeBlankTags();
         break;
     }
-    this.sendChanges()
+    this.sendChanges();
   }
 
   tryToInsertLi(unicode) {
     const alignDivList = this.partsSv.getAlignDivList(this.range);
     if (alignDivList.length === 0) {
-      this.insertLi(unicode)
-    }
-    else {
+      this.insertLi(unicode);
+    } else {
       for (const alignDiv of alignDivList) {
-        this.surroundLi(alignDiv, unicode)
+        this.surroundLi(alignDiv, unicode);
       }
     }
   }
@@ -519,33 +556,36 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.addNewLine(li.id);
     const unicode = li.textContent.substring(0, 1);
     this.insertLi(unicode);
-    return true
+    return true;
   }
 
   getListItem() {
     const alignDiv = this.partsSv.getAlignDiv();
-    if (alignDiv ?.id.startsWith('align:li')) {
-      return alignDiv
+    if (alignDiv?.id.startsWith('align:li')) {
+      return alignDiv;
     }
-    return null
+    return null;
   }
 
   isAlignDivLi(alignDiv: HTMLElement) {
-    if (alignDiv ?.id.startsWith('align:li')) {
-      return true
+    if (alignDiv?.id.startsWith('align:li')) {
+      return true;
     }
-    return false
+    return false;
   }
 
   insertLi(unicode: string) {
     const previousBr = this.partsSv.getPreviousBr();
-    const next = previousBr ?.nextElementSibling;
+    const next = previousBr?.nextElementSibling;
     if (next) {
       const alignDiv = this.elementsSv.createAlignDiv(null, null, null, 'li');
-      const div = this.elementsSv.createElement('div', `${unicode}&nbsp;&nbsp;`);
+      const div = this.elementsSv.createElement(
+        'div',
+        `${unicode}&nbsp;&nbsp;`
+      );
       this.renderer.appendChild(alignDiv, div);
       this.container.insertBefore(alignDiv, next);
-      this.selectionSv.moveCaret(div.firstChild, 3)
+      this.selectionSv.moveCaret(div.firstChild, 3);
     }
   }
 
@@ -554,13 +594,15 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
       const first = alignDiv.firstElementChild;
       const text = unicode + first.textContent.slice(1);
       first.innerHTML = text;
-    }
-    else {
-      this.renderer.setAttribute(alignDiv, 'id', `align:li-${uuid()}`)
-      const div = this.elementsSv.createElement('div', `${unicode}&nbsp;&nbsp;`);
+    } else {
+      this.renderer.setAttribute(alignDiv, 'id', `align:li-${uuid()}`);
+      const div = this.elementsSv.createElement(
+        'div',
+        `${unicode}&nbsp;&nbsp;`
+      );
       this.renderer.insertBefore(alignDiv, div, alignDiv.firstChild);
     }
-    this.selectionSv.moveCaretAfter(alignDiv.lastElementChild.id)
+    this.selectionSv.moveCaretAfter(alignDiv.lastElementChild.id);
   }
 
   private onEnter(id) {
@@ -569,7 +611,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     const currentAlignDiv = this.partsSv.getAlignDiv();
     if (!currentAlignDiv) {
       this.addNewLine(id);
-      return
+      return;
     }
     range.collapse(true);
     range.setEndAfter(currentAlignDiv.lastChild);
@@ -577,8 +619,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     const children = Array.from(content.childNodes);
     if (children.length === 1 && children[0].textContent === '') {
       this.addNewLine(id);
-    }
-    else {
+    } else {
       const alignDiv = this.elementsSv.createAlignDiv();
       for (const child of children) {
         alignDiv.appendChild(child);
@@ -586,49 +627,48 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
       const br = this.elementsSv.createElement('br');
       this.container.insertBefore(br, currentAlignDiv.nextSibling);
       this.container.insertBefore(alignDiv, br.nextSibling);
-      this.selectionSv.moveCaretAfter(alignDiv.id)
+      this.selectionSv.moveCaretAfter(alignDiv.id);
     }
   }
 
   private setSavedSettings() {
-    this.settingsSv.savedBlockSettings$
-      .subscribe(settingsData => this.content.nativeElement.innerHTML = settingsData.settings ?.html);
+    this.settingsSv.savedBlockSettings$.subscribe(
+      (settingsData) =>
+        (this.content.nativeElement.innerHTML = settingsData.settings?.html)
+    );
   }
 
   onFontSizeChange() {
-    this.fontSizeControl.valueChanges
-      .subscribe(val => {
-        if (this.fontSizeList.includes(val)) {
-          this.exec('modifyStyle', 'fontSize', val + 'px')
-        }
-        else if (val > 10) {
-          this.exec('modifyStyle', 'fontSize', val + 'px')
-          this.autoCompleteInput.nativeElement.blur()
-          this.autoComplete.closePanel()
-        }
-      })
+    this.fontSizeControl.valueChanges.subscribe((val) => {
+      if (this.fontSizeList.includes(val)) {
+        this.exec('modifyStyle', 'fontSize', val + 'px');
+      } else if (val > 10) {
+        this.exec('modifyStyle', 'fontSize', val + 'px');
+        this.autoCompleteInput.nativeElement.blur();
+        this.autoComplete.closePanel();
+      }
+    });
   }
 
   triggerColorBox() {
-    this.colorBox.nativeElement.click()
+    this.colorBox.nativeElement.click();
   }
 
   triggerBgColorBox() {
-    this.bgColorBox.nativeElement.click()
+    this.bgColorBox.nativeElement.click();
   }
 
   modifyStyle(style: string, value: string, fullStyle?: string) {
     if (this.selectionType === 'Caret') {
       /** TO DO: show message */
-      return
-    }
-    else if (this.selectionType === 'Range') {
+      return;
+    } else if (this.selectionType === 'Range') {
       if (this.range) {
         let stl = fullStyle;
         if (!fullStyle) {
-          stl = `${style}:${value};`
+          stl = `${style}:${value};`;
         }
-        this.modify(this.range, stl)
+        this.modify(this.range, stl);
       }
     }
   }
@@ -639,16 +679,15 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     let elements = this.elementsSv.getElements(selectionInfo, partList, style);
     if (elements && elements.length > 0) {
       if (isRemoveLink) {
-        elements = this.elementsSv.changeElements(elements, selectionInfo)
+        elements = this.elementsSv.changeElements(elements, selectionInfo);
       }
       const reversedElems = elements.slice().reverse();
       if (selectionInfo.type === 'multiLines') {
         range.deleteContents();
-        const alignDivs = partList.filter(part => part.nodeName === 'DIV')
-        const lastAlignDivId = alignDivs[alignDivs.length - 1]['id']
-        this.elementsSv.handle(elements, lastAlignDivId)
-      }
-      else {
+        const alignDivs = partList.filter((part) => part.nodeName === 'DIV');
+        const lastAlignDivId = alignDivs[alignDivs.length - 1]['id'];
+        this.elementsSv.handle(elements, lastAlignDivId);
+      } else {
         this.elementsSv.insertElements(range, reversedElems);
         this.elementsSv.moveElemets(elements);
       }
@@ -660,22 +699,26 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   }
 
   removeAnchor() {
-    this.modify(this.range, 'text-decoration: none;color: #000000', true)
+    this.modify(this.range, 'text-decoration: none;color: #000000', true);
   }
 
   modifyAnchor(range: Range, href, target) {
     const partList = this.partsSv.getChildren(range);
     const selectionInfo = this.selectionSv.getSelectionInfo(range);
-    const elements = this.elementsSv.getAnchors(selectionInfo, partList, href, target);
+    const elements = this.elementsSv.getAnchors(
+      selectionInfo,
+      partList,
+      href,
+      target
+    );
     if (elements && elements.length > 0) {
       if (selectionInfo.type === 'multiLines') {
         this.setDefaultAnchorSettings(elements, true);
         range.deleteContents();
-        const alignDivs = partList.filter(part => part.nodeName === 'DIV')
-        const lastAlignDivId = alignDivs[alignDivs.length - 1]['id']
-        this.elementsSv.handle(elements, lastAlignDivId)
-      }
-      else {
+        const alignDivs = partList.filter((part) => part.nodeName === 'DIV');
+        const lastAlignDivId = alignDivs[alignDivs.length - 1]['id'];
+        this.elementsSv.handle(elements, lastAlignDivId);
+      } else {
         this.setDefaultAnchorSettings(elements);
         const reversedElems = elements.slice().reverse();
         this.elementsSv.insertElements(range, reversedElems);
@@ -689,15 +732,14 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   }
 
   handleLineHeight(height: number) {
-    this.lineHeight = height
+    this.lineHeight = height;
     const selectionType = window.getSelection().type;
     if (selectionType === 'Caret') {
       const align = this.partsSv.getAlignDiv();
       if (align) {
         this.renderer.setStyle(align, 'line-height', height);
       }
-    }
-    else if (selectionType === 'Range') {
+    } else if (selectionType === 'Range') {
       const alignList = this.partsSv.getAlignDivList(this.range);
       for (const align of alignList) {
         this.renderer.setStyle(align, 'line-height', height);
@@ -716,8 +758,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
             this.setAnchorStyle(elem);
           }
         }
-      }
-      else {
+      } else {
         this.setAnchorStyle(element);
       }
     }
@@ -727,14 +768,13 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.renderer.setStyle(element, 'color', this.setting.value.color);
     if (this.setting.value.underline) {
       this.renderer.setStyle(element, 'text-decoration', 'underline');
-    }
-    else {
+    } else {
       this.renderer.setStyle(element, 'text-decoration', 'none');
     }
   }
 
   getElementById(id: string): HTMLElement {
-    return this.partsSv.getElementById(id)
+    return this.partsSv.getElementById(id);
   }
 
   clearStyle() {
@@ -744,7 +784,7 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
   }
 
   addLink(link: string, target = '_blank') {
-    this.modifyAnchor(this.range, link, target)
+    this.modifyAnchor(this.range, link, target);
   }
 
   /** save changes to TextComponent */
@@ -757,14 +797,16 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.elementsSv.removeMainBrs();
     this.pageSv.setBlockSettingsSubject.next({
       sender: 'block',
-      settings: { html: this.content.nativeElement.innerHTML }
+      settings: { html: this.content.nativeElement.innerHTML },
     });
   }
 
   openFullscreen() {
     this.isFullscreen = true;
     this.closeOutlet();
-    this.router.navigate([{ outlets: { blockSettings: `block-settings/text/fullscreen` } }]);
+    this.router.navigate([
+      { outlets: { blockSettings: `block-settings/text/fullscreen` } },
+    ]);
   }
 
   closeFullscreen() {
@@ -773,20 +815,23 @@ export class TextEditorComponent implements OnInit, AfterViewInit {
     this.resendChanges();
     this.closeOutlet();
     setTimeout(() => {
-      this.router.navigate([{ outlets: { blockSettings: `block-settings/text` } }]);
+      this.router.navigate([
+        { outlets: { blockSettings: `block-settings/text` } },
+      ]);
       /** reload changes */
       this.setSavedSettings();
     }, 0);
   }
 
   private closeOutlet() {
-    this.router.navigate([{
-      outlets: {
-        style: null,
-        blockSettings: null,
-      }
-    }]);
+    this.router.navigate([
+      {
+        outlets: {
+          style: null,
+          blockSettings: null,
+        },
+      },
+    ]);
     //this.pageSv.closeAuxOutletSubject.next();
   }
-
 }

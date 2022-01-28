@@ -9,8 +9,9 @@ import {
 } from '@ws-store/website/website.actions';
 import { Website } from '@ws-store/website/website.model';
 import { allWebsites } from '@ws-store/website/website.selectors';
-import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription, take } from 'rxjs';
 import { RoutingService } from '../../../core/services/routing.service';
+import { UserDashboardService } from '../user-dashboard.service';
 
 @Component({
   selector: 'app-websiteList',
@@ -19,7 +20,7 @@ import { RoutingService } from '../../../core/services/routing.service';
 })
 export class WebsiteListComponent implements OnInit {
   @ViewChild('contextMenu') contextMenuComponent: SalContextMenuComponent;
-  currentEntity;
+  currentEntity: Website;
   entities$: Observable<Website[]>;
   showSelectionSubject$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -29,12 +30,13 @@ export class WebsiteListComponent implements OnInit {
   constructor(
     private popupSv: PopupService,
     private store: Store<AppState>,
-    private routingSv: RoutingService
+    private routingSv: RoutingService,
+    private userDashboardSv: UserDashboardService
   ) {}
 
   ngOnInit(): void {
     this.loadEntities();
-    this.setEntity();
+    this.setEntities();
   }
 
   ngOnDestroy(): void {
@@ -43,11 +45,13 @@ export class WebsiteListComponent implements OnInit {
 
   private loadEntities() {
     this.sub.add(
-      this.selectAll().subscribe((entities) => {
-        if (entities?.length === 0) {
-          this.store.dispatch(loadManyWebsites());
-        }
-      })
+      this.selectAll()
+        .pipe(take(1))
+        .subscribe((entities) => {
+          if (entities?.length === 0) {
+            this.store.dispatch(loadManyWebsites());
+          }
+        })
     );
   }
 
@@ -57,7 +61,7 @@ export class WebsiteListComponent implements OnInit {
     return this.store.pipe(select(allWebsites));
   }
 
-  private setEntity() {
+  private setEntities() {
     this.entities$ = this.selectAll();
   }
 
@@ -109,5 +113,9 @@ export class WebsiteListComponent implements OnInit {
 
   onRowSelect(entity) {
     this.routingSv.navigate('editWebsite', entity.id);
+  }
+
+  openWebsiteDashboard() {
+    this.userDashboardSv.openWebsiteDashboard(this.currentEntity.id);
   }
 }

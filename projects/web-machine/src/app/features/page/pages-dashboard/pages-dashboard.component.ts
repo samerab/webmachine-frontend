@@ -8,11 +8,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { ContextMenuComponent, PopupService, Page } from '@ws-sal';
+import { PopupService, Page, SalContextMenuComponent } from '@ws-sal';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { allPages } from '@ws-store/page/page.selectors';
 import { map } from 'rxjs/operators';
 import { RoutingService } from '../../../core/services/routing.service';
+import { filter } from 'rxjs-compat/operator/filter';
 
 @Component({
   selector: 'ws-pages-dashboard',
@@ -22,7 +23,7 @@ import { RoutingService } from '../../../core/services/routing.service';
 export class PagesDashboardComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  @ViewChild('contextMenu') contextMenuComponent: ContextMenuComponent;
+  @ViewChild('contextMenu') contextMenuComponent: SalContextMenuComponent;
   currentPage;
   pages$: Observable<Page[]>;
   showSelectionSubject$: BehaviorSubject<boolean> =
@@ -59,7 +60,10 @@ export class PagesDashboardComponent
   ngAfterViewInit(): void {}
 
   selectPages() {
-    return this.store.pipe(select(allPages));
+    return this.store.pipe(
+      select(allPages),
+      map((pages) => pages.filter((page) => !page.id.startsWith('homepage-')))
+    );
   }
 
   private setPages() {

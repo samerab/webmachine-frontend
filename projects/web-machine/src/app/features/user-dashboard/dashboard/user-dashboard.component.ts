@@ -2,6 +2,7 @@ import { RoutingService } from './../../../core/services/routing.service';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { WebsitesTemplatesBrowserComponent } from '../websites-templates-browser/websites-templates-browser.component';
 import { UserDashboardService } from '../user-dashboard.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'ws-user-dashboard',
@@ -14,8 +15,11 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
 
   constructor(
     private routingSv: RoutingService,
+    private userSv: UserService,
     private userDashboardSv: UserDashboardService
-  ) {}
+  ) {
+    this.userSv.refreshUser();
+  }
 
   ngOnInit(): void {}
 

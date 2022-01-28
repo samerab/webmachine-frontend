@@ -8,6 +8,7 @@ import { WebsitesTemplatesBrowserComponent } from './websites-templates-browser/
 import {
   SalBtnModule,
   SalContextMenuModule,
+  SalDirectiveModule,
   SalPortalModule,
   SalSidenavModule,
   SalTableModule,
@@ -46,6 +47,7 @@ import { MatIconModule } from '@angular/material/icon';
     SalContextMenuModule,
     SalPortalModule,
     SalBtnModule,
+    SalDirectiveModule,
   ],
 })
 export class UserDashboardModule {}
