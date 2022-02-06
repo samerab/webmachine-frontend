@@ -7,10 +7,13 @@ import { ActivatedRoute } from '@angular/router';
 import { getAllPagesSlugs, getPageById } from '@ws-store/page/page.selectors';
 import { addPage, updatePage } from '@ws-store/page/page.actions';
 import { EnvService } from '../../../core/services/env/env.service';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { Page } from '@ws-sal';
 import { firstWebsite } from '@ws-store/website/website.selectors';
 import { Website } from '@ws-store/website/website.model';
+import { setPreviewMode } from '@ws-store/common/common.actions';
+import { getAllFiles } from '@ws-store/file/file.selectors';
+import { addFiles } from '@ws-store/file/file.actions';
 
 @Component({
   selector: 'ws-page-crud',
@@ -49,21 +52,40 @@ export class PageCrudComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
+  get fileList$() {
+    return this.store.pipe(select(getAllFiles));
+  }
+
+  onPreviewMode(status: boolean) {
+    this.store.dispatch(setPreviewMode({ status }));
+  }
+
+  uploadFiles(files) {
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i], files[i].name);
+    }
+    this.store.dispatch(addFiles({ files: formData }));
+  }
+
   onInfo(info) {
     this.info$.next(info);
   }
 
   private onSlugChange() {
-    this.slug.valueChanges.subscribe(() => (this.isSlugChanged = true));
+    this.sub.add(
+      this.slug.valueChanges.subscribe(() => (this.isSlugChanged = true))
+    );
   }
 
   get page$() {
     return this.route.paramMap.pipe(
+      take(1),
       switchMap((params) => {
         const pageId = params.get('id');
         this.status = pageId ? 'edit' : 'add';
         if (this.status === 'edit') {
-          return this.store.pipe(select(getPageById(pageId)));
+          return this.store.pipe(take(1), select(getPageById(pageId)));
         }
         return of(null);
       })
@@ -71,7 +93,9 @@ export class PageCrudComponent implements OnInit, OnDestroy {
   }
 
   setStatus() {
-    this.route.url.subscribe((arr) => (this.status = arr[0].path));
+    this.sub.add(
+      this.route.url.subscribe((arr) => (this.status = arr[0].path))
+    );
   }
 
   setPagesSlugs() {

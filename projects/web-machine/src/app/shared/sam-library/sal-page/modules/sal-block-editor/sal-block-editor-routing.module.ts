@@ -3,22 +3,30 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'gallery',
-    loadChildren: () =>
-      import('./gallery/gallery.module').then((m) => m.GalleryModule),
-  },
-  {
-    path: 'img',
-    loadChildren: () => import('./img/img.module').then((m) => m.ImgModule),
-  },
-  {
     path: 'text',
-    loadChildren: () => import('./text/text.module').then((m) => m.TextModule),
+    loadChildren: () =>
+      import('./text-editor/text-editor.module').then((m) => m.TextModule),
   },
   {
     path: 'youtube',
     loadChildren: () =>
-      import('./youtube/youtube.module').then((m) => m.YoutubeModule),
+      import('./youtube-editor/youtube-editor.module').then(
+        (m) => m.YoutubeModule
+      ),
+  },
+  {
+    path: 'menu-bar',
+    loadChildren: () =>
+      import('./menu-bar-editor/menu-bar-editor.module').then(
+        (m) => m.MenuBarEditorModule
+      ),
+  },
+  {
+    path: 'gallery',
+    loadChildren: () =>
+      import('./gallery-editor/gallery-editor.module').then(
+        (m) => m.GalleryEditorModule
+      ),
   },
 ];
 

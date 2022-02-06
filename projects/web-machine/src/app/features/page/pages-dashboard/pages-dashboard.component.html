@@ -9,12 +9,8 @@
 ></sal-table>
 
 <sal-context-menu #contextMenu>
-  <sal-icon-btn (click)="editPage()" icon="edit" text="edit"></sal-icon-btn>
-  <sal-icon-btn
-    (click)="deletePage()"
-    icon="delete"
-    text="delete"
-  ></sal-icon-btn>
+  <sal-btn (click)="editPage()" icon="edit">edit</sal-btn>
+  <sal-btn (click)="deletePage()" icon="delete">delete</sal-btn>
 </sal-context-menu>
 
 <sal-portal hostId="salTableExternalGuest">

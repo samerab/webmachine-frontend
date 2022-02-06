@@ -1,0 +1,19 @@
+button {
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  line-height: 50px;
+  &.icon-text {
+    display: flex;
+    grid-gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20px;
+    border: none;
+    background: #ffffff;
+    &:hover {
+      background: #eee;
+      cursor: pointer;
+    }
+  }
+}

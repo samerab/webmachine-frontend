@@ -16,7 +16,8 @@
     "effect": "ng g effect store/$entity  -m features/dashboard/dashboard.module --creators true --flat false --api true --skipTests",
     "entity": "npm run entity-without-effect && npm run effect",
     "g-block": "ng g c shared/sam-library/sal-page/blocks/$name",
-    "g-block-settings": "ng g c shared/sam-library/sal-block-settings/$name --skipTests"
+    "g-block-settings": "ng g c shared/sam-library/sal-block-settings/$name --skipTests",
+    "new-block": "ng g m shared/sam-library/sal-page/modules/sal-block-template/$name-template && ng g c shared/sam-library/sal-page/modules/sal-block-template/$name-template/$name-template --flat --skip-tests && ng g m shared/sam-library/sal-page/modules/sal-block-editor/$name-editor --routing && ng g c shared/sam-library/sal-page/modules/sal-block-editor/$name-editor/$name-editor --flat --skip-tests"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +38,7 @@
     "@ngrx/store-devtools": "^13.0.2",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "immutable": "^4.0.0",
     "rxjs": "~7.4.0",
     "rxjs-compat": "^6.6.7",
     "tslib": "^2.3.0",

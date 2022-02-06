@@ -31,6 +31,8 @@ import { SalSidebarModule } from '../sal-sidebar/sal-sidebar.module';
 import { SalContextMenuModule } from '../sal-context-menu/sal-context-menu.module';
 import { SalSpinnerModule } from '../sal-spinner/sal-spinner.module';
 import { SalIconModule } from '../sal-icon/sal-icon.module';
+import { BlockNavbarComponent } from './components/block/block-navbar/block-navbar.component';
+import { BlockInfoPipe } from './components/block/block-info.pipe';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { SalIconModule } from '../sal-icon/sal-icon.module';
     GridCellsComponent,
     FixedGridDashboardComponent,
     ChangeNameComponent,
+    BlockNavbarComponent,
+    BlockInfoPipe,
   ],
   imports: [
     CommonModule,

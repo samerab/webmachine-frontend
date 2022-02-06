@@ -16,50 +16,40 @@ export const initialState: State = adapter.getInitialState({
   currentPage: null,
 });
 
-
 export const reducer = createReducer(
   initialState,
-  on(PageActions.setCurrentPage,
-    (state, action) => {
-      return {...state, currentPage: action.page}
-    }
+  on(PageActions.setCurrentPage, (state, action) => {
+    return { ...state, currentPage: action.page };
+  }),
+  on(PageActions.addPageSuccess, (state, action) =>
+    adapter.addOne(action.page, state)
   ),
-  on(PageActions.addPageSuccess,
-    (state, action) => adapter.addOne(action.page, state)
+  on(PageActions.upsertPage, (state, action) =>
+    adapter.upsertOne(action.page, state)
   ),
-  on(PageActions.upsertPage,
-    (state, action) => adapter.upsertOne(action.page, state)
+  on(PageActions.addPages, (state, action) =>
+    adapter.addMany(action.pages, state)
   ),
-  on(PageActions.addPages,
-    (state, action) => adapter.addMany(action.pages, state)
+  on(PageActions.upsertPages, (state, action) =>
+    adapter.upsertMany(action.pages, state)
   ),
-  on(PageActions.upsertPages,
-    (state, action) => adapter.upsertMany(action.pages, state)
+  on(PageActions.updatePageSuccess, (state, action) =>
+    adapter.updateOne(action.page, state)
   ),
-  on(PageActions.updatePageSuccess,
-    (state, action) => adapter.updateOne(action.page, state)
+  on(PageActions.updatePages, (state, action) =>
+    adapter.updateMany(action.pages, state)
   ),
-  on(PageActions.updatePages,
-    (state, action) => adapter.updateMany(action.pages, state)
+  on(PageActions.deletePageSuccess, (state, action) =>
+    adapter.removeOne(action.id, state)
   ),
-  on(PageActions.deletePageSuccess,
-    (state, action) => adapter.removeOne(action.id, state)
+  on(PageActions.deletePagesSuccess, (state, action) =>
+    adapter.removeMany(action.ids, state)
   ),
-  on(PageActions.deletePagesSuccess,
-    (state, action) => adapter.removeMany(action.ids, state)
+  on(PageActions.loadPagesSuccess, (state, action) =>
+    adapter.setAll(action.pages, state)
   ),
-  on(PageActions.loadPagesSuccess,
-    (state, action) => adapter.setAll(action.pages, state)
-  ),
-  on(PageActions.clearPages,
-    state => adapter.removeAll(state)
-  ),
+  on(PageActions.clearPages, (state) => adapter.removeAll(state))
 );
 
-
-export const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal,
-} = adapter.getSelectors();
+export const { selectIds, selectEntities, selectAll, selectTotal } =
+  adapter.getSelectors();

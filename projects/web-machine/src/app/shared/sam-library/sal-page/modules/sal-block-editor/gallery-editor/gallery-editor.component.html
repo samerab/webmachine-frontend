@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <mat-tab-group>
+    <mat-tab label="settings">
+      <style-value-input
+        [styleConfig]="{
+          hasOptionsWithValues: true,
+          options: ['auto-fit', 'auto-fill', 'specifiedNumber']
+        }"
+        formControlName="imagesPerCol"
+        label="imagesPerCol"
+      ></style-value-input>
+
+      <style-value-input
+        [styleConfig]="{ hasValueWithUnit: true }"
+        formControlName="minWidth"
+        label="minWidth"
+      ></style-value-input>
+
+      <style-value-input
+        [styleConfig]="{ hasValueWithUnit: true }"
+        formControlName="gap"
+        label="gap"
+      ></style-value-input>
+
+      <style-value-input
+        [styleConfig]="{ hasValueWithUnit: true }"
+        formControlName="radius"
+        label="radius"
+      ></style-value-input>
+
+      <style-value-input
+        [styleConfig]="{ hasValueSlider: true, max: 180, min: -180, step: 1 }"
+        formControlName="rotate"
+        label="rotate"
+      ></style-value-input>
+    </mat-tab>
+
+    <mat-tab label="images">
+      <div class="images-browser">
+        <div (click)="openFilesBrowser()" class="add-image pointer">
+          <mat-icon>add</mat-icon>
+        </div>
+        <div cdkDropList (cdkDropListDropped)="drop($event)" class="images">
+          <div cdkDrag class="img" *ngFor="let src of srcList">
+            <img [src]="src" alt="" />
+            <button mat-mini-fab (click)="deleteImg(src)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-mini-fab>
+              <mat-icon>open_with</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</form>

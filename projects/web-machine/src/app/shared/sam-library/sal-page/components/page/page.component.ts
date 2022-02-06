@@ -56,6 +56,7 @@ import {
 import { SalFile } from '../../../models/modes.index';
 import { SalContextMenuComponent } from '../../../sal-context-menu/context-menu.component';
 import { SalFilesBrowserComponent } from '../../../sal-file/sal-files-browser/sal-files-browser.component';
+import { CustomEventService } from '../../../sal-common/custom.event.service';
 
 const CONTEXT_MENU = ['blank grid', 'button.delete'];
 
@@ -69,14 +70,17 @@ export class PageComponent
 {
   @Input() isViewMode = false;
   @Input() page$: Observable<Page>;
-  @Input() fileList$: Observable<SalFile[]>;
-  @Input() fixedGridList$: Observable<Grid[]>;
-  @Input() gridTemplateList$: Observable<Grid[]>;
-  @Input() info$: Observable<any>;
+  @Input() fileList$: Observable<SalFile[]> = of([]);
+  @Input() fixedGridList$: Observable<Grid[]> = of([]);
+  @Input() gridTemplateList$: Observable<Grid[]> = of([]);
+  @Input() info$: Observable<any> = of();
 
   @Output() onSave: EventEmitter<Page> = new EventEmitter<Page>();
   @Output() onRealPreview: EventEmitter<Page> = new EventEmitter<Page>();
   @Output() onAction: EventEmitter<SalAction> = new EventEmitter<SalAction>();
+
+  @Input() editable = false;
+  @Output() onPreviewMode: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @ViewChild('gridListContainer', { read: ViewContainerRef })
   gridListContainer: ViewContainerRef;
@@ -111,20 +115,18 @@ export class PageComponent
     private contentSv: ContentService,
     private ref: ChangeDetectorRef,
     private gridSv: GridService,
-    private pageSv: PageService,
+    public pageSv: PageService,
     private popupSv: PopupService,
-    private eventSv: EventService
+    private eventSv: EventService,
+    private event: CustomEventService
   ) {
     this.gridList = [];
     this.setAddGridMenuState();
   }
 
   ngOnInit(): void {
-    this.setViewModeForEditSettings();
-    this.setViewMode();
     this.onGridIdToDelete();
     this.onUpdateSection();
-    this.onPreview();
     this.onUploadFiles();
     this.onDeleteFiles();
     this.emitFileList();
@@ -135,6 +137,7 @@ export class PageComponent
     this.subToGridList();
     this.subToGridToUpdate();
     this.subToAddBlock();
+    this.handleViewMode();
   }
 
   ngAfterContentInit() {
@@ -154,49 +157,60 @@ export class PageComponent
   }
 
   ngOnDestroy() {
-    //this.dispatchContent();
-    this.stopViewMode();
     this.sub.unsubscribe();
+  }
+
+  private handleViewMode() {
+    if (this.editable) {
+      this.pageSv.editable = this.editable;
+      this.pageSv.setPreviewMode(false);
+    }
+    this.sub.add(
+      this.pageSv.onPreviewMode$().subscribe((status) => {
+        this.pageSv.isPreviewMode = status;
+        this.onPreviewMode.emit(status);
+      })
+    );
   }
 
   // TO DO:
   // merge with setViewModeForEditSettings
-  setViewMode() {
-    if (this.isViewMode) {
-      this.hideInfo = true;
-      /** set preview mode */
-      this.pageSv.setPreviewModeSubject.next(true);
-      /** stop all subscriptions on isPreviewMode observable */
-      this.pageSv.setPreviewModeSubject.next(null);
-    } else {
-      this.hideInfo = false;
-      /** set preview mode */
-      this.pageSv.setPreviewModeSubject.next(false);
-    }
-  }
+  // setViewMode() {
+  //   if (this.isViewMode) {
+  //     this.hideInfo = true;
+  //     /** set preview mode */
+  //     this.pageSv.setPreviewModeSubject.next(true);
+  //     /** stop all subscriptions on isPreviewMode observable */
+  //     this.pageSv.setPreviewModeSubject.next(null);
+  //   } else {
+  //     this.hideInfo = false;
+  //     /** set preview mode */
+  //     this.pageSv.setPreviewModeSubject.next(false);
+  //   }
+  // }
 
-  private setViewModeForEditSettings() {
-    this.pageSv.on(SalPageEventName.SET_VIEW_MODE).subscribe((isViewMode) => {
-      this.isViewMode = isViewMode;
-      this.hideInfo = isViewMode;
-      this.pageSv.setPreviewModeSubject.next(isViewMode);
-      this.runExternalViewMode(isViewMode);
-    });
-  }
+  // private setViewModeForEditSettings() {
+  //   this.pageSv.on(SalPageEventName.SET_VIEW_MODE).subscribe((isViewMode) => {
+  //     this.isViewMode = isViewMode;
+  //     this.hideInfo = isViewMode;
+  //     this.pageSv.setPreviewModeSubject.next(isViewMode);
+  //     this.runExternalViewMode(isViewMode);
+  //   });
+  // }
 
-  stopViewMode() {
-    this.hideInfo = false;
-    this.pageSv.setPreviewModeSubject.next(false);
-  }
+  // stopViewMode() {
+  //   this.hideInfo = false;
+  //   this.pageSv.setPreviewModeSubject.next(false);
+  // }
 
-  private runExternalViewMode(isViewMode: boolean) {
-    this.eventSv.on(SalEventName.SET_VIEW_MODE).subscribe((_) =>
-      this.onAction.emit({
-        name: SalNormalActionName.SET_VIEW_MODE,
-        payload: isViewMode,
-      })
-    );
-  }
+  // private runExternalViewMode(isViewMode: boolean) {
+  //   this.eventSv.on(SalEventName.SET_VIEW_MODE).subscribe((_) =>
+  //     this.onAction.emit({
+  //       name: SalNormalActionName.SET_VIEW_MODE,
+  //       payload: isViewMode,
+  //     })
+  //   );
+  // }
 
   private emitFileList() {
     this.sub.add(
@@ -299,24 +313,27 @@ export class PageComponent
     return fullGridList;
   }
 
-  private onPreview() {
-    this.sub.add(
-      this.pageSv.isPreviewMode$.subscribe((isPreview) => {
-        this.hideInfo = true;
-        this.changeAddGridMenuState(isPreview);
-        this.isDesignMode = !isPreview;
-      })
-    );
-  }
+  // private onPreview() {
+  //   this.sub.add(
+  //     this.pageSv.isPreviewMode$.subscribe((isPreview) => {
+  //       this.hideInfo = true;
+  //       this.changeAddGridMenuState(isPreview);
+  //       this.isDesignMode = !isPreview;
+  //     })
+  //   );
+  // }
 
   private setPreviewMode() {
-    this.pageSv.setPreviewModeSubject.next(true);
+    this.pageSv.setPreviewMode(true);
+    //this.pageSv.setPreviewModeSubject.next(true);
   }
 
   private showDesignPage() {
-    // this.hideInfo = true;
-    // this.changeAddGridMenuState(false);
-    this.pageSv.setPreviewModeSubject.next(false);
+    this.hideInfo = true;
+    //this.pageSv.setPreviewModeSubject.next(false);
+  }
+  goToDesignMode() {
+    this.pageSv.setPreviewMode(false);
   }
 
   onUploadFiles() {
@@ -385,8 +402,6 @@ export class PageComponent
   runCommand(clickedNavbarItem: ClickedNavbarItem) {
     switch (clickedNavbarItem.id) {
       case 'addGrid':
-        //   this.contextMenuComponent.openMenu(clickedNavbarItem.event);
-        // this.addGrid();
         break;
       case 'save':
         this.save();
@@ -504,18 +519,17 @@ export class PageComponent
 
   private subToAddBlock() {
     this.sub.add(
-      this.pageSv.blockToAdd$.subscribe((blockToAdd) => {
-        const sectionId = blockToAdd.sectionId;
+      this.event.on('updateGridListWithNewBlock').subscribe((block) => {
+        const sectionId = block.sectionId;
         const targetGridIndex = this.getTargetGridIndex(sectionId);
         const targetSectionIndex = this.getTargetSectionIndex(sectionId);
         if (targetGridIndex !== -1 && targetSectionIndex !== -1) {
-          blockToAdd = this.pageSv.getModifiedBlockToAdd(
-            blockToAdd,
+          block = this.pageSv.getModifiedBlockToAdd(
+            block,
             'color',
             this.gridList[targetGridIndex].settings.color
           );
-          this.addBlock(blockToAdd.block, targetGridIndex, targetSectionIndex);
-          //this.store.dispatch(addBlock({ blockToAdd: null }));
+          this.addBlock(block, targetGridIndex, targetSectionIndex);
         }
       })
     );
@@ -534,7 +548,6 @@ export class PageComponent
       block
     );
     this.gridList = [...gridListCopy];
-    //this.update();
   }
 
   pushBlock(
@@ -610,8 +623,6 @@ export class PageComponent
             this.createContent(gridList, this.gridListContainer);
             this.ref.detectChanges();
           }
-          //this.onDesignChange.emit(gridList);
-          //this.handleInitialView(gridList.length === 0);
         })
     );
   }
@@ -822,7 +833,6 @@ export class PageComponent
 
   private update() {
     this.gridListSubject.next(this.gridList);
-    //this.onDesignChange.emit(this.gridList);
   }
 
   createContent(gridList: Grid[], container: ViewContainerRef) {

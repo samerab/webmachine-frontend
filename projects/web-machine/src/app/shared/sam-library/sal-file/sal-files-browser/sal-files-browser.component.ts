@@ -7,7 +7,11 @@ import {
   Input,
   OnInit,
   Output,
+  QueryList,
+  Renderer2,
+  TemplateRef,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ClickedNavbarItem, NavbarItem } from '../../sal-menu/models';
@@ -16,6 +20,7 @@ import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { PopupService } from '../../sal-popup';
 import { SalFile } from '@ws-sal';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'sal-files-browser',
@@ -23,13 +28,16 @@ import { SalFile } from '@ws-sal';
   styleUrls: ['./sal-files-browser.component.scss'],
 })
 export class SalFilesBrowserComponent implements OnInit {
-  @Input() fileList: Observable<SalFile[]>;
+  @Input() fileList$: Observable<SalFile[]>;
   @Output() onSelect: EventEmitter<SalFile[]> = new EventEmitter<SalFile[]>();
   @Output() onUpload: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() onDelete: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('imgZoom') imgZoomTemplate: TemplateRef<any>;
+  @ViewChildren('file') files: QueryList<ElementRef<HTMLElement>>;
 
+  showEmptyCircle = false;
   startList: NavbarItem[] = START_LIST;
   selectedFiles: SalFile[] = [];
   buttonsConfig: ButtonConfig = {
@@ -40,18 +48,83 @@ export class SalFilesBrowserComponent implements OnInit {
     height: '50px',
   };
 
-  constructor(private popupSv: PopupService, private fileSv: FileService) {}
+  constructor(
+    private popupSv: PopupService,
+    private fileSv: FileService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {}
 
-  addFile(file: SalFile, e: MatCheckboxChange) {
-    if (e.checked) {
-      this.selectedFiles.push(file);
+  onHover(index: number) {
+    const elem = this.files.get(index).nativeElement;
+    if (!elem.classList.contains('active')) {
+      this.renderer.addClass(elem, 'hover');
     } else {
-      const index = this.selectedFiles.findIndex((f) => f === file);
-      this.selectedFiles.splice(index, 1);
+      this.renderer.addClass(elem, 'show-zoom');
+    }
+  }
+
+  onLeave(index: number) {
+    const elem = this.files.get(index).nativeElement;
+    this.renderer.removeClass(elem, 'hover');
+    this.renderer.removeClass(elem, 'show-zoom');
+  }
+
+  onClickFile(index: number, file: SalFile) {
+    const elem = this.files.get(index).nativeElement;
+    if (elem.classList.contains('active')) {
+      this.renderer.removeClass(elem, 'active');
+      this.removeFile(file);
+      this.send(this.selectedFiles);
+      this.handleEmptyCircle();
+    } else {
+      this.zoomImg(file);
+    }
+  }
+
+  private zoomImg(file: SalFile) {
+    const config = {
+      width: 'auto',
+      maxWidth: '95%',
+      maxHeight: '100%',
+    };
+    this.popupSv.openPopup1(this.imgZoomTemplate, this.getSrc(file), config);
+  }
+
+  onClickCheck(index: number, file: SalFile) {
+    const elem = this.files.get(index).nativeElement;
+    if (elem.classList.contains('active')) {
+      this.renderer.removeClass(elem, 'active');
+      this.removeFile(file);
+    } else {
+      this.renderer.removeClass(elem, 'hover');
+      this.renderer.addClass(elem, 'active');
+      this.addFile(file);
     }
     this.send(this.selectedFiles);
+    this.handleEmptyCircle();
+  }
+
+  private handleEmptyCircle() {
+    if (this.selectedFiles.length > 0) {
+      this.showEmptyCircle = true;
+    } else {
+      this.showEmptyCircle = false;
+    }
+  }
+
+  onZoom(file: SalFile) {
+    this.zoomImg(file);
+  }
+
+  addFile(file: SalFile) {
+    this.selectedFiles.push(file);
+  }
+
+  removeFile(file: SalFile) {
+    const index = this.selectedFiles.findIndex((f) => f === file);
+    this.selectedFiles.splice(index, 1);
   }
 
   triggerUpload() {

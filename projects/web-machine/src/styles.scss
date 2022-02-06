@@ -195,6 +195,10 @@
   cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     opacity: 0;
   }
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 0;
+  }
 }
 
 @each $id, $theme in $themes {

@@ -7,6 +7,7 @@ import {
   SalContextMenuModule,
   SalBtnModule,
   SalPortalModule,
+  SalFileModule,
 } from '@ws-sal';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -23,9 +24,10 @@ import { MatInputModule } from '@angular/material/input';
 import { PagesDashboardComponent } from './pages-dashboard/pages-dashboard.component';
 import { PageInfoComponent } from './page-info/page-info.component';
 import { PageFactoryModule } from '../../shared/page-factory/page-factory.module';
+import { ImgBrowserComponent } from './img-browser/img-browser.component';
 
 @NgModule({
-  declarations: [PageCrudComponent, PageInfoComponent, PagesDashboardComponent],
+  declarations: [PageCrudComponent, PageInfoComponent, PagesDashboardComponent, ImgBrowserComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -45,6 +47,7 @@ import { PageFactoryModule } from '../../shared/page-factory/page-factory.module
     SalContextMenuModule,
     SalBtnModule,
     SalPortalModule,
+    SalFileModule,
   ],
 })
 export class PageModule {}

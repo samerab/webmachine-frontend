@@ -1,10 +1,11 @@
-import { Grid, StyleData, Block, SettingsData, Style } from '../page.model';
+import { Grid, Block, Style } from '../page.model';
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { Section, BlockToAdd } from '../page.model';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { Section } from '../page.model';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { SalFile } from '@ws-sal';
+import { CustomEventService } from '../../sal-common/custom.event.service';
 
 export class SalPageEvent {
   constructor(public name: SalPageEventName, public value: any) {}
@@ -20,11 +21,10 @@ export enum SalPageEventName {
   providedIn: 'root',
 })
 export class PageService {
-  defaultRowHeight = '500px';
-  isWaitingForStyle;
-
-  setViewModeSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  isViewMode$ = this.setViewModeSubject.asObservable();
+  defaultRowHeight = 'auto';
+  isPreviewMode = true;
+  editable = false;
+  isEditingMode = false;
 
   setPreviewModeSubject: ReplaySubject<boolean> = new ReplaySubject<boolean>(2);
   isPreviewMode$ = this.setPreviewModeSubject.asObservable();
@@ -39,23 +39,6 @@ export class PageService {
 
   updateGridSubject: Subject<any> = new Subject<any>();
   gridToUpdate$ = this.updateGridSubject.asObservable();
-
-  addBlockSubject: Subject<any> = new Subject<any>();
-  blockToAdd$ = this.addBlockSubject.asObservable();
-
-  setStyleSubject: Subject<StyleData> = new Subject<StyleData>();
-  style$ = this.setStyleSubject.asObservable();
-
-  setSavedStyleSubject: BehaviorSubject<StyleData> =
-    new BehaviorSubject<StyleData>(null);
-  savedStyle$ = this.setSavedStyleSubject.asObservable();
-
-  setBlockSettingsSubject: BehaviorSubject<SettingsData> =
-    new BehaviorSubject<SettingsData>(null);
-  blockSettings$ = this.setBlockSettingsSubject.asObservable();
-
-  stopWatchingStyleSubject: Subject<Section> = new Subject<Section>();
-  stopWatchingStyle$ = this.stopWatchingStyleSubject.asObservable();
 
   closeAuxOutletSubject: Subject<Section> = new Subject<Section>();
   onCloseAuxOutlet$ = this.closeAuxOutletSubject.asObservable();
@@ -85,22 +68,35 @@ export class PageService {
 
   private renderer: Renderer2;
 
-  constructor(rendererFactory: RendererFactory2, private router: Router) {
+  constructor(
+    rendererFactory: RendererFactory2,
+    private router: Router,
+    private event: CustomEventService
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  showPrevieMode() {
-    this.emit(new SalPageEvent(SalPageEventName.SET_VIEW_MODE, true));
+  setPreviewMode(value: boolean) {
+    if (this.editable) {
+      this.event.emit({
+        name: 'preview_mode',
+        value,
+      });
+    }
+  }
+
+  setEditingMode(value: boolean) {
+    this.isEditingMode = value;
+  }
+
+  onPreviewMode$() {
+    return this.event
+      .on('preview_mode')
+      .pipe(tap((status) => (this.isPreviewMode = status)));
   }
 
   openStyleBuilder() {
     this.router.navigate([{ outlets: { style: 'style' } }]);
-  }
-
-  openBlockSettings(blockName: string) {
-    this.router.navigate([
-      { outlets: { blockSettings: `block-settings/${blockName}` } },
-    ]);
   }
 
   openx() {
@@ -135,61 +131,38 @@ export class PageService {
     return obj.value + obj.unit;
   }
 
-  editStyle(data: Block | Section | Grid, element: HTMLElement) {
+  editStyle(data: Block | Section, host: HTMLElement): Observable<any> {
+    this.setPreviewMode(true);
+    this.setEditingMode(true);
     this.openStyleBuilder();
-    this.setSavedStyleSubject.next({
-      sender: 'consumer',
-      styleList: data.styleList,
-    });
-    //this.isWaitingForStyle = true;
-    this.subToStyle(data, element);
+    this.sendStyleListToStyleBuilder(data.styleList);
+    return this.event.on('styleListFromStyleBuilder').pipe(
+      filter((styleData) => !!styleData),
+      takeUntil(this.onCloseAuxOutlet$),
+      tap((styleList) => {
+        this.handleStyle(data, styleList, host);
+      }),
+      map((styleList) => styleList)
+    );
   }
 
-  // private subToStyle(data: Block | Section | Grid, element: HTMLElement) {
-  //   this.style$
-  //     .pipe(
-  //       takeWhile(_ => this.isWaitingForStyle),
-  //       filter(styleData => !!styleData && styleData.sender === 'builder')
-  //     )
-  //     .subscribe((styleData: StyleData) => {
-  //       this.handleStyle(data, styleData.styleList, element);
-  //       this.isWaitingForStyle = false;
-  //     });
-  // }
+  sendStyleListToStyleBuilder(value) {
+    this.event.emit({
+      name: 'styleList',
+      value,
+    });
+  }
 
   cancelSubject: Subject<null> = new Subject<null>();
-  // private subToStyle(data: Block | Section | Grid, element: HTMLElement) {
-  //   this.style$
-  //     .pipe(
-  //       takeWhile(_ => this.isWaitingForStyle),
-  //       filter(styleData => !!styleData && styleData.sender === 'builder')
-  //     )
-  //     .subscribe((styleData: StyleData) => {
-  //       this.handleStyle(data, styleData.styleList, element);
-  //       this.isWaitingForStyle = false;
-  //       this.setStyleSubject.next(null);
-  //     });
-  // }
-
-  private subToStyle(data: Block | Section | Grid, element: HTMLElement) {
-    this.style$
-      .pipe(
-        filter((styleData) => !!styleData),
-        takeUntil(this.onCloseAuxOutlet$)
-      )
-      .subscribe((styleData: StyleData) => {
-        this.handleStyle(data, styleData.styleList, element);
-      });
-  }
 
   handleStyle(
-    data: Block | Section | Grid,
-    styleList: Style[],
+    oldData: Block | Section | Grid,
+    newStyleList: Style[],
     element: HTMLElement
   ) {
-    this.removeStyle(data.styleList, element);
-    this.applyStyle(styleList, element);
-    this.saveStyle(data, styleList);
+    this.removeStyle(element);
+    this.applyStyle(newStyleList, element);
+    this.saveStyle(oldData, newStyleList);
   }
 
   applyStyle(styleList: Style[], element: HTMLElement) {
@@ -201,13 +174,8 @@ export class PageService {
     }
   }
 
-  removeStyle(styleList: Style[], element: HTMLElement) {
-    const css = this.getCssObject(styleList);
-    if (css) {
-      for (const key of Object.keys(css)) {
-        this.renderer.removeStyle(element, key);
-      }
-    }
+  removeStyle(element: HTMLElement) {
+    this.renderer.removeAttribute(element, 'style');
   }
 
   saveStyle(data: Block | Section | Grid, styleList: Style[]) {
@@ -240,10 +208,11 @@ export class PageService {
     return section.blockList.map((block) => block.id).includes(blockId);
   }
 
-  getModifiedBlockToAdd(blockToAdd: BlockToAdd, property: string, val: any) {
-    const copySettings = { ...blockToAdd.block.settings, [property]: val };
-    const copyBlock = { ...blockToAdd.block, settings: copySettings };
-    const copyBlockToAdd = { ...blockToAdd, block: copyBlock };
-    return copyBlockToAdd;
+  getModifiedBlockToAdd(blockToAdd: Block, property: string, val: any) {
+    // const copySettings = { ...blockToAdd.settings, [property]: val };
+    // const copyBlock = { ...blockToAdd, settings: copySettings };
+    // const copyBlockToAdd = { ...blockToAdd, block: copyBlock };
+    // return copyBlockToAdd;
+    return blockToAdd;
   }
 }

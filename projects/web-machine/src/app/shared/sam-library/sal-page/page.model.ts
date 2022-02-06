@@ -1,3 +1,8 @@
+export interface ContentContainer {
+  createSavedContent: () => void;
+  createNewContent: (blockName: string) => void;
+}
+
 export class Page {
   id: string;
   info: PageInfo;
@@ -35,8 +40,8 @@ export interface Section {
 
 export class Block {
   id: string;
+  sectionId: string;
   component: string;
-  properties?: Object;
   styleList?: Style[];
   settings?: any;
 }
@@ -123,11 +128,8 @@ export interface SettingsData {
   settings: any;
 }
 
-export interface BlockContent {
-  data: any;
-}
-
 export interface BlockTemplate {
   data: any;
-  setDefault: () => {};
+  setDefault: () => void;
+  updateSettings: (settings: any) => void;
 }

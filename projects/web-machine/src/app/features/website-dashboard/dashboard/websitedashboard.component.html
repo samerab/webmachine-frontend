@@ -1,6 +1,8 @@
-<ws-website-dashbaord-header></ws-website-dashbaord-header>
-<div class="website-dashboard-container">
-  <div class="sidenav">
+<ws-website-dashbaord-header
+  *ngIf="!(isPreviewMode$ | async)"
+></ws-website-dashbaord-header>
+<div #dashContainer class="website-dashboard-container">
+  <div [hidden]="isPreviewMode$ | async" class="sidenav">
     <sal-sidebar
       [list]="sidebarList"
       [hasDivider]="false"

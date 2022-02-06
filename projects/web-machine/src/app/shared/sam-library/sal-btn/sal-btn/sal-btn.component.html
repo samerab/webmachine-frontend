@@ -1,0 +1,24 @@
+<ng-container *ngTemplateOutlet="template; context: context"></ng-container>
+
+<ng-template #raised let-text="text">
+  <button mat-raised-button>
+    {{ text }}
+  </button>
+</ng-template>
+
+<ng-template #transparent let-text="text">
+  <button mat-button>
+    {{ text }}
+  </button>
+</ng-template>
+
+<ng-template #iconText let-text="text" let-icon="icon">
+  <button class="icon-text">
+    <mat-icon>{{ icon }}</mat-icon>
+    <span>{{ text }}</span>
+  </button>
+</ng-template>
+
+<template #btnText>
+  <ng-content></ng-content>
+</template>

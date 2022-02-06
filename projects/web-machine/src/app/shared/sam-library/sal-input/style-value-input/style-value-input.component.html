@@ -3,7 +3,12 @@
 
   <ng-container *ngIf="styleConfig.hasValueWithUnit">
     <mat-form-field class="value">
-      <input formControlName="value" matInput autocomplete="off" />
+      <input
+        type="number"
+        formControlName="value"
+        matInput
+        autocomplete="off"
+      />
     </mat-form-field>
 
     <mat-form-field class="unit">
@@ -45,7 +50,8 @@
     <input type="color" formControlName="color" matInput autocomplete="off" />
   </mat-form-field>
 
-  <mat-slider *ngIf="styleConfig.hasValueSlider"
+  <mat-slider
+    *ngIf="styleConfig.hasValueSlider"
     class="slider"
     [max]="styleConfig.max"
     [min]="styleConfig.min"

@@ -13,6 +13,8 @@ import {
   TemplateRef,
   OnDestroy,
   Inject,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { Grid, GridSettings, Section } from '../../page.model';
 import { SectionComponent } from '../section/section.component';
@@ -42,6 +44,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('title') title: ElementRef<HTMLElement>;
   @ViewChild('sectionListDiv') sectionListDiv: ElementRef<HTMLDivElement>;
 
+  @ViewChildren(SectionComponent) sections: QueryList<SectionComponent>;
+
   data: Grid;
   sectionListSubject: BehaviorSubject<Section[]> = new BehaviorSubject<
     Section[]
@@ -62,7 +66,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private popupSv: PopupService,
     private gridSv: GridService,
-    private pageSv: PageService,
+    public pageSv: PageService,
     private eventSv: EventService,
     @Inject(SIDEBAR_LIST) public sidenavList: SidenavItem[]
   ) {}
@@ -75,42 +79,45 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setProperties();
     this.createContent(this.data.sectionList, this.sectionListContainer);
     this.subToSectionList();
-    this.onPreview();
+    //this.onPreview();
+    this.sections
+      .toArray()
+      .forEach((section) => console.log('samo', section.data.styleList));
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  private onPreview() {
-    this.pageSv.isPreviewMode$
-      .pipe(
-        takeWhile((isPreview) => isPreview !== null),
-        delay(0)
-      )
-      .subscribe((isPreview) => {
-        this.setDesignModeStyle(isPreview);
-        this.isDesignMode = !isPreview;
-        if (isPreview) {
-          this.isExpanded = false;
-          this.toggleGrid();
-        } else {
-          setTimeout(() => {
-            this.setTitleColor();
-          }, 0);
-        }
-      });
-  }
+  // private onPreview() {
+  //   this.pageSv.isPreviewMode$
+  //     .pipe(
+  //       takeWhile((isPreview) => isPreview !== null),
+  //       delay(0)
+  //     )
+  //     .subscribe((isPreview) => {
+  //       //this.setDesignModeStyle(isPreview);
+  //       this.isDesignMode = !isPreview;
+  //       if (isPreview) {
+  //         this.isExpanded = false;
+  //         this.toggleGrid();
+  //       } else {
+  //         setTimeout(() => {
+  //           this.setTitleColor();
+  //         }, 0);
+  //       }
+  //     });
+  // }
 
-  setDesignModeStyle(isPreview: boolean) {
-    if (isPreview) {
-      this.renderer.removeClass(this.sectionListDiv.nativeElement, 'coral');
-      this.renderer.removeClass(this.host.nativeElement, 'grid');
-    } else {
-      this.renderer.addClass(this.sectionListDiv.nativeElement, 'coral');
-      this.renderer.addClass(this.host.nativeElement, 'grid');
-    }
-  }
+  // setDesignModeStyle(isPreview: boolean) {
+  //   if (isPreview) {
+  //     this.renderer.removeClass(this.sectionListDiv.nativeElement, 'coral');
+  //     this.renderer.removeClass(this.host.nativeElement, 'grid');
+  //   } else {
+  //     this.renderer.addClass(this.sectionListDiv.nativeElement, 'coral');
+  //     this.renderer.addClass(this.host.nativeElement, 'grid');
+  //   }
+  // }
 
   subToSectionList() {
     this.sectionListSubject

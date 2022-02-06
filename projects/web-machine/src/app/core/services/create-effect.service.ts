@@ -282,7 +282,7 @@ export class CreateEffectService {
     return this.sendRequest(
       entityInfo,
       'load',
-      () => this.apiSv.loadAll(name),
+      () => this.apiSv.loadAll(name, entityInfo.detach),
       true
     );
   }
@@ -383,7 +383,11 @@ export class CreateEffectService {
         exhaustMap((action) => {
           this.store.dispatch(startLoading());
           return this.apiSv
-            .addMany(entity.entityPlural, action[entity.entityPlural])
+            .addMany(
+              entity.entityPlural,
+              action[entity.entityPlural],
+              entityInfo.detach
+            )
             .pipe(
               map((response) => {
                 this.store.dispatch(endLoading());
@@ -414,18 +418,22 @@ export class CreateEffectService {
         exhaustMap((action) => {
           this.store.dispatch(startLoading());
           const { id, ...payload } = action[entity];
-          return this.apiSv.updateOne(entityPlural, id, payload.changes).pipe(
-            map((response) => {
-              this.store.dispatch(endLoading());
-              return entityActions[updateSuccess]({ [entity]: action[entity] });
-            }),
-            tap((_) =>
-              this.popupSv.openSnackBar('message.successfully_updated')
-            ),
-            catchError((err) => {
-              return this.handleError(err);
-            })
-          );
+          return this.apiSv
+            .updateOne(entityPlural, id, payload.changes, entityInfo.detach)
+            .pipe(
+              map((response) => {
+                this.store.dispatch(endLoading());
+                return entityActions[updateSuccess]({
+                  [entity]: action[entity],
+                });
+              }),
+              tap((_) =>
+                this.popupSv.openSnackBar('message.successfully_updated')
+              ),
+              catchError((err) => {
+                return this.handleError(err);
+              })
+            );
         })
       )
     );
@@ -441,20 +449,22 @@ export class CreateEffectService {
         ofType(entityActions[update]),
         exhaustMap((action) => {
           this.store.dispatch(startLoading());
-          return this.apiSv.updateMany(entityPlural, action[entityPlural]).pipe(
-            map((response) => {
-              this.store.dispatch(endLoading());
-              return entityActions[updateSuccess]({
-                [entityPlural]: action[entityPlural],
-              });
-            }),
-            tap((_) =>
-              this.popupSv.openSnackBar('message.successfully_updated')
-            ),
-            catchError((err) => {
-              return this.handleError(err);
-            })
-          );
+          return this.apiSv
+            .updateMany(entityPlural, action[entityPlural], entityInfo.detach)
+            .pipe(
+              map((response) => {
+                this.store.dispatch(endLoading());
+                return entityActions[updateSuccess]({
+                  [entityPlural]: action[entityPlural],
+                });
+              }),
+              tap((_) =>
+                this.popupSv.openSnackBar('message.successfully_updated')
+              ),
+              catchError((err) => {
+                return this.handleError(err);
+              })
+            );
         })
       )
     );
@@ -499,18 +509,20 @@ export class CreateEffectService {
         ofType(entityActions[deleteAction]),
         concatMap((action) => {
           this.store.dispatch(startLoading());
-          return this.apiSv.deleteMany(entityPlural, action['ids']).pipe(
-            tap((_) => {
-              this.store.dispatch(endLoading());
-              this.popupSv.openSnackBar('message.successfully_deleted');
-            }),
-            map((_) => {
-              return entityActions[deleteSuccess]({ ids: action['ids'] });
-            }),
-            catchError((err) => {
-              return this.handleError(err);
-            })
-          );
+          return this.apiSv
+            .deleteMany(entityPlural, action['ids'], entityInfo.detach)
+            .pipe(
+              tap((_) => {
+                this.store.dispatch(endLoading());
+                this.popupSv.openSnackBar('message.successfully_deleted');
+              }),
+              map((_) => {
+                return entityActions[deleteSuccess]({ ids: action['ids'] });
+              }),
+              catchError((err) => {
+                return this.handleError(err);
+              })
+            );
         })
       )
     );

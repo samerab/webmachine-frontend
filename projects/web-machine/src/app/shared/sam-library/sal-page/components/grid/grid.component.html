@@ -14,18 +14,20 @@
     contentAfterEnd
   ></sam-menu>
 </sal-navbar> -->
-
-<div #sectionListDiv class="section-list-container">
-  <ng-container #sectionListContainer></ng-container>
+<div class="grid" [class.no-sidenav]="pageSv.isPreviewMode">
+  <div #sectionListDiv class="section-list-container">
+    <ng-container #sectionListContainer></ng-container>
+  </div>
+  <!-- *ngIf="isDesignMode" -->
+  <sal-sidebar
+    *ngIf="!pageSv.isPreviewMode"
+    [list]="sidenavList"
+    [hasDivider]="false"
+    activeClass="primary-50"
+    (onSelect)="runCommand($event)"
+  >
+  </sal-sidebar>
 </div>
-<sal-sidebar
-  *ngIf="isDesignMode"
-  [list]="sidenavList"
-  [hasDivider]="false"
-  activeClass="primary-50"
-  (onSelect)="runCommand($event)"
->
-</sal-sidebar>
 
 <!-- Templates -->
 <ng-template #designPopupTemplate let-data="data">

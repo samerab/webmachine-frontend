@@ -12,4 +12,8 @@
   .content {
     grid-column-start: 2;
   }
+  &.no-sidenav {
+    grid-template-columns: 0 1fr;
+    transition: 5s;
+  }
 }

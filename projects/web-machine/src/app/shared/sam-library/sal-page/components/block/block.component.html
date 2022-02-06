@@ -1,13 +1,16 @@
-<sal-navbar
-  *ngIf="isDesignMode"
-  (onItemClick)="runCommand($event)"
-  [startList]="startList"
-  [endList]="endList"
-  color="primary-50"
->
-  <h3 #title class="nav-title">{{ "block" }}</h3>
-</sal-navbar>
+<div class="block-host" cdkDrag>
+  <div class="block" #blockContainer></div>
 
-<div class="block-container">
-  <div #blockContainer></div>
+  <block-navbar
+    class="navbar"
+    #blockNavbar
+    *ngIf="!pageSv.isPreviewMode"
+    (onSettings)="editSettings()"
+    (onStyle)="editStyle()"
+    (onDelete)="deleteBlock()"
+  >
+    {{ data | blockInfo }}
+  </block-navbar>
 </div>
+
+<!-- *ngIf="isDesignMode" -->

@@ -1,5 +1,13 @@
+<!-- *ngIf="!isViewMode" -->
+<div
+  class="close"
+  (click)="goToDesignMode()"
+  *ngIf="editable && pageSv.isPreviewMode && !pageSv.isEditingMode"
+>
+  <mat-icon>cancel</mat-icon>
+</div>
 <sal-navbar
-  *ngIf="!isViewMode"
+  *ngIf="!pageSv.isPreviewMode"
   color="primary-500"
   (onItemClick)="runCommand($event)"
   [startList]="startList"
@@ -14,11 +22,14 @@
   ></sam-menu>
 </sal-navbar>
 
-<div *ngIf="!isViewMode" [hidden]="hideInfo" class="page-info">
+<div *ngIf="!pageSv.isPreviewMode" [hidden]="hideInfo" class="page-info">
   <ng-content></ng-content>
 </div>
 
-<div [hidden]="!hideInfo" class="page-viewer-container">
+<div
+  [hidden]="!hideInfo && !pageSv.isPreviewMode"
+  class="page-viewer-container"
+>
   <div #gridListContainer></div>
 </div>
 

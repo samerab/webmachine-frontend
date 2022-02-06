@@ -27,12 +27,16 @@ function blockTemplateInfoFactory() {
       blockName: 'img',
     },
     {
-      file: 'img.svg',
-      blockName: 'classic-gallery',
+      file: 'gallery.svg',
+      blockName: 'gallery',
     },
     {
       file: 'text.svg',
       blockName: 'text',
+    },
+    {
+      file: 'text.svg',
+      blockName: 'menu-bar',
     },
   ];
 }

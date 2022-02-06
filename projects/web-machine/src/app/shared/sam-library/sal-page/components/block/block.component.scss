@@ -1,7 +1,13 @@
-:host {
-    display: grid;
+.block-host {
+  display: grid;
+  .navbar {
+    grid-row: 1/2;
+  }
+  .block {
+    grid-row: 2/3;
+  }
 }
 
 .block-container {
-    overflow: hidden;
+  //overflow: hidden;
 }

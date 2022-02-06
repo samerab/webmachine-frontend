@@ -1,25 +1,37 @@
 <div class="files-container">
-  <sal-navbar
+  <!-- <sal-navbar
     color="primary-500"
     (onItemClick)="runCommand($event)"
     [startList]="startList"
     class="padding"
-  ></sal-navbar>
+  ></sal-navbar> -->
 
   <input #fileInput (change)="fileChange($event)" type="file" multiple hidden />
 
   <div class="files">
-    <div class="file" *ngFor="let file of fileList | async">
-      <img
-        [src]="getSrc(file)"
-        alt=""
-        (click)="
-          checkbox.checked = !checkbox.checked;
-          addFile(file, { source: null, checked: checkbox.checked })
-        "
-      />
-      <mat-checkbox #checkbox (change)="addFile(file, $event)"></mat-checkbox>
+    <div
+      #file
+      (mouseenter)="onHover(index)"
+      (mouseleave)="onLeave(index)"
+      class="file"
+      *ngFor="let file of fileList$ | async; index as index"
+    >
+      <img (click)="onClickFile(index, file)" [src]="getSrc(file)" />
+      <div
+        class="empty-circle"
+        [class.show-empty-circle]="showEmptyCircle"
+      ></div>
+      <mat-icon (click)="onClickCheck(index, file)" class="select"
+        >check_circle_two_tone</mat-icon
+      >
+      <mat-icon (click)="onZoom(file)" class="zoom">zoom_in</mat-icon>
     </div>
   </div>
 </div>
 <!-- <sal-button [config]="buttonsConfig" (onClick)="onClick($event)"></sal-button> -->
+
+<ng-template #imgZoom let-src="data">
+  <div class="zoom-container">
+    <img [src]="src" />
+  </div>
+</ng-template>

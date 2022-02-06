@@ -54,6 +54,7 @@ export class ClientComponent implements OnInit {
       map((response) => (response as BackendResponse)?.data),
       filter((page) => !!page),
       tap((page) => {
+        console.log('page', page);
         this.store.dispatch(endLoading());
         if (!page) {
           this.router.navigate(['page-not-found']);

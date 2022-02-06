@@ -3,19 +3,25 @@
 [menuData$]="menuData$"
 >
 </sam-toolbar> -->
-
-<sal-navbar
-  *ngIf="isDesignMode"
-  (onItemClick)="runCommand($event)"
-  [startList]="startList"
-  [endList]="endList"
-  color="primary-100"
+<div
+  cdkDropList
+  [cdkDropListData]="data.blockList"
+  (cdkDropListDropped)="drop($event)"
+  #parentContainer
+  class="section"
 >
-  <h3 #title class="nav-title">{{ "section" }}</h3>
-</sal-navbar>
-
-<div #parentContainer class="block-list-container">
-  <div #blockListContainer></div>
+  <div class="block-list" #blockListContainer></div>
+  <!-- *ngIf="isDesignMode" -->
+  <sal-navbar
+    class="navbar"
+    *ngIf="!pageSv.isPreviewMode"
+    (onItemClick)="runCommand($event)"
+    [startList]="startList"
+    [endList]="endList"
+    color="primary-100"
+  >
+    <h3 #title class="nav-title">{{ "section" }}</h3>
+  </sal-navbar>
 </div>
 
 <!-- Template -->

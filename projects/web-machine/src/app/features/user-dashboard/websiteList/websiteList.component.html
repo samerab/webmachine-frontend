@@ -9,17 +9,11 @@
 ></sal-table>
 
 <sal-context-menu #contextMenu>
-  <sal-icon-btn (click)="editEntity()" icon="edit" text="edit"></sal-icon-btn>
-  <sal-icon-btn
-    (click)="deleteEntity()"
-    icon="delete"
-    text="delete"
-  ></sal-icon-btn>
-  <sal-icon-btn
-    (click)="openWebsiteDashboard()"
-    icon="dashboard"
-    text="go to dashboard"
-  ></sal-icon-btn>
+  <sal-btn (click)="editEntity()" icon="edit">edit</sal-btn>
+  <sal-btn (click)="deleteEntity()" icon="delete">delete</sal-btn>
+  <sal-btn (click)="openWebsiteDashboard()" icon="dashboard"
+    >go to dashboard</sal-btn
+  >
 </sal-context-menu>
 
 <sal-portal hostId="salTableExternalGuest">

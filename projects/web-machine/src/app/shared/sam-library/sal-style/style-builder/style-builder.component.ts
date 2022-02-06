@@ -1,36 +1,45 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { L } from '@angular/cdk/keycodes';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { fromEvent, Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { ButtonConfig } from '../../sal-button/button/button.component';
-import { PageService } from '../../sal-page';
-import { StyleConfig, StyleData } from '../../sal-page/page.model';
+import { CustomEventService } from '../../sal-common/custom.event.service';
+import { StyleConfig } from '../../sal-page/page.model';
 import { PopupService } from '../../sal-popup/index';
 import { STYLES } from '../styles';
 
 @Component({
   selector: 'ws-style-builder',
   templateUrl: './style-builder.component.html',
-  styleUrls: ['./style-builder.component.scss']
+  styleUrls: ['./style-builder.component.scss'],
 })
-export class StyleBuilderComponent implements OnInit {
-
+export class StyleBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('template') template: TemplateRef<any>;
 
   form: FormGroup;
+  sub: Subscription = new Subscription();
+  isInit = true;
   buttonConfig: ButtonConfig = {
-    buttonList: [
-      {label: 'add', icon: 'add', color: 'accent'},
-      //{label: 'save', icon: 'dave', color: 'primary'},
-    ],
-    height: '50px'
-  }
-  
+    buttonList: [{ label: 'add', icon: 'add', color: 'accent' }],
+    height: '50px',
+  };
+
   constructor(
-    private pageSv: PageService,
     private fb: FormBuilder,
-    private popupSv: PopupService
-  ) { }
+    private popupSv: PopupService,
+    private event: CustomEventService,
+    private host: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -38,15 +47,16 @@ export class StyleBuilderComponent implements OnInit {
     this.onFormChange();
   }
 
-  private subToSavedStyle() {
-    this.pageSv.savedStyle$
-      .pipe(
-        filter(styleData => !!styleData && styleData.sender === 'consumer' && !!styleData.styleList),
-        take(1)
-      )
-      .subscribe((styleData: StyleData) => {
-        this.setSavedStyleList(styleData.styleList);
-      });
+  ngAfterViewInit(): void {
+    this.sub.add(
+      fromEvent(this.host.nativeElement, 'mouseenter')
+        .pipe(take(1))
+        .subscribe((_) => (this.isInit = false))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   buildForm() {
@@ -55,22 +65,35 @@ export class StyleBuilderComponent implements OnInit {
     });
   }
 
-  onFormChange() {
-    this.form.valueChanges.subscribe(_ => {
-      this.sendGeneratedStyle();
-    });
+  private subToSavedStyle() {
+    this.sub.add(
+      this.event
+        .on('styleList')
+        .pipe(
+          filter((styleList) => !!styleList),
+          take(1)
+        )
+        .subscribe((styleList) => {
+          this.setSavedStyleList(styleList);
+        })
+    );
   }
 
-  // onFormChange() {
-  //   this.form.valueChanges.subscribe(val => {
-  //     const stylesArr = val.styles.map(styleConfig => styleConfig.style);
-  //     let styleObj = {};
-  //      for (const style of stylesArr) {
-  //        styleObj = {...styleObj, ...style};
-  //      }
-  //     this.pageSv.setStyleSubject.next({sender: 'builder', css: styleObj});
-  //   });
-  // }
+  setSavedStyleList(styleList: StyleConfig[]) {
+    for (const StyleConfig of styleList) {
+      this.styleFormArray.push(this.fb.group(StyleConfig));
+    }
+  }
+
+  onFormChange() {
+    this.sub.add(
+      this.form.valueChanges.subscribe((_) => {
+        if (!this.isInit) {
+          this.sendGeneratedStyle();
+        }
+      })
+    );
+  }
 
   get stylesControls() {
     return this.styleFormArray.controls;
@@ -81,17 +104,11 @@ export class StyleBuilderComponent implements OnInit {
   }
 
   addStyle(styleConfig: StyleConfig) {
-    const formGroup = this.fb.group({ 
+    const formGroup = this.fb.group({
       id: styleConfig.id,
-      value: null,  
+      value: null,
     });
     this.styleFormArray.push(formGroup);
-  }
-
-  setSavedStyleList(styleList: StyleConfig[]) {
-    for (const StyleConfig of styleList) {
-      this.styleFormArray.push(this.fb.group(StyleConfig));
-    }
   }
 
   dialog: MatDialogRef<any, any>;
@@ -100,9 +117,6 @@ export class StyleBuilderComponent implements OnInit {
       case 'add':
         this.openStyleList();
         break;
-        // case 'save':
-        // this.sendGeneratedStyle();
-        // break;
     }
   }
 
@@ -114,21 +128,18 @@ export class StyleBuilderComponent implements OnInit {
   }
 
   sendGeneratedStyle() {
-      this.pageSv.setStyleSubject.next({sender: 'builder', styleList: this.form.value.styles});
+    this.event.emit({
+      name: 'styleListFromStyleBuilder',
+      value: this.form.value.styles,
+    });
   }
 
   onStyleSelect(styleConfig: StyleConfig) {
-    this.addStyle(styleConfig)
+    this.addStyle(styleConfig);
     this.dialog.close();
   }
 
   deleteStyle(index: number) {
     this.styleFormArray.removeAt(index);
   }
-
-  logObj() {
-    console.log(this.form.value)
-  }
-
-
 }
