@@ -1,3 +1,4 @@
+import { SalBtnModule } from './../sal-btn/sal-btn.module';
 import { SalPopupModule } from './../sal-popup/sal-popup.module';
 import { SamMenuModule } from './../sal-menu/menu.module';
 import { NgModule } from '@angular/core';
@@ -8,23 +9,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ImgInputComponent } from './imgInput/imgInput.component';
 import { MatIconModule } from '@angular/material/icon';
 
-
-
 @NgModule({
-  declarations: [
-    SalFilesBrowserComponent,
-    ImgInputComponent
-  ],
+  declarations: [SalFilesBrowserComponent, ImgInputComponent],
   imports: [
     CommonModule,
     SalButtonModule,
     SamMenuModule,
     MatCheckboxModule,
     MatIconModule,
+    SalBtnModule,
   ],
-  exports: [
-    SalFilesBrowserComponent,
-    ImgInputComponent
-  ]
+  exports: [SalFilesBrowserComponent, ImgInputComponent],
 })
-export class SalFileModule { }
+export class SalFileModule {}

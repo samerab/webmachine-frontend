@@ -16,7 +16,8 @@ import { ButtonConfig } from '../../sal-button/button/button.component';
 import { CustomEventService } from '../../sal-common/custom.event.service';
 import { StyleConfig } from '../../sal-page/page.model';
 import { PopupService } from '../../sal-popup/index';
-import { STYLES } from '../styles';
+import { Style } from '../classes/style';
+import { STYLES_LIST } from '../styles';
 
 @Component({
   selector: 'ws-style-builder',
@@ -103,9 +104,16 @@ export class StyleBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.form.get('styles') as FormArray;
   }
 
-  addStyle(styleConfig: StyleConfig) {
+  // addStyle(styleConfig: StyleConfig) {
+  //   const formGroup = this.fb.group({
+  //     id: styleConfig.id,
+  //     value: null,
+  //   });
+  //   this.styleFormArray.push(formGroup);
+  // }
+  addStyle(style: Style) {
     const formGroup = this.fb.group({
-      id: styleConfig.id,
+      style,
       value: null,
     });
     this.styleFormArray.push(formGroup);
@@ -121,7 +129,7 @@ export class StyleBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private openStyleList() {
-    this.dialog = this.popupSv.openPopup1(this.template, STYLES, {
+    this.dialog = this.popupSv.openPopup1(this.template, STYLES_LIST, {
       width: '400px',
       position: { top: '5%' },
     });
@@ -134,8 +142,8 @@ export class StyleBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  onStyleSelect(styleConfig: StyleConfig) {
-    this.addStyle(styleConfig);
+  onStyleSelect(style: Style) {
+    this.addStyle(style);
     this.dialog.close();
   }
 

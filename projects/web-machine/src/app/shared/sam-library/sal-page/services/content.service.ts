@@ -1,19 +1,18 @@
 import {
   ComponentFactoryResolver,
-  ElementRef,
   Injectable,
   Injector,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { SalFilesBrowserComponent } from '../../sal-file/sal-files-browser/sal-files-browser.component';
+import { FilesBrowser } from '../../sal-file/tokens';
 import { Grid, Section, Block } from '../page.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContentService {
-  fileBrowser: SalFilesBrowserComponent;
+  filesBrowser: FilesBrowser;
   fileBrowsertemplate: TemplateRef<any>;
   constructor(
     private resolver: ComponentFactoryResolver,

@@ -1,10 +1,23 @@
-import { Component, Input, OnInit, forwardRef, AfterViewInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnInit,
+  forwardRef,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { StyleConfig } from '../../sal-page/page.model';
-import { STYLES } from '../styles';
+import { Style } from '../classes/style';
 
 @Component({
   selector: 'style-form',
@@ -13,32 +26,24 @@ import { STYLES } from '../styles';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => StyleFormComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  styleUrls: ['./style-form.component.scss']
+  styleUrls: ['./style-form.component.scss'],
 })
-export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterViewInit {
-
-  _styleId;
-  @Input() set styleId(val: string) {
-    this._styleId = val;
-    this.styleConfig = STYLES.find(styleConfig => styleConfig.id === val);
-  }
-  get styleId() {
-    return this._styleId;
-  }
-
-  styleConfig: StyleConfig;
+export class StyleFormComponent
+  implements OnInit, ControlValueAccessor, AfterViewInit
+{
+  @Input() style = {} as Style;
   @Output() onDelete: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(MatSlideToggle) equalCheck: MatSlideToggle;
 
   form: FormGroup;
   topSub: Subscription = new Subscription();
-  firstPart; /** top | top-left */
-  secondPart;
-  thirdPart; /** bottom | bottom-right */
-  fourthPart;
+  // firstPart; /** top | top-left */
+  // secondPart;
+  // thirdPart; /** bottom | bottom-right */
+  // fourthPart;
   isOneValu;
   showAll;
   showFourvalueBtn;
@@ -46,104 +51,111 @@ export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterVi
   onChange: Function;
   onTouched: Function;
 
-  constructor(
-    private fb: FormBuilder,
-  ) {
-    this.onChange = (_: any) => { };
-    this.onTouched = () => { };
+  constructor(private fb: FormBuilder) {
+    this.onChange = (_: any) => {};
+    this.onTouched = () => {};
   }
 
   ngOnInit(): void {
     this.showAll = false;
-    this.setProperteis();
+    //this.setProperteis();
     this.buildForm();
-    this.form.valueChanges.subscribe(formVal => {
+    this.showVariants();
+    this.form.valueChanges.subscribe((formVal) => {
       this.onChange(formVal);
-    })
+    });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.handleEqualCheck();
-      
     }, 0);
   }
 
-  setProperteis() {
-    switch (this.styleConfig.type) {
-      case 'radius':
-        this.setBorderRadius();
-        break;
-      case 'oneValue':
-        this.setOnePart();
-        break;
-      default:
-        this.setFourPart();
-        break;
-    }
-  }
+  // setProperteis() {
+  //   const multi = this.styleConfig.multi;
+  //   const variants = this.styleConfig.variants;
+  //   if (multi) {
+  //     if (variants) {
+  //       this.setCustomedVariants(variants);
+  //     } else {
+  //       this.setNormalVariants();
+  //     }
+  //   } else {
+  //     this.setOnePart();
+  //   }
+  // }
 
   deleteStyle() {
     this.onDelete.emit();
   }
 
-  private setFourPart() {
-    this.firstPart = this.styleId + '-top';
-    this.secondPart = this.styleId + '-right';
-    this.thirdPart = this.styleId + '-bottom';
-    this.fourthPart = this.styleId + '-left';
-  }
+  // private setNormalVariants() {
+  //   this.firstPart = this.styleId + '-top';
+  //   this.secondPart = this.styleId + '-right';
+  //   this.thirdPart = this.styleId + '-bottom';
+  //   this.fourthPart = this.styleId + '-left';
+  // }
 
-  private setBorderRadius() {
-    this.firstPart = this.styleId.replace('-', '-top-left-');
-    this.secondPart = this.styleId.replace('-', '-top-right-');
-    this.thirdPart = this.styleId.replace('-', '-bottom-right-');
-    this.fourthPart = this.styleId.replace('-', '-bottom-left-');
-  }
+  // private setCustomedVariants(variants: string[]) {
+  //   this.firstPart = variants[0];
+  //   this.secondPart = variants[1];
+  //   this.thirdPart = variants[2];
+  //   this.fourthPart = variants[3];
+  // }
 
-  setOnePart() {
-    this.firstPart = this.styleId;
-  }
+  // setOnePart() {
+  //   this.firstPart = this.styleId;
+  // }
 
   buildForm() {
-    this.form = this.fb.group(this.generateControlsConfig());
+    //this.form = this.fb.group(this.generateControlsConfig());
+    this.form = this.fb.group(this.style.variantsObj);
   }
 
-  generateControlsConfig() {
-    const s = this.styleConfig;
-    if (s.hasFourValues) {
+  showVariants() {
+    if (this.style.multi) {
       this.showAll = true;
       this.showFourvalueBtn = true;
-      return {
-        [this.firstPart]: null,
-        [this.secondPart]: null,
-        [this.thirdPart]: null,
-        [this.fourthPart]: null,
-      };
-    }
-    else {
+    } else {
       this.showAll = false;
       this.showFourvalueBtn = false;
-      return {
-        [this.firstPart]: null
-      };
     }
   }
 
+  // generateControlsConfig() {
+  //   if (this.styleConfig.multi) {
+  //     this.showAll = true;
+  //     this.showFourvalueBtn = true;
+  //     return {
+  //       [this.firstPart]: null,
+  //       [this.secondPart]: null,
+  //       [this.thirdPart]: null,
+  //       [this.fourthPart]: null,
+  //     };
+  //   } else {
+  //     this.showAll = false;
+  //     this.showFourvalueBtn = false;
+  //     return {
+  //       [this.firstPart]: null,
+  //     };
+  //   }
+  // }
+
   get topValue() {
-    return this.form.get(this.firstPart).value;
+    //return this.form.get(this.firstPart).value;
+    return this.form.get(this.style.partNameList[0]).value;
   }
 
   subToTopValue() {
     this.topSub.add(
-      this.form.get(this.firstPart).valueChanges
-        .pipe(
-          filter(_ => !this.showAll)
-        )
-        .subscribe(_ => {
-          this.unifyValue()
+      this.form
+        .get(this.style.partNameList[0])
+        .valueChanges.pipe(filter((_) => !this.showAll))
+        .subscribe((_) => {
+          this.unifyValue();
         })
-    )
+    );
   }
 
   unSubFromTopValue() {
@@ -159,8 +171,7 @@ export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterVi
           equal = false;
           break;
         }
-      }
-      else {
+      } else {
         value = val;
       }
     }
@@ -174,8 +185,7 @@ export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterVi
     if (checked) {
       this.unify();
       this.subToTopValue();
-    }
-    else {
+    } else {
       this.separate();
       //this.unSubFromTopValue();
     }
@@ -188,10 +198,9 @@ export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterVi
   }
 
   unifyValue() {
-    const val = this.topValue;
-    this.form.get(this.secondPart).setValue(val);
-    this.form.get(this.thirdPart).setValue(this.topValue);
-    this.form.get(this.fourthPart).setValue(this.topValue);
+    this.form.get(this.style.partNameList[1]).setValue(this.topValue);
+    this.form.get(this.style.partNameList[2]).setValue(this.topValue);
+    this.form.get(this.style.partNameList[3]).setValue(this.topValue);
   }
 
   separate() {
@@ -223,6 +232,5 @@ export class StyleFormComponent implements OnInit, ControlValueAccessor, AfterVi
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-  setDisabledState(isDisabled: boolean): void { }
-
+  setDisabledState(isDisabled: boolean): void {}
 }

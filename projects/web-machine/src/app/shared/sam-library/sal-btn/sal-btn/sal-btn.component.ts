@@ -15,7 +15,9 @@ import {
   templateUrl: './sal-btn.component.html',
   styleUrls: ['./sal-btn.component.scss'],
 })
-export class SalBtnComponent implements OnInit, AfterViewInit {
+export class SalBtnComponent
+  implements OnInit, AfterViewInit, AfterContentInit
+{
   @ViewChild('raised') raised: TemplateRef<any>;
   @ViewChild('transparent') transparent: TemplateRef<any>;
   @ViewChild('iconText') iconText: TemplateRef<any>;
@@ -28,8 +30,9 @@ export class SalBtnComponent implements OnInit, AfterViewInit {
   @Input() type = 'raised';
   @Input() icon = null;
   @Input() className = '';
+  @Input() disabled = false;
 
-  constructor(private rendere: Renderer2, private host: ElementRef) {}
+  constructor(private renderer: Renderer2, private host: ElementRef) {}
 
   ngOnInit() {}
 
@@ -38,9 +41,11 @@ export class SalBtnComponent implements OnInit, AfterViewInit {
     this.setClass();
   }
 
+  ngAfterContentInit(): void {}
+
   private setClass() {
     if (this.className !== '') {
-      this.rendere.addClass(this.host.nativeElement, this.className);
+      this.renderer.addClass(this.host.nativeElement, this.className);
     }
   }
 

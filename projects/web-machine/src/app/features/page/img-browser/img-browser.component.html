@@ -1,7 +1,8 @@
-<sal-files-browser [fileList$]="fileList$"></sal-files-browser>
-<sal-btn-group gridTemplateColumns="200px 1fr 200px 200px">
-  <sal-btn type="transparent">vvv</sal-btn>
-  <span></span>
-  <sal-btn>cancel</sal-btn>
-  <sal-btn icon="edit">select</sal-btn>
+<sal-files-browser
+  (onSelect)="_onSelect($event)"
+  [fileList$]="fileList$"
+></sal-files-browser>
+<sal-btn-group>
+  <sal-btn (click)="_onCancel()">cancel</sal-btn>
+  <sal-btn [disabled]="!fileList?.length" (click)="select()">select</sal-btn>
 </sal-btn-group>

@@ -102,17 +102,20 @@ export interface Style {
   value?: any;
 }
 
+export enum StyleType {
+  valueUnit = 'value + unit : width',
+  multiValueUnit = '(value + unit) * 4 : margin',
+  border = '(value + unit + option + color) * 4',
+  color = 'color',
+  option = 'option : overflow',
+}
+
 export interface StyleConfig {
-  id?: string /** margin | padding... */;
-  type?: string;
+  id: string /** margin | padding... */;
+  type: StyleType;
+  variants?: string[];
   options?: string[];
-  default?: any;
-  hasColor?: boolean;
-  hasValueWithUnit?: boolean;
-  hasValueSlider?: boolean;
-  hasOptions?: boolean;
   hasOptionsWithValues?: boolean;
-  hasFourValues?: boolean;
   max?: number;
   min?: number;
   step?: number;
@@ -131,5 +134,6 @@ export interface SettingsData {
 export interface BlockTemplate {
   data: any;
   setDefault: () => void;
+  applySettings?: (settings: any) => void;
   updateSettings: (settings: any) => void;
 }

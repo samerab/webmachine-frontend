@@ -44,3 +44,4 @@ export * from './sal-page/page.model';
 export * from './sal-sidenav/interfaces';
 export * from './sal-sidebar/interfaces';
 export * from './sal-common/decorators';
+export * from './sal-file/tokens';

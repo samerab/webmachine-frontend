@@ -1,7 +1,40 @@
-<form [formGroup]="form" class="style-form-container">
-  <div class="label">{{ label }}</div>
+<ng-container *ngTemplateOutlet="template"></ng-container>
+<!-- <ng-container *ngFor="let type of typeList">
 
-  <ng-container *ngIf="styleConfig.hasValueWithUnit">
+    <ng-container *ngIf="type === types.isOptionValue">
+      <mat-form-field>
+        <mat-select formControlName="option">
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="hasSpecifiedNumber">
+        <input
+          type="number"
+          formControlName="value"
+          matInput
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </ng-container>
+
+   
+
+    <mat-slider
+      *ngIf="type === types.isSlider"
+      class="slider"
+      [max]="max"
+      [min]="min"
+      [step]="step"
+      [thumbLabel]="true"
+      formControlName="value"
+    >
+    </mat-slider>
+  </ng-container> -->
+<ng-template #value>
+  <form [formGroup]="form" class="val">
+    <div class="label">{{ label }}</div>
     <mat-form-field class="value">
       <input
         type="number"
@@ -10,33 +43,13 @@
         autocomplete="off"
       />
     </mat-form-field>
+  </form>
+</ng-template>
 
-    <mat-form-field class="unit">
-      <mat-select formControlName="unit">
-        <mat-option *ngFor="let unit of units" [value]="unit">
-          {{ unit }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </ng-container>
-
-  <mat-form-field *ngIf="styleConfig.hasOptions">
-    <mat-select formControlName="option">
-      <mat-option *ngFor="let option of styleConfig.options" [value]="option">
-        {{ option }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <ng-container *ngIf="styleConfig.hasOptionsWithValues">
-    <mat-form-field>
-      <mat-select formControlName="option">
-        <mat-option *ngFor="let option of styleConfig.options" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field *ngIf="hasSpecifiedNumber">
+<ng-template #valueUnit>
+  <form [formGroup]="form" class="val-unit">
+    <div class="label">{{ label }}</div>
+    <mat-form-field class="value">
       <input
         type="number"
         formControlName="value"
@@ -44,20 +57,55 @@
         autocomplete="off"
       />
     </mat-form-field>
-  </ng-container>
+    <mat-form-field class="unit">
+      <mat-select formControlName="unit">
+        <mat-option *ngFor="let unit of units" [value]="unit">
+          {{ unit }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</ng-template>
 
-  <mat-form-field *ngIf="styleConfig.hasColor" class="color">
-    <input type="color" formControlName="color" matInput autocomplete="off" />
-  </mat-form-field>
+<ng-template #color>
+  <form [formGroup]="form" class="color">
+    <div class="label">{{ label }}</div>
+    <mat-form-field class="color">
+      <input type="color" formControlName="color" matInput autocomplete="off" />
+    </mat-form-field>
+  </form>
+</ng-template>
 
-  <mat-slider
-    *ngIf="styleConfig.hasValueSlider"
-    class="slider"
-    [max]="styleConfig.max"
-    [min]="styleConfig.min"
-    [step]="styleConfig.step"
-    [thumbLabel]="true"
-    formControlName="value"
-  >
-  </mat-slider>
-</form>
+<ng-template #option>
+  <form [formGroup]="form" class="option">
+    <div class="label">{{ label }}</div>
+    <mat-form-field>
+      <mat-select formControlName="option">
+        <mat-option *ngFor="let option of style.options" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</ng-template>
+
+<ng-template #optionValue>
+  <form [formGroup]="form" class="option-val">
+    <div class="label">{{ label }}</div>
+    <mat-form-field>
+      <mat-select #option formControlName="option">
+        <mat-option *ngFor="let option of style.options" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="option.value === 'value'">
+      <input
+        type="number"
+        formControlName="value"
+        matInput
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </form>
+</ng-template>

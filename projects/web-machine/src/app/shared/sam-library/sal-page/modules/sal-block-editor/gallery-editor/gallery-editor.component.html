@@ -1,38 +1,43 @@
 <form [formGroup]="form">
   <mat-tab-group>
     <mat-tab label="settings">
-      <style-value-input
-        [styleConfig]="{
-          hasOptionsWithValues: true,
-          options: ['auto-fit', 'auto-fill', 'specifiedNumber']
-        }"
+      <!-- <style-value-input
+        [style]="styles.imagesPerCol"
         formControlName="imagesPerCol"
         label="imagesPerCol"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="{ hasValueWithUnit: true }"
+        [style]="styles.minWidth"
         formControlName="minWidth"
         label="minWidth"
-      ></style-value-input>
+      ></style-value-input> -->
 
       <style-value-input
-        [styleConfig]="{ hasValueWithUnit: true }"
+        [style]="styles.gap"
         formControlName="gap"
         label="gap"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="{ hasValueWithUnit: true }"
+        [style]="styles.radius"
         formControlName="radius"
         label="radius"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="{ hasValueSlider: true, max: 180, min: -180, step: 1 }"
+        [style]="styles.rotate"
         formControlName="rotate"
         label="rotate"
       ></style-value-input>
+      <!-- <style-value-input
+        type="slider"
+        [min]="-180"
+        [max]="180"
+        [step]="1"
+        formControlName="rotate"
+        label="rotate"
+      ></style-value-input> -->
     </mat-tab>
 
     <mat-tab label="images">

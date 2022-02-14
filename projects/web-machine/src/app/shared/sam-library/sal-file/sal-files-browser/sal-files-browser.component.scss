@@ -3,7 +3,7 @@
   overflow: auto;
 }
 .files-container {
-  overflow: auto;
+  overflow-x: hidden;
   height: calc(100% - 10px);
 }
 
@@ -16,6 +16,7 @@
     position: relative;
     height: 175px;
     cursor: pointer;
+    padding: 5px;
     img {
       height: 100%;
       object-fit: cover;
@@ -50,9 +51,8 @@
       }
     }
     &.active {
-      box-sizing: border-box;
-      border: 2px solid blue;
-      padding: 5px;
+      outline: 2px solid blue;
+      outline-offset: -2px;
       border-radius: 5px;
       .mat-icon {
         &.select {
@@ -84,15 +84,7 @@
 .zoom-container {
   height: 100%;
   img {
-    // max-height: 100%;
-    // width: 100%;
     max-height: 100vh;
     max-width: 100%;
   }
-}
-
-.mat-checkbox {
-  position: absolute;
-  left: 10px;
-  top: 10px;
 }

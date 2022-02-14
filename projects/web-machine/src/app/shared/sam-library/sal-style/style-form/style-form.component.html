@@ -1,33 +1,33 @@
 <mat-card>
   <mat-card-header color="accent">
-    <mat-card-title>{{ styleId }}</mat-card-title>
+    <mat-card-title>{{ style.id }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form" class="style-form-container">
       <style-value-input
-        [styleConfig]="styleConfig"
-        [formControlName]="firstPart"
+        [style]="style"
+        [formControlName]="style.partNameList[0]"
         [label]="topLabel"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="styleConfig"
+        [style]="style"
         *ngIf="showAll"
-        [formControlName]="secondPart"
+        [formControlName]="style.partNameList[1]"
         label="right"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="styleConfig"
+        [style]="style"
         *ngIf="showAll"
-        [formControlName]="thirdPart"
+        [formControlName]="style.partNameList[2]"
         label="bottom"
       ></style-value-input>
 
       <style-value-input
-        [styleConfig]="styleConfig"
+        [style]="style"
         *ngIf="showAll"
-        [formControlName]="fourthPart"
+        [formControlName]="style.partNameList[3]"
         label="left"
       ></style-value-input>
     </form>
@@ -37,7 +37,7 @@
       <mat-icon (click)="deleteStyle()">delete</mat-icon>
     </button>
     <mat-slide-toggle
-    *ngIf="showFourvalueBtn"
+      *ngIf="showFourvalueBtn"
       (change)="onCheckboxChange($event.checked)"
       color="primary"
     >

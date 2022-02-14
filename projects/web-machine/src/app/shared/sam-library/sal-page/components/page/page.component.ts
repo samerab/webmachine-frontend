@@ -24,7 +24,6 @@ import {
   ContentChild,
   AfterContentInit,
   Input,
-  ElementRef,
 } from '@angular/core';
 import { ADD_GRID_MENU, END_LIST, START_LIST } from './page.data';
 import { filter } from 'rxjs/operators';
@@ -37,7 +36,7 @@ import {
 } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { GridService } from '../grid/grid.service';
-import { PageService, SalPageEventName } from '../../services/page.service';
+import { PageService } from '../../services/page.service';
 import { ContentService } from '../../services/content.service';
 import {
   ClickedNavbarItem,
@@ -51,12 +50,11 @@ import {
   SalEventName,
   SalAction,
   SalActionName,
-  SalNormalActionName,
 } from '../../../sal-common/event.service';
 import { SalFile } from '../../../models/modes.index';
 import { SalContextMenuComponent } from '../../../sal-context-menu/context-menu.component';
-import { SalFilesBrowserComponent } from '../../../sal-file/sal-files-browser/sal-files-browser.component';
 import { CustomEventService } from '../../../sal-common/custom.event.service';
+import { FilesBrowser, FILES_BROWSER } from '../../../sal-file/tokens';
 
 const CONTEXT_MENU = ['blank grid', 'button.delete'];
 
@@ -85,9 +83,11 @@ export class PageComponent
   @ViewChild('gridListContainer', { read: ViewContainerRef })
   gridListContainer: ViewContainerRef;
   @ViewChild('grid') grid: TemplateRef<void>;
+
   @ViewChild('fileBrowsertemplate') fileBrowsertemplate: TemplateRef<void>;
-  @ContentChild(SalFilesBrowserComponent)
-  fileBrowser: SalFilesBrowserComponent;
+
+  @ContentChild(FILES_BROWSER) filesBrowser: FilesBrowser;
+
   @ViewChild('contextMenu') contextMenuComponent: SalContextMenuComponent;
   @ViewChild('nameTemplate') nameTemplate: TemplateRef<any>;
 
@@ -141,7 +141,7 @@ export class PageComponent
   }
 
   ngAfterContentInit() {
-    this.contentSv.fileBrowser = this.fileBrowser;
+    this.contentSv.filesBrowser = this.filesBrowser;
     this.constructPage();
     this.subToAddToTemplates();
     this.sub.add(
@@ -840,4 +840,7 @@ export class PageComponent
       this.contentSv.createComponent(container, GridComponent, grid);
     }
   }
+}
+function FilesBrowser(FilesBrowser: any) {
+  throw new Error('Function not implemented.');
 }

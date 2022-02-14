@@ -1,1 +1,6 @@
-<img #img *ngFor="let file of data.settings.fileList" [src]="file.url" alt="" />
+<img
+  #img
+  *ngFor="let file of data?.settings?.fileList"
+  [src]="file?.url"
+  alt=""
+/>

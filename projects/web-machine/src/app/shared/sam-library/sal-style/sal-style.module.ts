@@ -16,10 +16,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
 import { SalPageModule } from '../sal-page';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SalInputModule } from '../sal-input/sal-input.module';
-
 
 @NgModule({
   declarations: [StyleBuilderComponent, StyleFormComponent],
@@ -40,7 +39,7 @@ import { SalInputModule } from '../sal-input/sal-input.module';
     SalPageModule,
     SalButtonModule,
     SalTableModule,
-    SalInputModule
-  ]
+    SalInputModule,
+  ],
 })
-export class SalStyleModule { }
+export class SalStyleModule {}

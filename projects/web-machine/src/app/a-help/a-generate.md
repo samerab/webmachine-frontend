@@ -1,8 +1,9 @@
 ng g c features/website-dashboard/redirect --skip-tests --inline-style --inline-template --flat
 ng g c features/page/img-browser --skip-tests
 ng g c shared/sam-library/sal-btn/sal-group-btn --skip-tests
+ng g c shared/sam-library/sal-style/styles-components/value-unit --skip-tests
 
-ng g m shared/sam-library/sal-page --routing
+ng g m shared/sam-library/sal-page/ --routing
 
 # sal-block-editor
 

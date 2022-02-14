@@ -7,17 +7,23 @@ import {
   Renderer2,
   ViewChildren,
 } from '@angular/core';
+import { Style } from '../../../../sal-style/classes/style';
+import { ValueUnit } from '../../../../sal-style/classes/value-unit';
+import { createStyle } from '../../../../sal-style/styles';
 import { Block, BlockTemplate } from '../../../page.model';
-import { PageService } from '../../../services/page.service';
 
 interface GalleryBlockTemplate extends Omit<Block, 'settings'> {
   settings: {
     fileList: any[];
-    imagesPerCol: any;
-    minWidth: any;
-    gap: any;
-    radius: any;
-    rotate: any;
+    gridStyleList: {
+      // imagesPerCol: any;
+      // minWidth: any;
+      gap: Style;
+    };
+    imgStyleList: {
+      radius: Style;
+      rotate: Style;
+    };
   };
 }
 
@@ -55,82 +61,70 @@ export class GalleryTemplateComponent
     },
   ];
 
-  constructor(
-    private renderer: Renderer2,
-    private host: ElementRef,
-    private pageSv: PageService
-  ) {}
+  constructor(private renderer: Renderer2, private host: ElementRef) {}
 
   ngOnInit(): void {
-    this.setDefault();
-    //this.setSettings();
-    //this.applyGridStyle();
+    const x = createStyle('margin', '33', 'px');
+    console.log('xx', x);
   }
 
-  ngAfterViewInit() {
-    this.applyImgStyle();
+  ngAfterViewInit(): void {
+    this.setDefault();
   }
 
   updateSettings(settings) {
-    this.data.settings = settings;
+    const copyData = { ...this.data };
+    copyData.settings = { ...settings };
+    this.data = { ...copyData };
+    this.applySettings(settings);
+    console.log('ggg', settings.gridStylelist['radius'] instanceof Style);
   }
 
   setDefault() {
-    if (!this.data?.settings) {
-      const defaultData = {
-        fileList: [],
-        imagesPerCol: { option: 'auto-fit', value: null },
-        minWidth: { value: 100, unit: 'px' },
-        gap: { value: 10, unit: 'px' },
-        radius: { value: 10, unit: 'px' },
-        rotate: { value: 0 },
-      };
-      this.data.settings = defaultData;
+    if (!this.data.settings) {
+      // const defaultSettings = {
+      //   fileList: [],
+      //   imagesPerCol: { option: 'auto-fit', value: null },
+      //   minWidth: { value: 100, unit: 'px' },
+      //   gap: { value: 10, unit: 'px' },
+      //   radius: { value: 10, unit: 'px' },
+      //   rotate: { value: 0 },
+      // };
+      // this.data.settings = defaultSettings;
+    } else {
+      this.applySettings(this.data.settings);
     }
   }
 
-  private applyGridStyle() {
-    const imagesPerCol = this.pageSv.combineStyleParts(
-      this.data.settings.imagesPerCol
-    );
-    const minWidth = this.pageSv.combineStyleParts(this.data.settings.minWidth);
-    const gap = this.pageSv.combineStyleParts(this.data.settings.gap);
-    this.renderer.setStyle(
-      this.host.nativeElement,
-      'grid-template-columns',
-      `repeat(${imagesPerCol}, minmax(${minWidth}, 1fr))`
-    );
-    this.renderer.setStyle(this.host.nativeElement, 'grid-gap', gap);
-    //this.renderer.setStyle(this.host.nativeElement, 'padding', gap);
+  private applyGridStyle(gridStylelist) {
+    for (const key in gridStylelist) {
+      console.log('gridStylelist[key]', gridStylelist[key] instanceof Style);
+      console.log(
+        'gridStylelist[key]?.styleValue,',
+        gridStylelist[key]?.styleValue
+      );
+      this.renderer.setStyle(
+        this.host.nativeElement,
+        gridStylelist[key]?.styleName,
+        gridStylelist[key]?.styleValue
+      );
+    }
   }
 
-  private applyImgStyle() {
-    const radius = this.pageSv.combineStyleParts(this.data.settings.radius);
-    const rotate = this.pageSv.combineStyleParts(this.data.settings.rotate);
-    this.imgList.forEach((img, index) => {
-      this.renderer.setStyle(img.nativeElement, 'border-radius', radius);
-      this.renderer.setStyle(
-        img.nativeElement,
-        'transform',
-        `rotate(${rotate}deg)`
-      );
+  private applyImgStyle(imgStylelist) {
+    this.imgList.forEach((img) => {
+      for (const key in imgStylelist) {
+        this.renderer.setStyle(
+          img.nativeElement,
+          imgStylelist[key]?.styleName,
+          imgStylelist[key]?.styleValue
+        );
+      }
     });
   }
 
-  private setSettings() {
-    if (Object.keys(this.data).length) {
-      const settings = this.data;
-      for (const [key, value] of Object.entries(settings)) {
-        if (key !== 'fileList') {
-          this.data.settings[key] = this.pageSv.combineStyleParts(value);
-        } else {
-          this.data.settings[key] = value as any;
-        }
-      }
-    } else {
-      for (const [key, value] of Object.entries(this.data.settings)) {
-        this.data[key] = value;
-      }
-    }
+  applySettings(settings) {
+    this.applyGridStyle(settings?.gridStyleList);
+    this.applyImgStyle(settings?.imgStyleList);
   }
 }

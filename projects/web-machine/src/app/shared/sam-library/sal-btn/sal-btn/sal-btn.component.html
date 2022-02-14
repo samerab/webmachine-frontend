@@ -1,19 +1,19 @@
 <ng-container *ngTemplateOutlet="template; context: context"></ng-container>
 
 <ng-template #raised let-text="text">
-  <button mat-raised-button>
+  <button [disabled]="disabled" mat-raised-button>
     {{ text }}
   </button>
 </ng-template>
 
 <ng-template #transparent let-text="text">
-  <button mat-button>
+  <button [disabled]="disabled" mat-button>
     {{ text }}
   </button>
 </ng-template>
 
 <ng-template #iconText let-text="text" let-icon="icon">
-  <button class="icon-text">
+  <button [disabled]="disabled" class="icon-text">
     <mat-icon>{{ icon }}</mat-icon>
     <span>{{ text }}</span>
   </button>

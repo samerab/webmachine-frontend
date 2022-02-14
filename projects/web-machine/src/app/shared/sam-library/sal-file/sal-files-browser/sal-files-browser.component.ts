@@ -13,14 +13,12 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ClickedNavbarItem, NavbarItem } from '../../sal-menu/models';
 import { START_LIST } from './sal-files-browser.data';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { PopupService } from '../../sal-popup';
 import { SalFile } from '@ws-sal';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'sal-files-browser',
@@ -96,6 +94,7 @@ export class SalFilesBrowserComponent implements OnInit {
     const elem = this.files.get(index).nativeElement;
     if (elem.classList.contains('active')) {
       this.renderer.removeClass(elem, 'active');
+      this.renderer.addClass(elem, 'hover');
       this.removeFile(file);
     } else {
       this.renderer.removeClass(elem, 'hover');
